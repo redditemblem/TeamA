@@ -1,0 +1,168 @@
+<div class="backgroundBox"></div>
+<div id="dropArea" class="mapBox">
+	<img id="map" class="absolutePos" src="{{mapUrl}}">
+
+	<!--Draw tile names-->
+	<div ng-repeat="(yIndex,row) in rows" class="glowBoxIndent absolutePos" ng-style="{top: determineGlowY(yIndex)}">
+		<div class="glowBox"
+			 ng-repeat="(indexX,column) in columns"
+			 title="({{column}},{{row}}) {{terrainLocs[column+','+row].type}}: {{terrainTypes[terrainLocs[column+','+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+','+row].type].def}}⛨"
+			 ng-style="{left: determineGlowX(indexX), 'background-color': determineGlowColor(column+','+row)}">
+		</div>
+	</div>
+	
+	<!--Draw characters-->
+	<div ng-repeat="(cIndex,char) in charaData">
+		<div id="{{cIndex}}" ng-if="validPosition(char.position)" ng-click="displayData(cIndex)" class="absolutePos charDiv hoverImage" title="{{char.position}}" ng-style="{top: determineCharY(char.position), left: determineCharX(char.position)}">
+			<!--Paired unit sprite-->
+			<div ng-if="isPaired(char.position)" class="charDiv mapCharOffsetLeft">
+				<img ng-src="{{getPairUnitIcon(char.position)}}" class="mapCharCentered dimImage">
+			</div>
+			<!--Unit sprite-->
+			<div class="charDiv" ng-class="isPaired(char.position) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
+				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered">
+				<div class="enemyNum">{{getEnemyNum(char.name)}}</div>
+			</div>
+			<div class="healthBarBack"></div>
+			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*27)+'px'}"></div>
+			<div class="healthBarBorder"></div>
+			<div ng-if="isPaired(char.position)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
+		</div>
+	</div>
+
+    <!--Character Info Box-->
+	<div id="{{cIndex}}_box" ng-repeat="(cIndex,char) in charaData" class="characterInfo yellowTan floatAbove" draggable="true" ng-show="checkCharToggle(cIndex)">
+	<!--Drag bar-->
+		<div class="absolutePos dragBar olive"></div>
+		<!--Close button-->
+		<div class="infoElement dragBarButton hoverImage" title="Close" style="left:calc(100% - 18px)" ng-click="removeData(cIndex)">
+			<img src="IMG/close.png">
+		</div>
+		<!--Pair-Up button-->
+		<div class="infoElement dragBarButton hoverImage" title="Switch to Paired Unit" style="left:calc(100% - 38px)" ng-if="isPaired(char.position)" ng-click="findPairUpChar(cIndex)">
+			<img src="IMG/switchpairup.png">
+		</div>
+		<!--Name, Class, Lvl-->
+		<div class="infoElement whiteText charNamePos" ng-style="{'background-color': determineNametagColor(cIndex)}" style="text-align: center; padding-top: 5px;">
+			<span style="font-size: 25px;">{{char.name}}</span><br/>
+			<span style="font-size: 15px;">Lvl. {{char.lvl}} {{char.class}}</span>
+		</div>
+		<!--Experience bar-->
+		<div class="infoElement redText charExpPos">
+			EXP: {{char.exp}}
+			<div class="expBarBack"></div>
+			<div class="expBarFront" ng-style="{width: ((char.exp/100) * 226)+'px'}"></div>
+			<!--<div class="expBarBorder"></div>-->
+		</div>
+		<!--HP-->
+		<div class="infoElement darkTan tanText HpPos">
+			<div class="HPText">HP</div>
+			<div class="HPFractionPos">
+				<span class="currHPText">{{char.currHp}} /</span>
+				<span class="totalHPText">{{char.maxHp}}</span>
+			</div>
+		</div>
+		<!--Hit, Atk, Crit, Avo-->
+		<div class="infoElement darkTan tanText statsPos">
+			<div class="hitPos">
+				<span class="statNameText">Hit</span>
+				<span class="statText">-</span>
+			</div>
+			<div class="critPos">
+				<span class="statNameText">Crit</span>
+				<span class="statText">-</span>
+			</div>
+			<div class="atkPos">
+				<span class="statNameText">Atk</span>
+				<span class="statText">{{char.Str}}</span>
+			</div>
+			<div class="avoidPos">
+				<span class="statNameText">Avo</span>
+				<span class="statText">-</span>
+			</div>
+		</div>
+		<!--Stats-->
+		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText statBox" ng-style="{top: stat[2], left: stat[3]}">
+			<span class="indentedStatLabel">{{stat[0]}}</span>
+			<span class="indentedStat">{{char[stat[0]]}}</span>
+		</div>
+		<!--Inventory-->
+		<div ng-repeat="item in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos" ng-class="$index == 0 ? 'lightTan' : 'paleTan'" ng-style="{top: fetchWeaponVerticalPos($index)}">
+			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
+		</div>
+		<!--Weapon ranks-->
+		<div ng-repeat="w in char.weaponRanks" class="infoElement weaponRankPos" ng-style="{left: fetchWpnRankHorzPos($index)}">
+			<span ng-if="existsWeapon(w.class)" title="{{w.class}} Rank" style="position:relative">
+				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
+				<div class="weaponRankBackground"></div>
+				<div class="weaponRankBar" ng-style="{width:calcWeaponExp(w.exp)+'px'}"></div>
+				<div class="weaponRankLtrPos redText">{{w.rank}}</div>
+			</span>
+		</div>
+		<!--Pairup Info-->
+		<div class="infoElement darkTan tanText pairBoxPos">
+			<div class="boldText popOutText popOutHeader">Partner: {{getPairName(char.position)}}</div>
+			<div ng-if="isPaired(char.position)" class="popOutText popOutBody">
+				Support Rank: {{getPairSupportRank(char.name, char.position)}}<br/>
+				{{buildPairSupportBonuses(char.position)}}
+			</div>
+		</div>
+		<!--Skills-->
+		<div ng-repeat="skill in char.skills" class="infoElement redText hoverTan paleTan hoverImage skillPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
+			<span class="indentedSkillName" ng-if="validSkill(skill.name)">{{skill.name}}</span>
+		</div>
+		<!--Status Effect-->
+		<div class="infoElement darkTan tanText statusBox hoverBrown" ng-mouseover="statusHoverIn(cIndex)" ng-mouseleave="statusHoverOut(cIndex)" style="top: 225px;">
+			<span class="indentedStatusLabel">Status</span>
+			<span class="indentedStatus">{{char.statusEffect.name}}</span>
+		</div>
+		<!--Trait-->
+		<div class="infoElement darkTan tanText statusBox hoverBrown" ng-mouseover="traitHoverIn(cIndex)" ng-mouseleave="traitHoverOut(cIndex)" style="top: 270px;">
+			<span class="indentedStatusLabel">Trait</span>
+			<span class="indentedStatus">{{char.trait.name}}</span>
+		</div>
+
+		<!--Inventory Desc-->
+		<div ng-repeat="weapon in char.inventory">
+			<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, $index) && validWeapon(weapon.name)" ng-style="{top: fetchWpnDescVerticalPos($index)}">
+				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
+				<div class="popOutText itemRankPos">
+					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span>
+					{{weapon.class}}
+				</div>
+				<div class="customDivider" style="top:22px"></div>
+				<div ng-if="notItem(weapon.class)">
+					<div class="popOutText itemMightPos">Might: {{weapon.might}}</div>
+					<div class="popOutText itemMightPos" style="right:0px">Hit: {{weapon.hit}}</div>
+					<div class="popOutText itemWeightPos">Crit: {{weapon.crit}} ({{weapon.critMltpr}})</div>
+					<div class="popOutText itemWeightPos" style="right:0px">Range: {{weapon.range}}</div>
+					<div class="customDivider" style="top:58px"></div>
+				</div>
+				<div class="popOutText italicText" ng-style="{top: setDescriptionLoc(weapon.class)}">{{weapon.desc}}</div>
+			</div>
+		</div>
+		<!--Skill Info Boxes-->
+		<div ng-repeat="skill in char.skills">
+			<div ng-if="skillHoverOn(cIndex, $index) && validSkill(skill.name)" class="infoElement green whiteText skillGemInfoPos" ng-style="{top: fetchSklDescVerticalPos($index)}">
+				<div class="boldText popOutText popOutHeader">{{skill.name}}</div>
+				<div class="popOutText popOutBody">{{skill.desc}}</div>
+			</div>
+		</div>
+		<!--Status Info-->
+		<div ng-if="statusHoverOn(cIndex) && char.statusEffect.name != 'None'" class="infoElement green whiteText statusInfoPos" style="top: 170px">
+			<div class="boldText popOutText popOutHeader">{{char.statusEffect.name}}</div>
+			<div class="popOutText popOutBody">{{char.statusEffect.desc}}</div>
+		</div>
+		<!--Trait Info-->
+		<div ng-if="traitHoverOn(cIndex)" class="infoElement green whiteText statusInfoPos" style="top: 190px">
+			<div class="boldText popOutText popOutHeader">{{char.trait.name}}</div>
+			<div class="popOutText popOutBody">
+				Pro: {{char.trait.pro}}
+				<br/><br/>
+				Con: {{char.trait.con}}
+			</div>
+		</div>
+
+	</div>
+</div>

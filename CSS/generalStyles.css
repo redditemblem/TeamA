@@ -1,0 +1,235 @@
+body{
+	height:100%;
+	width:100%;
+}
+
+img{
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -o-crisp-edges;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+.backgroundBox{
+	position:fixed;
+	top:0px;
+	left:0px;
+	height:100%;
+	width:100%;
+	background-color: black;
+}
+
+.mapBox{
+	position:absolute;
+	top:0px;
+	left:0px;
+	height:100%;
+	width:100%;
+}
+
+.charDiv{
+	height:31px;
+	width:31px;
+}
+
+.hoverImage:hover{
+	cursor: pointer;
+	filter: brightness(160%);
+}
+
+.dimImage{
+	filter: brightness(60%);
+}
+
+.hoverBrown:hover{
+	background-color: #5f605f !important;
+	cursor: pointer !important;
+}
+
+.hoverTan:hover{
+	background-color: #f2e4cc !important;
+	cursor: pointer !important;
+}
+
+.healthBarBack{
+	position: absolute;
+	width: 27px;
+	height: 2px;
+	left: 2px;
+	top: 28px;
+	background-color: dimgray;
+}
+
+.healthBarFront{
+	position: absolute;
+	height: 2px;
+	left: 2px;
+	top: 28px;
+	background-color: red;
+}
+
+.healthBarBorder{
+	position: absolute;
+	width: 26px;
+	height: 1px;
+	left: 2px;
+	top: 28px;
+	border: 1px solid black;
+}
+
+.expBarBack{
+	position: absolute;
+	width: calc(100% - 2px);
+	height: 5px;
+	left: 2px;
+	top: 17px;
+	background-color: dimgray;
+}
+
+.expBarFront{
+	position: absolute;
+	height: 5px;
+	left: 2px;
+	top: 17px;
+	background-color: red;
+}
+
+.expBarBorder{
+	position: absolute;
+	width: calc(100% - 4px);
+	height: 4px;
+	left: 2px;
+	top: 17px;
+	border: 1px solid black;
+}
+
+.infoElement{
+	position: absolute;
+	border-radius: 10px;
+}
+
+.rightIndented{
+	position: absolute;
+	margin-top:5px;
+}
+
+.popOutHeader{
+	margin-top:5px;
+}
+
+.popOutBody{
+	margin-top:25px;
+}
+
+.popOutText{
+	font-size:12px;
+	position: absolute;
+	margin-left:5px;
+	margin-right:5px;
+}
+
+.popOutTextSpacing{
+	margin-top:5px;
+}
+
+.glowBox{
+	position:absolute;
+	height:31px;
+	width:31px;
+	display:inline-block;
+}
+
+.glowBox:hover{
+	box-shadow: 0px 0px 10px #00ffff;
+	z-index:1;
+}
+
+.absolutePos{
+	position:absolute;
+}
+
+.mapCharCentered{
+	margin: auto;
+	position: absolute;
+	left:0;
+	right: 0;
+	top: 0;
+	bottom: 0;  
+}
+
+.mapCharOffsetLeft{
+	position:absolute;
+	left:-6px;
+	top:-3px;
+}
+
+.mapCharOffsetRight{
+	position:absolute;
+	left:6px;
+	top:3px;
+}
+
+.mapCharOffsetNone{
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+.floatAbove{
+	z-index:3;
+}
+
+.floatAbove:hover{
+	z-index:4;
+}
+
+.customDivider{
+	position:absolute;
+	width:96%;
+	height:1px;
+	left:2%;
+	background-color: white;	
+}
+
+.itemNamePos{
+	font-size: 14px !important;
+	top: 4px;
+}
+
+.itemRankPos{
+	top: 5px;
+	right: 0px;
+	text-align: right;
+}
+
+.itemMightPos{
+	top:25px;
+}
+
+.itemWeightPos{
+	top:40px;
+}
+
+.itemNotesPos{
+	top:95px;
+}
+
+.centerText{ text-align: center; }
+.rightText{ text-align: right; }
+.whiteText{ color: white; }
+.redText{ color: #13300e; }
+.tanText{ color: #eaeaea; }
+.boldText{ font-weight: bold; }
+.italicText{ font-style: italic; }
+
+.navy{ background-color: #727472; }
+.paleTan{ background-color: #cecece; }
+.lightTan{ background-color: #e0e0e0; }
+.yellowTan{ background-color: #c0c0c0 ; }
+.darkTan{ background-color: #727472; }
+.olive{ background-color: #212121; }
+.lightGreen{ background-color: #39af2b; }
+.green{ background-color: #5b0808; opacity: 0.95;}
+.blackBorder{ border: 1px solid black; }

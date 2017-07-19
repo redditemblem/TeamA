@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="RedditEmblemViewer">
+  <head>
+  	<!--Set pages attributes-->
+  	<link rel="icon" type="image/x-icon" href="IMG/favicon.ico">
+  	<title>RE Team F Map</title>
+  	
+  	<!--Load AngularJS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
+    
+    <!--Included CSS stylesheet files-->
+    <link rel="stylesheet" href="CSS/loginStyles.css">
+    <link rel="stylesheet" href="CSS/generalStyles.css">
+    <link rel="stylesheet" href="CSS/characterStyles.css">
+    
+    <!--Included JavaScript files-->
+    <script src="app.js"></script>
+    <script src="controller.auth.js"></script>
+    <script src="controller.home.js"></script>
+    <script src="service.data.js"></script>
+    
+    <!--Google API Scripts-->
+    <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+  </head>
+  <body>
+  	<!-- Individual HTML files are displayed here when loaded -->
+    <div ng-view></div>
+  </body>
+</html>
