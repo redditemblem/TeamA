@@ -26,5 +26,12 @@
   <body>
   	<!-- Individual HTML files are displayed here when loaded -->
     <div ng-view></div>
+    <button class="audioButton" ng-click="toggleMusic()">
+      <span ng-if="!playMusic" style="font-size: 14px;">&#9654;</span>
+      <span ng-if="playMusic" style="font-size: 18px;">&#9208;</span>
+    </button>
+    <audio id="audioPlayer" autoplay loop style="visibility: hidden">
+      <source src="MUS/PoR-Battle_And_Beginning.mp3" type="audio/mp3">
+    </audio>
   </body>
 </html>

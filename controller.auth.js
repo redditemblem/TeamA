@@ -13,8 +13,22 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
     var bar = document.getElementById('progress');
 	unavailableDiv.style.display = 'none';
     loadingDiv.style.display = 'none';
-    bar.style.value = '0px';
-    
+	bar.style.value = '0px';
+
+	//Global music variables
+	$scope.$root.playMusic = true;
+	$scope.$root.toggleMusic = function(){ 
+		var audio = document.getElementById("audioPlayer");
+		if($scope.$root.playMusic){
+			$scope.$root.playMusic = false;
+			audio.pause();
+		}
+		else{
+			$scope.$root.playMusic = true;
+			audio.play();
+		}
+	};
+
     //Continue to check gapi until it's loaded
     function checkAuth() {
     	if(gapi.client != undefined){
@@ -95,5 +109,5 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		
 		if(map != undefined && img.src == "") img.src = map;
 		if(data >= 100) redirect();
-    });
+	});
 }]);
