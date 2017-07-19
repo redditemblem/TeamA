@@ -4,7 +4,7 @@
 		<div class="authText">
 			<img src="IMG/logo.png">
 		</div>
-		<button class="authButton" ng-disabled="true" ng-click="loadAPI(event)" style="left: calc(50% - 50px); top: calc(50% + 35px);">
+		<button class="authButton" ng-disabled="!ready" ng-click="loadAPI(event)" style="left: calc(50% - 50px); top: calc(50% + 35px);">
 			<span ng-show="!ready"><img src="IMG/loading.gif"></span>
 			<span ng-show="ready">Load Map</span>
 		</button>

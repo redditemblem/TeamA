@@ -1,16 +1,16 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
-	var sheetId = '19OIsTc_rxylCoqq2JOIFwx3avsl-lQeqd4VD_NzrmBU';
+	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
+	const updateVal = (100 / 2) + 0.1;
+
 	var progress = 0;
 	var characters = null;
 	var enemies = null;
 	var rows = [];
 	var cols = [];
-	var map, characterData, enemyData, itemIndex, skillIndex, statusIndex, traitIndex, supportIndex, supportBonuses, coordMapping, terrainIndex, terrainLocs;
+	var map, characterData, enemyData, itemIndex, skillIndex, coordMapping, terrainIndex, terrainLocs;
 	
 	this.getCharacters = function(){ return characters; };
 	this.getMap = function(){ return map; };
-	this.getSupportIndex = function(){ return supportIndex; };
-	this.getSupportBonuses = function(){ return supportBonuses; };
 	this.getRows = function(){ return rows; };
 	this.getColumns = function(){ return cols; };
 	this.getTerrainTypes = function(){ return terrainIndex; };
@@ -27,196 +27,90 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         majorDimension: "COLUMNS",
-        range: 'Player Stats!B:ZZ',
+        range: 'Character Tracker!B:ZZ',
       }).then(function(response) {
     	 characterData = response.result.values;
-		 characterData.splice(characterData.length-2, 2);
     	 updateProgressBar();
     	 fetchCharacterImages();
       });
-    };
-    
-    function fetchCharacterImages() {
-        gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: sheetId,
-          majorDimension: "ROWS",
-          valueRenderOption: "FORMULA",
-          range: 'Player Stats!B3:ZZ3',
-        }).then(function(response) {
-      	 var images = response.result.values[0];
-      	 for(var i = 0; i < images.length; i++)
-		   if(characterData[i][0] != "")
-      		 characterData[i][2] = processImageURL(images[i]);
-      	 updateProgressBar();
-      	 fetchEnemyData();
-        });
-      };
-      
-    function fetchEnemyData(){
-    	gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: sheetId,
-            majorDimension: "COLUMNS",
-            range: 'Enemy Stats!B:ZZ',
-          }).then(function(response) {
-        	 enemyData = response.result.values;
-        	 updateProgressBar();
-        	 fetchEnemyImages();
-          });
-    };
-    
-    function fetchEnemyImages() {
-        gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: sheetId,
-          majorDimension: "ROWS",
-          valueRenderOption: "FORMULA",
-          range: 'Enemy Stats!B3:ZZ3',
-        }).then(function(response) {
-      	 var images = response.result.values[0];
-      	 for(var i = 0; i < images.length; i++)
-      		enemyData[i][2] = processImageURL(images[i]);
-      	 updateProgressBar();
-      	 fetchSkillData();
-        });
-      };
-    
-    function fetchSkillData(){
-    	gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: sheetId,
-            majorDimension: "ROWS",
-            range: 'Skills!A:C',
-        }).then(function(response) {
-        	skillIndex = response.result.values;
-        	updateProgressBar();
-        	fetchItemData();
-        });
-    };
-    
-    function fetchItemData(){
-    	gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: sheetId,
-            majorDimension: "ROWS",
-            range: 'Weapon Index!A:K',
-          }).then(function(response) {
-        	 itemIndex = response.result.values;
-        	 updateProgressBar();
-        	 fetchStatusData();
-          });
-    };
+	};
+	
+	function fetchCharacterImages() {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "ROWS",
+		range: 'Character Tracker!B2:ZZ2',
+		valueRenderOption: 'FORMULA',
+      }).then(function(response) {
+		 var images = response.result.values[0];
+		  
+		 for(var i = 0; i < images.length && characterData.length; i++)
+			characterData[i].splice(1,1, processImageURL(images[i]));
 
-	function fetchStatusData(){
-    	gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: sheetId,
-            majorDimension: "ROWS",
-            range: 'Status Effects!A:D',
-          }).then(function(response) {
-        	 statusIndex = response.result.values;
-        	 updateProgressBar();
-        	 fetchTraitData();
-          });
-    };
-
-	function fetchTraitData(){
-		gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: sheetId,
-            majorDimension: "ROWS",
-            range: 'Traits!A:C',
-          }).then(function(response) {
-        	 traitIndex = response.result.values;
-        	 updateProgressBar();
-        	 fetchSupportRanks();
-          });
+    	 updateProgressBar();
+    	 fetchWeaponIndex();
+      });
 	};
 
-	function fetchSupportRanks(){
-		gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: sheetId,
-            majorDimension: "ROWS",
-            range: 'Support Data!A:P',
-          }).then(function(response) {
-        	 var data = response.result.values;
-			 var colHeader = data[0];
-			 data.splice(0,1);
-			 supportIndex = {};
+	function fetchWeaponIndex() {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "ROWS",
+		range: 'Item Index!B2:ZZ',
+      }).then(function(response) {
+		 var items = response.result.values;
+		  itemIndex = {};
 
-			 //Process support matrix
-			 for(var row in data){
-				 var temp = {};
-				 for(var i = 1; i < data[row].length; i++){
-					temp[colHeader[i]] = data[row][i];
-				 }
-				 supportIndex[data[row][0]] = temp;
-			 }
-
-        	 updateProgressBar();
-        	 fetchSupportBonuses();
-          });
-	};
-    
-	function fetchSupportBonuses(){
-		gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: sheetId,
-            majorDimension: "ROWS",
-            range: 'Support Bonuses!A:L',
-          }).then(function(response) {
-        	 var data = response.result.values;
-			 var colHeader = data[0];
-			 data.splice(0,1);
-			 supportBonuses = {};
-
-			 //Process support matrix
-			 for(var row in data){
-				 var temp = {};
-				 for(var i = 1; i < data[row].length; i++){
-					temp[colHeader[i]] = data[row][i];
-				 }
-				 supportBonuses[data[row][0]] = temp;
-			 }
-
-        	 updateProgressBar();
-        	 fetchTerrainIndex();
-		});
-	};
-
-	function fetchTerrainIndex(){
-		gapi.client.sheets.spreadsheets.values.get({
-			spreadsheetId: sheetId,
-			majorDimension: "ROWS",
-			range: 'Terrain Chart!A2:K',
-		}).then(function(response) {
-			var rw = response.result.values;
-			terrainIndex = {};
-
-			for(var i = 1; i < rw.length; i++){
-				var r = rw[i];
-				terrainIndex[r[0]] = {
-					'avo' : r[1] != "-" ? parseInt(r[1]) : 0,
-					'def' : r[2] != "-" ? parseInt(r[2]) : 0,
-					'Foot' :  r[3],
-					'Armour' : r[4],
-					'Mounted' : r[5],
-					'Barbarian' :  r[6],
-					'Mage' :  r[7],
-					'Fliers' : r[8],
-					'effect' : r[9]
-				}
+		  for(var i = 0; i < items.length; i++){
+			var w = items[i];
+			itemIndex[w[0]] = {
+				'name' : w[0],
+				'class' : w[1],
+				'rank' : w[2],
+				'type' : w[3],
+				'might' : w[4],
+				'hit' : w[5],
+				'range' : w[6],
+				'effect' : w[7],
+				'desc' : w[8],
+				'Str' : w[9] != undefined ? w[9] : "",
+				'Mag' : w[10] != undefined ? w[10] : "",
+				'Skl' : w[11] != undefined ? w[11] : "",
+				'Spd' : w[12] != undefined ? w[12] : "",
+				'Def' : w[13] != undefined ? w[13] : "",
+				'Res' : w[14] != undefined ? w[14] : "",
+				'icoOverride' : w[20] != undefined ? w[20] : ""
 			}
+		  }
 
-			updateProgressBar();
-			fetchTerrainChart();
-		});
+    	 updateProgressBar();
+    	 fetchSkillIndex();
+      });
 	};
+	
+	function fetchSkillIndex() {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "ROWS",
+		range: 'Skills!C2:G',
+      }).then(function(response) {
+		 var skills = response.result.values;
+		 skillIndex = {};
+		  
+		 for(var i = 0; i < skills.length; i++){
+			var s = skills[i];
+			skillIndex[s[0]] = {
+				'name' : s[0],
+				'slot' : s[1],
+				'classes' : s[2],
+				'finalEff' : s[3],
+				'notes' : s[4] != undefined ? s[4] : ""
+			};
+		 }
 
-	function fetchTerrainChart(){
-	    gapi.client.sheets.spreadsheets.values.get({
-			spreadsheetId: sheetId,
-			majorDimension: "ROWS",
-			range: 'Terrain Mapping!A:B',
-	    }).then(function(response) {
-			coordMapping = response.result.values;
-
-			updateProgressBar();
-			processCharacters();
-		});
+    	 updateProgressBar();
+    	 processCharacters();
+      });
 	};
 
     function processCharacters(){
@@ -226,155 +120,87 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			if(c[0] != ""){ //if character has a name
 				var currObj = {
 					'name'   : c[0],
-					'player' : c[1],
-					'spriteUrl' : c[2],
-					'class'  : c[3],
-					'maxHp'  : c[4],
-					'currHp' : c[5],
-					'Str' : c[6],
-					'Mag' : c[7],
-					'Skl' : c[8],
-					'Spd' : c[9],
-					'Lck' : c[10],
-					'Def' : c[11],
-					'Res' : c[12],
-					'Con' : c[13],
-					'Mov' : c[14],
-					'lvl' : c[15],
-					'exp' : c[16],
-					'skills' : {},
+					'spriteUrl' : c[1],
+					'class'  : c[2],
+					'race' : c[3],
+					'affinity' : c[4],
+					'affiliation' : c[5],
+					'position' : c[6],
+					'currHp' : c[7],
+					'maxHp'  : c[8],
+					'Str' : c[9],
+					'Mag' : c[10],
+					'Skl' : c[11],
+					'Spd' : c[12],
+					'Lck' : c[13],
+					'Def' : c[14],
+					'Res' : c[15],
+					'Mov' : c[16],
+					'exp' : c[17],
+					'gold' : c[18],
+					'accessories' : {},
+					'equippedWeapon' : c[23],
 					'inventory' : {},
-					'trait' : getTrait(c[28]),
-					'wallet' : {
-						'Harts' : c[30],
-						'Chips' : c[31],
-						'Doles' : c[32],
-						'Vults' : c[33],
-						'Maars' : c[34],
-						'Buckskins' : c[35],
-					},
-					'statusEffect' : getStatusEffect(c[37]),
-					'turnsLeft' : c[38],
-					'moved'     : c[39],
-					'position'  : c[40],
+					'skills' : {},
+					'statusEffect' : c[36],
+					'HpBuff' : c[37],
+					'StrBuff' : c[38],
+					'MagBuff' : c[39],
+					'SklBuff' : c[40],
+					'SpdBuff' : c[41],
+					'LckBuff' : c[42],
+					'DefBuff' : c[43],
+					'ResBuff' : c[44],
+					'MovBuff' : c[45],
+					'HpBoost' : c[46],
+					'StrBoost' : c[47],
+					'MagBoost' : c[48],
+					'SklBoost' : c[49],
+					'SpdBoost' : c[50],
+					'LckBoost' : c[51],
+					'DefBoost' : c[52],
+					'ResBoost' : c[53],
+					'MovBoost' : c[54],
 					'weaponRanks' : {
 						'w1' : {
-						'class' : c[46],
-						'rank'  : (c[42] != "-" ? c[42].charAt(0) : ""),
-						'exp'   : c[47]
+							'class' : c[55],
+							'exp'   : c[56]
 						},
 						'w2' : {
-						'class' : c[48],
-						'rank'  : (c[43] != "-" ? c[43].charAt(0) : ""),
-						'exp'   : c[49]
+							'class' : c[57],
+							'exp'   : c[58]
 						},
 						'w3' : {
-						'class' : c[50],
-						'rank'  : (c[44] != "-" ? c[44].charAt(0) : ""),
-						'exp'   : c[51]
+							'class' : c[59],
+							'exp'   : c[60]
+						},
+						'w4' : {
+							'class' : c[61],
+							'exp'   : c[62]
 						}
 					},
-					'baseHp'  : c[69],
-					'baseStr' : c[70],
-					'baseMag' : c[71],
-					'baseSkl' : c[72],
-					'baseSpd' : c[73],
-					'baseLck' : c[74],
-					'baseDef' : c[75],
-					'baseRes' : c[76],
-					'baseCon' : c[77],
-					'baseMov' : c[78]
+					'racialInfo' : {},
+					'desc' : c[79]
 				};
 				
-				//Match skills
-				for(var j = 17; j < 23; j++)
-					currObj.skills["skl_" + (j-16)] = getSkill(c[j]);
+				//Populate racial info
+				for(var j = 63; j < 79; j++)
+					currObj.racialInfo[j - 62] = c[j];
 
-				//Match inventory
-				for(var k = 23; k < 28; k++)
-					currObj.inventory["itm_" + (k-22)] = getItem(c[k]);
+				//Skills
+				for(var k = 29; k < 36; k++)
+					currObj.skills["skl_" + (k-28)] = getSkill(c[k]);
+
+				//Inventory
+				for(var l = 24; l < 29; l++)
+					currObj.inventory["itm_" + (l-23)] = getItem(c[l]);
 
 				characters["char_" + i] = currObj;
 			}
 		}
     	updateProgressBar();
-		processEnemies();
     };
     
-    function processEnemies(){
-    	for(var i = 0; i < enemyData.length; i++){
-    		var e = enemyData[i];
-			if(e[0] != ""){ //if character has a name
-				var currObj = {
-				'name'   : e[0],
-				'affiliation' : e[1],
-				'spriteUrl' : e[2],
-				'class'  : e[3],
-				'maxHp'  : e[4],
-				'currHp' : e[5],
-				'Str' : e[6],
-				'Mag' : e[7],
-				'Skl' : e[8],
-				'Spd' : e[9],
-				'Lck' : e[10],
-				'Def' : e[11],
-				'Res' : e[12],
-				'Con' : e[13],
-				'Mov' : e[14],
-				'gold' : e[15],
-				'lvl' : e[16],
-				'exp' : e[17],
-				'skills' : {},
-				'inventory' : {},
-				'trait' : getTrait(e[29]),
-				'statusEffect' : getStatusEffect(e[31]),
-				'turnsLeft' : e[32],
-				'position'  : e[34],
-				'weaponRanks' : {
-					'w1' : {
-						'class' : e[40],
-						'rank'  : (e[36] != "-" ? e[36].charAt(0) : ""),
-						'exp'   : e[41]
-					},
-					'w2' : {
-						'class' : e[42],
-						'rank'  : (e[37] != "-" ? e[37].charAt(0) : ""),
-						'exp'   : e[43]
-					},
-					'w3' : {
-						'class' : e[44],
-						'rank'  : (e[38] != "-" ? e[38].charAt(0) : ""),
-						'exp'   : e[45]
-					}
-				},
-				'baseHp'  : e[63],
-				'baseStr' : e[64],
-				'baseMag' : e[65],
-				'baseSkl' : e[66],
-				'baseSpd' : e[67],
-				'baseLck' : e[68],
-				'baseDef' : e[69],
-				'baseRes' : e[70],
-				'baseCon' : e[71],
-				'baseMov' : e[72]
-				};
-
-				//Match skills
-				for(var j = 18; j < 24; j++)
-					currObj.skills["skl_" + (j-17)] = getSkill(e[j]);
-				
-				//Match inventory
-				for(var k = 24; k < 29; k++)
-					currObj.inventory["itm_" + (k-23)] = getItem(e[k]);
-
-				characters["enmy_" + i] = currObj;
-			}
-    	}
-
-		updateProgressBar();
-		fetchMapUrl();
-	};
-	
 	function fetchMapUrl() {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
@@ -385,7 +211,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 map = response.result.values[0][0];
 		 if(map != "") map = map.substring(8, map.length-2);
     	 updateProgressBar();
-    	 
       });
 	};
 	
@@ -573,108 +398,41 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
     };
     
     function processImageURL(str){
-    	return str.substring(8, str.lastIndexOf(",")-1);
+    	return str.substring(str.indexOf("\"")+1, str.lastIndexOf("\""));
     };
 
 	function getItem(name){
-		var inv = findItem(name);
-		return {
-			'name' : name,
-			'class' : inv[1],
-			'rank' : inv[2],
-			'uses' : inv[3],
-			'might' : inv[4],
-			'hit' : inv[5],
-			'crit' : inv[6],
-			'critMltpr' : inv[7],
-			'range' : inv[8],
-			'value' : inv[9],
-			'desc' : (inv[10] != undefined ? inv[10] : "")
-		};
+		if(name == undefined || name.length == 0 || itemIndex[name] == undefined)
+			return {
+				'name' : name != undefined ? name : "",
+				'class' : "",
+				'rank' : "",
+				'type' : "",
+				'might' : "",
+				'hit' : "",
+				'range' : "",
+				'effect' : "",
+				'desc' : "",
+				'Str' : "",
+				'Mag' : "",
+				'Skl' : "",
+				'Spd' : "",
+				'Def' : "",
+				'Res' : "",
+				'icoOverride' : "",
+		}
+		else return itemIndex[name];
 	};
 
 	function getSkill(name){
-		var skl = findSkill(name);
-		return {
-			'name' : skl[0],
-			'type' : skl[1],
-			'desc' : skl[2]
-		};
+		if(name == undefined || name.length == 0 || skillIndex[name] == undefined)
+			return {
+				'name' : name != undefined ? name : "",
+				'slot' : "",
+				'classes' : "",
+				'finalEff' : "",
+				'notes' : "This skill could not be located."
+			}
+		else return skillIndex[name];
 	};
-
-	function getStatusEffect(name){
-		var s = findStatus(name);
-		return {
-			'name' : s[0],
-			'icon' : '',
-			'desc' : s[2],
-			'class' : (s[3] != undefined ? s[3] : '')
-		}
-	};
-
-	function getTrait(name){
-		var t = findTrait(name);
-		return {
-			'name' : t[0],
-			'pro' : t[1],
-			'con' : t[2]
-		}
-	};
-
-	//\\//\\//\\//\\//\\//
-	// SEARCH FUNCTIONS //
-	//\\//\\//\\//\\//\\//
-    
-    function findSkill(name){
-    	if(name == undefined || name.length == 0)
-    		return ["None", "N/A", "-"];
-    	
-    	for(var i = 0; i < skillIndex.length; i++){
-    		if(skillIndex[i][0] == name)
-    			return skillIndex[i];
-    	}
-    	
-    	return [name, "-", "This skill could not be located. Is its name spelled correctly?"];
-    };
-    
-    function findItem(name){
-    	if(name == undefined || name.length == 0)
-    		return ["", "None", "-", "0", "0", "0", "0", "0", "0", "0", ""];
-    	
-		if(name.indexOf("(") != -1){ 
-			name = name.substring(0, name.indexOf("(")); 
-			name = name.trim(); 
-		}
-
-    	for(var i = 0; i < itemIndex.length; i++){
-    		if(itemIndex[i][0] == name)
-    			return itemIndex[i];
-    	}
-    	
-    	return [name, "Mystery", "E", "0", "0", "0", "0", "0", "0", "0", "This item could not be located. Is its name spelled correctly?"];
-    };
-
-	function findStatus(name){
-		if(name == undefined || name.length == 0 || name == "None")
-			return ["None", "", "No status.", ""];
-		
-		var status = null;
-		for(var i = 0; i < statusIndex.length; i++)
-			if(statusIndex[i][0] == name)
-				return statusIndex[i];
-
-		return [name, "", "This status could not be found.", ""];
-	}
-
-	function findTrait(name){
-		if(name == undefined || name.length == 0 || name == "None")
-			return ["None", "No positive", "No negative"];
-
-		for(var i = 0; i < traitIndex.length; i++)
-			if(traitIndex[i][0] == name)
-				return traitIndex[i];
-
-		return [name, "This trait could not be found.", ""]
-	};
-
 }]);

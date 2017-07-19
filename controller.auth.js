@@ -1,6 +1,6 @@
 app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', function ($scope, $location, $interval, DataService) {
     var id = fetch();
-	var sheetId = '19OIsTc_rxylCoqq2JOIFwx3avsl-lQeqd4VD_NzrmBU';
+	var sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
     $scope.ready = false;
     var checkGapi = $interval(checkAuth, 250);
     $scope.loadingIcon = pickLoadingIcon();
@@ -30,17 +30,16 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
     		'discoveryDocs': ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
     	}).then(function(){
 			testWebAppAvailability();
-    		
     	});
     };
 
 	function testWebAppAvailability(){
-	  gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: sheetId,
-        majorDimension: "COLUMNS",
-        range: 'Management!A1:A1',
-      }).then(function(response) {
-		 var toggle = response.result.values[0][0];
+	  //gapi.client.sheets.spreadsheets.values.get({
+        //spreadsheetId: sheetId,
+        //majorDimension: "COLUMNS",
+        //range: 'Management!A1:A1',
+      //}).then(function(response) {
+		 var toggle = "On"; //response.result.values[0][0];
 		 if(toggle == "Off"){
 			authorizeDiv.style.display = 'none';
 			unavailableDiv.style.display = 'inline';
@@ -49,7 +48,7 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
     		loadingDiv.style.display = 'inline';
     		DataService.loadMapData();
 		 }
-      });
+      //});
 	};
     
     function pickLoadingIcon(){
