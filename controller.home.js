@@ -5,14 +5,14 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	const gridWidth = 1;
 
 	$scope.statsList = [
-	                ["Str", "Strength. Affects damage the unit deals with physical attacks.",    "215px", "200px"],
-	                ["Mag", "Magic. Affects damage the unit deals with magical attacks.",        "240px", "200px"],
-	                ["Skl", "Skill. Affects hit rate and the frequency of critical hits.",       "265px", "200px"],
-	                ["Spd", "Speed. Affects Avo. Unit strikes twice if 5 higher than opponent.", "290px", "200px"],
-	                ["Lck", "Luck. Has various effects. Lowers risk of enemy criticals.",        "215px", "315px"],
-	                ["Def", "Defense. Reduces damage from physical attacks.",                    "240px", "315px"],
-	                ["Res", "Resistance. Reduces damage from physical attacks.",                 "265px", "315px"],
-					["Mov", "Movement. Affects how many blocks a unit can move in a turn.",      "290px", "315px"]
+	                ["Str", "Strength. Affects damage the unit deals with physical attacks.",    "95px"],
+	                ["Mag", "Magic. Affects damage the unit deals with magical attacks.",        "117px"],
+	                ["Skl", "Skill. Affects hit rate and the frequency of critical hits.",       "139px"],
+	                ["Spd", "Speed. Affects Avo. Unit strikes twice if 5 higher than opponent.", "161px"],
+	                ["Lck", "Luck. Has various effects. Lowers risk of enemy criticals.",        "183px"],
+	                ["Def", "Defense. Reduces damage from physical attacks.",                    "205px"],
+	                ["Res", "Resistance. Reduces damage from physical attacks.",                 "227px"],
+					["Mov", "Movement. Affects how many blocks a unit can move in a turn.",      "249px"]
 	               ];
 	
 	//Interval timers

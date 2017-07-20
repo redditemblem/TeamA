@@ -47,5 +47,17 @@
 			<span style="position: relative; font-size: 18px; top: calc(50% - 20px);">{{char.name}}</span><br />
 			<span style="position: relative; font-size: 10px;">Lvl. {{calculateCharLvl(char.exp)}} {{char.class}}</span>
 		</div>
+		<!--Experience bar-->
+		<div class="infoElement redText charExpPos">
+			EXP: {{char.exp % 100}}
+			<div class="expBarBack"></div>
+			<div class="expBarFront" ng-style="{width: (((char.exp % 100)/100) * 95)+'px'}"></div>
+			<div class="expBarBorder"></div>
+		</div>
+		<!--Stats-->
+		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText statBox" ng-style="{top: stat[2]}">
+			<span class="indentedStatLabel">{{stat[0]}}</span>
+			<span class="indentedStat">{{char[stat[0]]}}</span>
+		</div>
 	</div>
 </div>
