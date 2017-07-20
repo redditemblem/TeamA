@@ -1,6 +1,6 @@
 .characterInfo{
-	height:320px;
-	width:631px;
+	height:270px;
+	width:520px;
 	left:0px;
 	top:20px;
 	position: absolute;
@@ -289,9 +289,9 @@
 }
 
 .charNamePos{
-	height:60px;
-	width:230px;
-	left: calc(50% - 115px);
+	height:45px;
+	width:200px;
+	left: calc(50% - 100px);
 	top:10px;
 }
 

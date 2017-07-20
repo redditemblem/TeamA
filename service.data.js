@@ -1,6 +1,8 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 2) + 0.1;
+	const updateVal = (100 / 6) + 0.1;
+	const boxWidth = 31;
+	const gridWidth = 1;
 
 	var progress = 0;
 	var characters = null;
@@ -191,14 +193,28 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				for(var k = 29; k < 36; k++)
 					currObj.skills["skl_" + (k-28)] = getSkill(c[k]);
 
+				//Accessories
+				for(var l = 20; l < 23; l++)
+					currObj.accessories["acc_" + (l-19)] = getItem(c[l]);
+
 				//Inventory
-				for(var l = 24; l < 29; l++)
-					currObj.inventory["itm_" + (l-23)] = getItem(c[l]);
+				var inv = c.slice(24, 29); //grab inventory items
+				var eqpIndex = inv.indexOf(currObj.equippedWeapon);
+				if(eqpIndex > -1){
+					c.splice(eqpIndex + 24, 1); //remove item
+					c.splice(28, 0, ""); //insert a blank at the end
+				}
+
+				currObj.equippedWeapon = getItem(currObj.equippedWeapon);
+
+				for(var m = 24; m < 29; m++)
+					currObj.inventory["itm_" + (m-23)] = getItem(c[m]);
 
 				characters["char_" + i] = currObj;
 			}
 		}
-    	updateProgressBar();
+		updateProgressBar();
+		map = "abc";
     };
     
 	function fetchMapUrl() {
@@ -217,9 +233,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	//******************\\
 	// CHARACTER RANGES \\
 	//******************\\
-
-	const boxWidth = 30;
-	const gridWidth = 1;
 
 	function getMapDimensions(){
     	var map = document.getElementById('mapImg');
@@ -248,7 +261,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					terrainLocs[cols[c] + "," + rows[r]] = getDefaultTerrainObj();
 			
 		//Update terrain types from input list
-		for(var r = 1; r < coordMapping.length; r++){
+		/*for(var r = 1; r < coordMapping.length; r++){
 			var index = coordMapping[r][0].replace( /\s/g, ""); //remove spaces
 			if(terrainLocs[index] != undefined)
 				terrainLocs[index].type = coordMapping[r][1];
@@ -257,8 +270,10 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		for(var c in characters)
 			if(terrainLocs[characters[c].position] != undefined)
 				terrainLocs[characters[c].position].occupiedAffiliation = c.indexOf("char_") > -1 ? "char" : characters[c].affiliation;
+		*/
 
-		calculateCharacterRanges();
+		updateProgressBar();
+		//calculateCharacterRanges();
 	};
 
 	function getDefaultTerrainObj(){
@@ -392,7 +407,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
     
     function updateProgressBar(){
 		if(progress < 100){
-			progress = progress + 5.9; //13 calls
+			progress = progress += updateVal; //13 calls
     		$rootScope.$broadcast('loading-bar-updated', progress, map);
 		}
     };
@@ -402,6 +417,13 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
     };
 
 	function getItem(name){
+		var originalName = name;
+		if(name != undefined && name.length > 0){
+			if(name.indexOf("(") != - 1)
+				name = name.substring(0, name.indexOf("("));
+			name.trim();
+		}
+
 		if(name == undefined || name.length == 0 || itemIndex[name] == undefined)
 			return {
 				'name' : name != undefined ? name : "",
@@ -421,7 +443,10 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'Res' : "",
 				'icoOverride' : "",
 		}
-		else return itemIndex[name];
+		
+		var copy = Object.assign({}, itemIndex[name]);
+		copy.name = originalName;
+		return copy;
 	};
 
 	function getSkill(name){

@@ -1,6 +1,9 @@
 app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', function ($scope, $location, $interval, DataService) {
 	$scope.rows = ["1"];
-    $scope.columns = ["1"];
+	$scope.columns = ["1"];
+	const boxWidth = 30;
+	const gridWidth = 1;
+
 	$scope.statsList = [
 	                ["Str", "Strength. Affects damage the unit deals with physical attacks.",    "215px", "200px"],
 	                ["Mag", "Magic. Affects damage the unit deals with magical attacks.",        "240px", "200px"],
@@ -31,7 +34,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     const eWpnDescVerticalPos = ["5px", "20px", "40px", "55px", "65px"];
     
     //Constants
-	const DEFAULT_NAMETAG_COLOR = "#4a5d23";
+	const DEFAULT_NAMETAG_COLOR = "#FFA600";
     const STAT_DEFAULT_COLOR = "#E5C68D";
     const STAT_BUFF_COLOR = "#42adf4";
     const STAT_DEBUFF_COLOR = "#960000";
@@ -53,9 +56,6 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     // FUNCTIONS FOR MAP TILE  \\
     // GLOW BOXES              \\
     //*************************\\
-    
-	const boxWidth = 30;
-	const gridWidth = 1;
     
     //Returns the vertical position of a glowBox element
     $scope.determineGlowY = function(index){
@@ -86,16 +86,16 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     	var bool = $scope[char + "_displayBox"];
     	if(bool == undefined || bool == false){
     		positionCharBox(char);
-			toggleCharRange(char, 1);
+			//toggleCharRange(char, 1);
     		$scope[char + "_displayBox"] = true;
     	}else{
-			toggleCharRange(char, -1);
+			//toggleCharRange(char, -1);
     		$scope[char + "_displayBox"] = false;
     	}
     };
 
     $scope.removeData = function(char){
-		toggleCharRange(char, -1);
+		//toggleCharRange(char, -1);
     	$scope[char + "_displayBox"] = false;
     };
     
@@ -145,8 +145,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		pairBox.style.top = currBox.offsetTop + 'px';
 		pairBox.style.left = currBox.offsetLeft + 'px';
 		
-		toggleCharRange(char, -1); //remove original char's data
-		toggleCharRange(pairedUnit.unitLoc, 1); //display new char's data
+		//toggleCharRange(char, -1); //remove original char's data
+		//toggleCharRange(pairedUnit.unitLoc, 1); //display new char's data
     };
     
     function locatePairedUnit(unitName){
@@ -243,7 +243,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     // FUNCTIONS FOR STAT    \\
     // PROCESSING/FORMATTING \\
     //***********************\\
-    
+	
+	$scope.calculateCharLvl = function(exp){
+		exp = parseInt(exp);
+		return Math.floor(exp / 100);
+	};
+
     //Returns true if the value in the passed attribute is >= 0
     $scope.checkRate = function(stat){ return parseInt(stat) >= 0; };
     
@@ -304,23 +309,6 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     	return skill != "" && skill != "None";
     };
 
-    //Returns the image for a character's skill, if they're at the minimum
-    //level to obtain it. Otherwise, returns the blank skill image.
-    $scope.fetchSkillImage = function(skillName, charLvl, index){
-    	var minLvl = (index - 1) * 5;
-    	if(minLvl == 0) minLvl = 1;
-    	
-    	if(skillName == "-" || minLvl > parseInt(charLvl))
-    		return "IMG/SKL/skl_blank.png";
-    	
-    	if(index == "0")
-    		return "IMG/SKL/skl_personal.png";
-    	
-    	skillName = skillName.toLowerCase();
-    	skillName = skillName.replace(/ /g,"_");
-    	return "IMG/SKL/skl_" + skillName + ".png";
-    };
-    
     $scope.checkShields = function(num, shields){
     	num = parseInt(num);
     	shields = parseInt(shields);
