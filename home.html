@@ -14,17 +14,11 @@
 	<!--Draw characters-->
 	<div ng-repeat="(cIndex,char) in charaData">
 		<div id="{{cIndex}}" ng-if="validPosition(char.position)" ng-click="displayData(cIndex)" class="absolutePos charDiv hoverImage" title="{{char.position}}" ng-style="{top: determineCharY(char.position), left: determineCharX(char.position)}">
-			<!--Paired unit sprite-->
-			<div ng-if="isPaired(char.position)" class="charDiv mapCharOffsetLeft">
-				<img ng-src="{{getPairUnitIcon(char.position)}}" class="mapCharCentered dimImage">
-			</div>
 			<!--Unit sprite-->
-			<div class="charDiv" ng-class="isPaired(char.position) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
-				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered">
-				<div class="enemyNum">{{getEnemyNum(char.name)}}</div>
-			</div>
+			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered">
+			<div class="enemyNum">{{getEnemyNum(char.name)}}</div>
 			<div class="healthBarBack"></div>
-			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*27)+'px'}"></div>
+			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*13)+'px'}"></div>
 			<div class="healthBarBorder"></div>
 			<div ng-if="isPaired(char.position)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
 		</div>

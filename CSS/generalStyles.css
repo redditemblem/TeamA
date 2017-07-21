@@ -48,8 +48,8 @@ img{
 }
 
 .charDiv{
-	height:31px;
-	width:31px;
+	height:15px;
+	width:15px;
 }
 
 .hoverImage:hover{
@@ -73,27 +73,27 @@ img{
 
 .healthBarBack{
 	position: absolute;
-	width: 27px;
+	width: 13px;
 	height: 2px;
-	left: 2px;
-	top: 28px;
+	left: 0px;
+	top: 12px;
 	background-color: dimgray;
 }
 
 .healthBarFront{
 	position: absolute;
 	height: 2px;
-	left: 2px;
-	top: 28px;
+	left: 0px;
+	top: 12px;
 	background-color: red;
 }
 
 .healthBarBorder{
 	position: absolute;
-	width: 26px;
+	width: 12px;
 	height: 1px;
-	left: 2px;
-	top: 28px;
+	left: 0px;
+	top: 12px;
 	border: 1px solid black;
 }
 
@@ -169,30 +169,9 @@ img{
 }
 
 .mapCharCentered{
-	margin: auto;
 	position: absolute;
-	left:0;
-	right: 0;
-	top: 0;
-	bottom: 0;  
-}
-
-.mapCharOffsetLeft{
-	position:absolute;
-	left:-6px;
-	top:-3px;
-}
-
-.mapCharOffsetRight{
-	position:absolute;
-	left:6px;
-	top:3px;
-}
-
-.mapCharOffsetNone{
-	position:absolute;
-	left:0px;
-	top:0px;
+	right: 0px;
+	bottom: 0px;  
 }
 
 .floatAbove{
