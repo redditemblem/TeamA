@@ -1,7 +1,7 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
 	const updateVal = (100 / 6) + 0.1;
-	const boxWidth = 31;
+	const boxWidth = 15;
 	const gridWidth = 1;
 
 	var progress = 0;

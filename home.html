@@ -44,8 +44,13 @@
 		</div>
 		<!--Name, Class, Lvl-->
 		<div class="infoElement whiteText charNamePos" ng-style="{'background-color': determineNametagColor(cIndex)}" style="text-align: center;">
-			<span style="position: relative; font-size: 18px; top: calc(50% - 20px);">{{char.name}}</span><br />
-			<span style="position: relative; font-size: 10px;">Lvl. {{calculateCharLvl(char.exp)}} {{char.class}}</span>
+			<span style="position: relative; font-size: 18px; top: calc(50% - 15px);">{{char.name}}</span><br />
+			<span style="position: relative; top: 2px; font-size: 10px;">Lvl. {{calculateCharLvl(char.exp)}} {{char.race}} {{char.class}}</span>
+		</div>
+		<!--Battle stats-->
+		<div ng-repeat="stat in battleStatsList" class="infoElement darkTan tanText battleStatBox" ng-style="{top: stat[1]}">
+			<span class="indentedStatLabel">{{stat[0]}}</span>
+			<span class="indentedStat">3</span>
 		</div>
 		<!--Experience bar-->
 		<div class="infoElement redText charExpPos">
@@ -54,10 +59,45 @@
 			<div class="expBarFront" ng-style="{width: (((char.exp % 100)/100) * 95)+'px'}"></div>
 			<div class="expBarBorder"></div>
 		</div>
+		<!--Weapon ranks-->
+		<div ng-repeat="w in char.weaponRanks" class="infoElement weaponRankPos" ng-style="{left: fetchWpnRankHorzPos($index), top: fetchWpnRankVertPos($index)}">
+			<span ng-if="existsWeapon(w.class)" title="{{w.class}} Rank" style="position:relative">
+				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
+				<div class="weaponRankBackground"></div>
+				<div class="weaponRankBar" ng-style="{width:calcWeaponExp(w.exp)+'px'}"></div>
+				<!--<div class="weaponRankLtrPos redText">{{w.rank}}</div>-->
+			</span>
+		</div>
 		<!--Stats-->
+		<div class="infoElement darkTan tanText HPText">
+			<span class="HpStatLabel">HP</span>
+			<span class="currHPText">{{char.currHp}} /</span>
+			<span class="maxHPText">{{char.maxHp}}</span>
+		</div>
 		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText statBox" ng-style="{top: stat[2]}">
 			<span class="indentedStatLabel">{{stat[0]}}</span>
 			<span class="indentedStat">{{char[stat[0]]}}</span>
+		</div>
+		<!--Inventory-->
+		<div ng-mouseenter="weaponHoverIn(cIndex, 0)" ng-mouseleave="weaponHoverOut(cIndex, 0)" class="infoElement redText hoverTan itemsPos lightTan" style="top: 5px;">
+			<span class="indentedWeaponIcon" ng-if="validWeapon(char.equippedWeapon.name)"><img ng-src="{{getWeaponClassIcon(char.equippedWeapon.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)">{{char.equippedWeapon.name}}</span>
+		</div>
+		<div ng-repeat="item in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index)}">
+			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
+		</div>
+		<!--Accessories-->
+		<div ng-repeat="item in char.accessories" ng-mouseenter="accessoryHoverIn(cIndex, $index)" ng-mouseleave="accessoryHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index + 5)}">
+			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
+		</div>
+		<!--Skills-->
+		<div class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, 0)" ng-mouseleave="skillHoverOut(cIndex, 0)" style="top: 5px;">
+			<span class="indentedSkillName">Racial Skill</span>
+		</div>
+		<div ng-repeat="skill in char.skills" class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
+			<span class="indentedSkillName" ng-if="validSkill(skill.name)">{{skill.name}}</span>
 		</div>
 	</div>
 </div>

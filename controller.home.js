@@ -1,37 +1,37 @@
 app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', function ($scope, $location, $interval, DataService) {
 	$scope.rows = ["1"];
 	$scope.columns = ["1"];
-	const boxWidth = 30;
+	const boxWidth = 15;
 	const gridWidth = 1;
 
+	$scope.battleStatsList = [
+	                ["Atk", "60px"],
+	                ["Hit", "82px"],
+	                ["Crit", "104px"],
+	                ["Avo", "126px"],
+	                ["Eva", "148px"]
+	               ];
 	$scope.statsList = [
-	                ["Str", "Strength. Affects damage the unit deals with physical attacks.",    "95px"],
-	                ["Mag", "Magic. Affects damage the unit deals with magical attacks.",        "117px"],
-	                ["Skl", "Skill. Affects hit rate and the frequency of critical hits.",       "139px"],
-	                ["Spd", "Speed. Affects Avo. Unit strikes twice if 5 higher than opponent.", "161px"],
-	                ["Lck", "Luck. Has various effects. Lowers risk of enemy criticals.",        "183px"],
-	                ["Def", "Defense. Reduces damage from physical attacks.",                    "205px"],
-	                ["Res", "Resistance. Reduces damage from physical attacks.",                 "227px"],
-					["Mov", "Movement. Affects how many blocks a unit can move in a turn.",      "249px"]
+	                ["Str", "Strength. Affects damage the unit deals with physical attacks.",    "100px"],
+	                ["Mag", "Magic. Affects damage the unit deals with magical attacks.",        "122px"],
+	                ["Skl", "Skill. Affects hit rate and the frequency of critical hits.",       "144px"],
+	                ["Spd", "Speed. Affects Avo. Unit strikes twice if 5 higher than opponent.", "166px"],
+	                ["Lck", "Luck. Has various effects. Lowers risk of enemy criticals.",        "188px"],
+	                ["Def", "Defense. Reduces damage from physical attacks.",                    "210px"],
+	                ["Res", "Resistance. Reduces damage from physical attacks.",                 "232px"],
+					["Mov", "Movement. Affects how many blocks a unit can move in a turn.",      "254px"]
 	               ];
 	
 	//Interval timers
     var dragNDrop = $interval(initializeListeners, 250, 20);
     
     //Positioning constants
-    const statVerticalPos = ["10px", "39px", "68px", "97px", "126px", "155px", "184px"];
-    const weaponVerticalPos = ["10px", "45px", "80px", "115px", "150px"];
-    const weaponRankHorzPos = ["15px", "85px", "155px"];
+    const weaponVerticalPos = ["35px", "65px", "95px", "125px", "155px", "185px", "215px", "245px"];
+	const weaponRankHorzPos = ["290px", "340px", "290px", "340px"];
+	const weaponRankVertPos = ["210px", "210px", "240px", "240px"];
     const weaponDescVerticalPos = ["10px", "35px", "60px", "85px", "105px"];
-    const skillVerticalPos = ["10px", "45px", "80px", "115px", "150px", "185px", "220px"];
+    const skillVerticalPos = ["35px", "65px", "95px", "125px", "155px", "185px", "215px", "245px"];
     const skillDescVerticalPos = ["5px", "15px", "22px", "29px", "36px", "43px", "50px", "57px", "63px"];
-    
-    const eSkillHorzPos = ["3px", "24px", "45px", "66px", "87px", "108px", "129px", "150px", "171px"];
-    const eStatVerticalPos = ["5px", "29px", "53px", "77px", "101px", "125px", "149px"];
-    const eWeaponVerticalPos = ["5px", "34px", "63px", "92px", "121px"];
-    const eWpnRankHorzPos = ["297px", "364px", "431px"];
-    const eSklDescHorzPos = ["5px", "26px", "47px", "68px", "89px", "110px", "131px", "150px", "169px"];
-    const eWpnDescVerticalPos = ["5px", "20px", "40px", "55px", "65px"];
     
     //Constants
 	const DEFAULT_NAMETAG_COLOR = "#FFA600";
@@ -59,12 +59,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     
     //Returns the vertical position of a glowBox element
     $scope.determineGlowY = function(index){
-    	return (index * (boxWidth + (gridWidth * 2)) + 1) + "px";
+    	return (index * (boxWidth + gridWidth)) + "px";
     };
     
     //Returns the horizontal position of a glowBox element
     $scope.determineGlowX = function(index){
-    	return (index * (boxWidth + (gridWidth * 2)) + 1) + "px";
+    	return (index * (boxWidth + gridWidth)) + "px";
 	};
 	
 	$scope.determineGlowColor = function(loc){
@@ -225,20 +225,13 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     	box.style.top = y + 'px';
     };
     
-    $scope.fetchStatVerticalPos = function(index){ return statVerticalPos[index] };
-    $scope.fetchWeaponVerticalPos = function(index){ return weaponVerticalPos[index]; };
+	$scope.fetchWeaponVerticalPos = function(index){ return weaponVerticalPos[index]; };
+	$scope.fetchWpnRankVertPos = function(index){ return weaponRankVertPos[index]; };
     $scope.fetchWpnRankHorzPos = function(index){ return weaponRankHorzPos[index]; };
     $scope.fetchWpnDescVerticalPos = function(index){ return weaponDescVerticalPos[index]; };
     $scope.fetchSklVerticalPos = function(index){ return skillVerticalPos[index]; };
     $scope.fetchSklDescVerticalPos = function(index){ return skillDescVerticalPos[index]; };
-    
-    $scope.fetchESklHorzPos = function(index){ return eSkillHorzPos[index]; };
-    $scope.fetchEStatVerticalPos = function(index){ return eStatVerticalPos[index]; };
-    $scope.fetchEWeaponVerticalPos = function(index){ return eWeaponVerticalPos[index]; };
-    $scope.fetchEWpnRankHorzPos = function(index){ return eWpnRankHorzPos[index]; };
-    $scope.fetchESklDescHorzPos = function(index){ return eSklDescHorzPos[index]; };
-    $scope.fetchEWpnDescVerticalPos = function(index){ return eWpnDescVerticalPos[index]; };
-    
+ 
     //***********************\\
     // FUNCTIONS FOR STAT    \\
     // PROCESSING/FORMATTING \\
@@ -448,9 +441,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	$scope.statusHoverOut = function(char){ $scope[char + "status"] = false; };
 	$scope.statusHoverOn = function(char){ return $scope[char + "status"] == true; };
 
-	$scope.traitHoverIn = function(char){ $scope[char + "trait"] = true; };
-	$scope.traitHoverOut = function(char){ $scope[char + "trait"] = false; };
-	$scope.traitHoverOn = function(char){ return $scope[char + "trait"] == true; };
+	$scope.accessoryHoverIn = function(char, index){ $scope[char + "acc_" + index] = true; };
+	$scope.accessoryHoverOut = function(char, index){ $scope[char + "acc_" + index] = false; };
+	$scope.accessoryHoverOn = function(char, index){ return $scope[char + "acc_" + index] == true; };
     
     //*************************\\
     // SUPPORT FOR DRAGABILITY \\
