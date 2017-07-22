@@ -196,11 +196,11 @@
 	height:25px;
 }
 
-.skillGemInfoPos{
+.skillInfoPos{
 	overflow-y: hidden;
 	width:250px;
-	left:185px;
-	height:150px;
+	left:125px;
+	height:125px;
 }
 
 .statNameText{

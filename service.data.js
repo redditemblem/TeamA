@@ -100,7 +100,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         majorDimension: "ROWS",
-		range: 'Skills!C2:G',
+		range: 'Skills!B2:G',
       }).then(function(response) {
 		 var skills = response.result.values;
 		 skillIndex = {};
@@ -111,7 +111,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'name' : s[0],
 				'slot' : s[1],
 				'classes' : s[2],
-				'finalEff' : s[3],
+				'finalEff' : s[3] != undefined ? s[3] : "",
 				'notes' : s[4] != undefined ? s[4] : ""
 			};
 		 }
@@ -441,7 +441,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'crit' : "",
 				'net' : "",
 				'range' : "",
-				'effect' : "",
+				'effect' : "Couldn't locate this item.",
 				'laguzEff' : "",
 				'desc' : "",
 				'HP' : "",
@@ -462,6 +462,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function getSkill(name){
+		name = name.trim();
 		if(name == undefined || name.length == 0 || skillIndex[name] == undefined)
 			return {
 				'name' : name != undefined ? name : "",
