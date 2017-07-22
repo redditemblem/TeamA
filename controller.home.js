@@ -29,7 +29,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     const weaponVerticalPos = ["35px", "65px", "95px", "125px", "155px", "185px", "215px", "245px"];
 	const weaponRankHorzPos = ["290px", "340px", "290px", "340px"];
 	const weaponRankVertPos = ["210px", "210px", "240px", "240px"];
-    const weaponDescVerticalPos = ["10px", "35px", "60px", "85px", "105px"];
+    const weaponDescVerticalPos = ["5px", "30px", "55px", "70px", "95px", "120px", "155px", "170px"];
     const skillVerticalPos = ["35px", "65px", "95px", "125px", "155px", "185px", "215px", "245px"];
     const skillDescVerticalPos = ["5px", "15px", "22px", "29px", "36px", "43px", "50px", "57px", "63px"];
     
@@ -406,7 +406,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
     
     $scope.setDescriptionLoc = function(type){
-    	if(type != "Staff" && type != "Consumable" && type != "Mystery") return "60px";
+    	if(type != "Staff" && type != "Consumable" && type != "Mystery") return "45px";
     	else return "25px";
     };
 

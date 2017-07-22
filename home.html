@@ -73,12 +73,12 @@
 			<span class="indentedStat">{{char[stat[0]]}}</span>
 		</div>
 		<!--Inventory-->
-		<div ng-mouseenter="weaponHoverIn(cIndex, 0)" ng-mouseleave="weaponHoverOut(cIndex, 0)" class="infoElement redText hoverTan itemsPos lightTan" style="top: 5px;">
-			<span class="indentedWeaponIcon" ng-if="validWeapon(char.equippedWeapon.name)"><img ng-src="{{getWeaponClassIcon(char.equippedWeapon.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement redText hoverTan itemsPos lightTan" style="top: 5px;">
+			<span class="indentedWeaponIcon" ng-if="validWeapon(char.equippedWeapon.name)"><img ng-src="{{char.equippedWeapon.icoOverride.length > 0 ? char.equippedWeapon.icoOverride : getWeaponClassIcon(char.equippedWeapon.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
 			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)">{{char.equippedWeapon.name}}</span>
 		</div>
 		<div ng-repeat="item in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index)}">
-			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{item.icoOverride.length > 0 ? item.icoOverride : getWeaponClassIcon(item.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
 			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
 		</div>
 		<!--Accessories-->
@@ -87,11 +87,56 @@
 			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
 		</div>
 		<!--Skills-->
-		<div class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, 0)" ng-mouseleave="skillHoverOut(cIndex, 0)" style="top: 5px;">
+		<div class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, -1)" ng-mouseleave="skillHoverOut(cIndex, -1)" style="top: 5px;">
 			<span class="indentedSkillName">Racial Skill</span>
 		</div>
 		<div ng-repeat="skill in char.skills" class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
 			<span class="indentedSkillName" ng-if="validSkill(skill.name)">{{skill.name}}</span>
+		</div>
+		<!--Inventory Desc-->
+		<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, -1) && validWeapon(char.equippedWeapon.name)" ng-style="{top: fetchWpnDescVerticalPos($index)}">
+			<div class="popOutText itemNamePos boldText">{{formatWeaponName(char.equippedWeapon.name)}}</div>
+			<div class="popOutText itemRankPos">
+				<span ng-if="hasWeaponRank(char.equippedWeapon.rank)">{{char.equippedWeapon.rank}} -</span>
+				{{char.equippedWeapon.class}}
+			</div>
+			<div class="customDivider" style="top:22px"></div>
+			<div ng-if="notItem(char.equippedWeapon.class)">
+				<div class="popOutText itemMightPos">Might: {{char.equippedWeapon.might}}</div>
+				<div class="popOutText itemMightPos" style="left: 95px;">Hit: {{char.equippedWeapon.hit}}</div>
+				<div class="popOutText itemMightPos" style="right: 0px;">Rng: {{char.equippedWeapon.range}}</div>
+				<div class="customDivider" style="top:41px"></div>
+			</div>
+			<div class="popOutText" ng-style="{top: setDescriptionLoc(char.equippedWeapon.class)}"><span class="italicText">{{char.equippedWeapon.effect}}<br/></span><span>{{char.equippedWeapon.desc}}</span>
+			</div>
+		</div>
+		<div ng-repeat="weapon in char.inventory">
+			<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, $index) && validWeapon(weapon.name)" ng-style="{top: fetchWpnDescVerticalPos($index)}">
+				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
+				<div class="popOutText itemRankPos">
+					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span>
+					{{weapon.class}}
+				</div>
+				<div class="customDivider" style="top:22px"></div>
+				<div ng-if="notItem(weapon.class)">
+					<div class="popOutText itemMightPos">Might: {{weapon.might}}</div>
+					<div class="popOutText itemMightPos" style="left: 95px;">Hit: {{weapon.hit}}</div>
+					<div class="popOutText itemMightPos" style="right: 0px;">Rng: {{weapon.range}}</div>
+					<div class="customDivider" style="top:41px"></div>
+				</div>
+				<div class="popOutText" ng-style="{top: setDescriptionLoc(weapon.class)}"><span class="italicText">{{weapon.effect}}<br/></span><span>{{weapon.desc}}</span>
+				</div>
+			</div>
+		</div>
+		<!--Accesories-->
+		<div ng-repeat="item in char.accessories">
+			<div class="infoElement green whiteText itemInfoPos" ng-if="accessoryHoverOn(cIndex, $index) && validWeapon(item.name)" ng-style="{top: fetchWpnDescVerticalPos($index + 5)}">
+				<div class="popOutText itemNamePos boldText">{{item.name}}</div>
+				<div class="popOutText itemRankPos">{{item.class}} ({{item.rank}} Slot<span ng-if="parseInt">s</span>)</div>
+				<div class="customDivider" style="top:22px"></div>
+				<div class="popOutText" style="top: 25px;"><span class="italicText">{{item.effect}}<br/></span><span>{{item.desc}}</span>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

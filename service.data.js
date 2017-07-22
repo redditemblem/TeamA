@@ -74,14 +74,15 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'hit' : w[5],
 				'range' : w[6],
 				'effect' : w[7],
-				'desc' : w[8],
-				'Str' : w[9] != undefined ? w[9] : "",
-				'Mag' : w[10] != undefined ? w[10] : "",
-				'Skl' : w[11] != undefined ? w[11] : "",
-				'Spd' : w[12] != undefined ? w[12] : "",
-				'Def' : w[13] != undefined ? w[13] : "",
-				'Res' : w[14] != undefined ? w[14] : "",
-				'icoOverride' : w[20] != undefined ? w[20] : ""
+				'laguzEff' : w[8],
+				'desc' : w[9],
+				'Str' : w[10] != undefined ? w[10] : "",
+				'Mag' : w[11] != undefined ? w[11] : "",
+				'Skl' : w[12] != undefined ? w[12] : "",
+				'Spd' : w[13] != undefined ? w[13] : "",
+				'Def' : w[14] != undefined ? w[14] : "",
+				'Res' : w[15] != undefined ? w[15] : "",
+				'icoOverride' : w[21] != undefined ? w[21] : ""
 			}
 		  }
 
@@ -421,7 +422,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		if(name != undefined && name.length > 0){
 			if(name.indexOf("(") != - 1)
 				name = name.substring(0, name.indexOf("("));
-			name.trim();
+			name = name.trim();
 		}
 
 		if(name == undefined || name.length == 0 || itemIndex[name] == undefined)
