@@ -72,17 +72,22 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'type' : w[3],
 				'might' : w[4],
 				'hit' : w[5],
-				'range' : w[6],
-				'effect' : w[7],
-				'laguzEff' : w[8],
-				'desc' : w[9],
-				'Str' : w[10] != undefined ? w[10] : "",
-				'Mag' : w[11] != undefined ? w[11] : "",
-				'Skl' : w[12] != undefined ? w[12] : "",
-				'Spd' : w[13] != undefined ? w[13] : "",
-				'Def' : w[14] != undefined ? w[14] : "",
-				'Res' : w[15] != undefined ? w[15] : "",
-				'icoOverride' : w[21] != undefined ? w[21] : ""
+				'crit' : w[6],
+				'net' : w[7],
+				'range' : w[8],
+				'effect' : w[9],
+				'laguzEff' : w[10],
+				'desc' : w[11],
+				'HP' : w[12] != undefined ? w[12] : "",
+				'Str' : w[13] != undefined ? w[13] : "",
+				'Mag' : w[14] != undefined ? w[14] : "",
+				'Skl' : w[15] != undefined ? w[15] : "",
+				'OSpd' : w[16] != undefined ? w[16] : "",
+				'DSpd' : w[17] != undefined ? w[17] : "",
+				'Lck' : w[18] != undefined ? w[18] : "",
+				'Def' : w[19] != undefined ? w[19] : "",
+				'Res' : w[20] != undefined ? w[20] : "",
+				'icoOverride' : w[26] != undefined ? w[26] : ""
 			}
 		  }
 
@@ -433,16 +438,22 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'type' : "",
 				'might' : "",
 				'hit' : "",
+				'crit' : "",
+				'net' : "",
 				'range' : "",
 				'effect' : "",
+				'laguzEff' : "",
 				'desc' : "",
+				'HP' : "",
 				'Str' : "",
 				'Mag' : "",
 				'Skl' : "",
-				'Spd' : "",
+				'OSpd' : "",
+				'DSpd' : "",
+				'Lck' : "",
 				'Def' : "",
 				'Res' : "",
-				'icoOverride' : "",
+				'icoOverride' : ""
 		}
 		
 		var copy = Object.assign({}, itemIndex[name]);

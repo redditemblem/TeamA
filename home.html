@@ -74,16 +74,16 @@
 		</div>
 		<!--Inventory-->
 		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement redText hoverTan itemsPos lightTan" style="top: 5px;">
-			<span class="indentedWeaponIcon" ng-if="validWeapon(char.equippedWeapon.name)"><img ng-src="{{char.equippedWeapon.icoOverride.length > 0 ? char.equippedWeapon.icoOverride : getWeaponClassIcon(char.equippedWeapon.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponIcon" ng-if="validWeapon(char.equippedWeapon.name)"><img ng-src="{{getWeaponClassIcon(char.equippedWeapon.class, char.equippedWeapon.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
 			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)">{{char.equippedWeapon.name}}</span>
 		</div>
 		<div ng-repeat="item in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index)}">
-			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{item.icoOverride.length > 0 ? item.icoOverride : getWeaponClassIcon(item.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class, item.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
 			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
 		</div>
 		<!--Accessories-->
 		<div ng-repeat="item in char.accessories" ng-mouseenter="accessoryHoverIn(cIndex, $index)" ng-mouseleave="accessoryHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index + 5)}">
-			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class, item.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
 			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
 		</div>
 		<!--Skills-->

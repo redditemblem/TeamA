@@ -358,7 +358,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     
     //Returns the icon for the class of the weapon at the index
     //Version for characters
-    $scope.getWeaponClassIcon = function(type){
+    $scope.getWeaponClassIcon = function(type, override){
+		if(override.length > 0) return override;
     	type = type.toLowerCase();
     	return "IMG/type_" + type + ".png";
     };
