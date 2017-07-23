@@ -157,12 +157,11 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						};
 					}
 					break;
-				case "Jera" :
+				case "Florkana" :
 					if(s[0].length > 0){
 						racialSkillIndex[skillBlock][s[0]] = {
-							'name' : s[0],
-							'req' : s[2],
-							'desc' : s[4]
+							'terrain' : s[0],
+							'effect' : s[1]
 						};
 					}
 					break;
@@ -172,6 +171,32 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 							'name' : s[0],
 							'waterCost' : s[1],
 							'desc' : s[2]
+						};
+					}
+					break;
+				case "Kano" :
+					if(s[0].length > 0){
+						racialSkillIndex[skillBlock][s[0]] = {
+							'heatUnits' : s[0],
+							'hpPenalty' : s[1],
+							'statGains' : s[2]
+						};
+					}
+					break;
+				case "Jera" :
+					if(s[0].length > 0){
+						racialSkillIndex[skillBlock][s[0]] = {
+							'name' : s[0],
+							'req' : s[2],
+							'desc' : s[4]
+						};
+					}
+					break;
+				case "Angel" :
+					if(s[0].length > 0){
+						racialSkillIndex[skillBlock][s[0]] = {
+							'supportRace' : s[0],
+							'desc' : s[1]
 						};
 					}
 					break;
@@ -255,6 +280,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				
 				//Populate racial info
 				switch(currObj.race){
+					case "Kano":
+						currObj.racialInfo.heatUnits = parseInt(c[63]);
+						break;
 					case "Jera" :
 						for(var j = 63; j < 68; j++)
 							currObj.racialInfo[j - 62] = getRacialAbility(c[j], currObj.race);

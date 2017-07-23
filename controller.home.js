@@ -344,10 +344,26 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 			returnStr = returnStr.substring(0, returnStr.length-2);
 		return returnStr;
 	};
+
+	//*************************\\
+    //     RACIAL ABILITIES	   \\
+    //*************************\\
 	
 	$scope.calcEnchantmentCost = function(hp){
 		return Math.floor(hp / 4);
 	};
+
+	$scope.heatIsHighEnough = function(minHeat, currHeat){
+		if(minHeat.match(/^[0-9]+$/) == null) return false;
+		else return parseInt(minHeat) <= parseInt(currHeat);
+	};
+
+	$scope.calcHpPercentCost = function(penalty, maxHp){
+		var percent = penalty.match(/^[0-9]+/)[0];
+		percent = parseInt(percent) / 100;
+		return Math.floor(parseInt(maxHp) * percent);
+	};
+
     //*************************\\
     // FUNCTIONS FOR INVENTORY \\
     // & WEAPONS PROFICIENCY   \\

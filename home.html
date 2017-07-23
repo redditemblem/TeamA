@@ -149,6 +149,13 @@
 					</span>
 				</div>
 			</div>
+			<div ng-if="char.race == 'Kano'">
+				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 10px;">{{char.racialInfo.heatUnits}} Heat Units</div>
+				<div class="customDivider" style="top:18px"></div>
+				<div ng-repeat="com in racialSkills.Kano" ng-if="com.heatUnits != 'Heat Units'" style="margin-top: 3px;">
+					<span class="boldText" style="font-size: 9px;">{{com.heatUnits}} Units Req: </span><span style="font-size: 8px;">({{calcHpPercentCost(com.hpPenalty, char.maxHp)}} HP Cost) <span class="italicText">{{com.statGains}}</span></span>
+				</div>
+			</div>
 			<div ng-if="char.race == 'Jera'">
 				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 10px;">Enchantment Cost: {{calcEnchantmentCost(char.maxHp)}} HP</div>
 				<div class="customDivider" style="top:18px"></div>
@@ -157,11 +164,21 @@
 					<span class="italicText" style="font-size: 8px;">{{com.desc}}</span>
 				</div>
 			</div>
+			<div ng-if="char.race == 'Florkana'">
+				<div ng-repeat="com in racialSkills.Angel" ng-if="com.supportRace != 'Terrain'" style="margin-top: 3px;">
+					<span class="boldText" style="font-size: 9px;">{{com.terrain}}: </span><span class="italicText" style="font-size: 8px;">{{com.effect}}</span>
+				</div>
+			</div>
 			<div ng-if="char.race == 'Ayzer'">
 				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 10px;">Water Meter: <img ng-repeat="i in [1,2,3,4,5,6,7,8,9,10]" ng-src="{{$index < char.racialInfo.waterMeter ? 'IMG/waterdrop.png' : 'IMG/waterdrop_empty.png'}}" style="display: inline-block;" /></div>
 				<div class="customDivider" style="top:18px"></div>
 				<div ng-repeat="com in racialSkills.Ayzer | waterCostSort" ng-if="com.name.length > 0 && com.name != 'Name'" style="margin-top: 3px;">
 					<span class="boldText" style="font-size: 9px;">{{com.name}}: </span><span class="italicText" style="font-size: 8px;">({{com.waterCost}} Water) {{com.desc}}</span>
+				</div>
+			</div>
+			<div ng-if="char.race == 'Angel'">
+				<div ng-repeat="com in racialSkills.Angel" ng-if="com.supportRace != 'Supporting Race'" style="margin-top: 3px;">
+					<span class="boldText" style="font-size: 9px;">{{com.supportRace}}: </span><span class="italicText" style="font-size: 8px;">{{com.desc}}</span>
 				</div>
 			</div>
 		</div>
