@@ -88,7 +88,7 @@
 		</div>
 		<!--Skills-->
 		<div class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, -1)" ng-mouseleave="skillHoverOut(cIndex, -1)" style="top: 5px;">
-			<span class="indentedSkillName">Racial Skill</span>
+			<span class="indentedSkillName">Racial Ability Info</span>
 		</div>
 		<div ng-repeat="skill in char.skills" class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
 			<span class="indentedSkillName" ng-if="validSkill(skill.name)">{{skill.name}}</span>
@@ -135,6 +135,33 @@
 				<div class="popOutText itemRankPos">{{item.class}} ({{item.rank}} Slot<span ng-if="parseInt">s</span>)</div>
 				<div class="customDivider" style="top:22px"></div>
 				<div class="popOutText" style="top: 25px;"><span class="italicText">{{item.effect}}<br/></span><span>{{item.desc}}</span>
+				</div>
+			</div>
+		</div>
+		<!--Racial Ability Info Box-->
+		<div ng-if="skillHoverOn(cIndex, -1)" class="infoElement green whiteText racialAbilityInfoPos" ng-style="{height: (char.race == 'Ayzer' ? '255px' : '235px')}" style="top: 5px;">
+			<div ng-if="char.race == 'Laguz'">
+				<div ng-repeat="com in char.racialInfo" ng-if="com.name.length > 0" class="racialInfoBlock">
+					<span class="boldText" style="font-size: 9px;">{{com.name}} ({{com.rank}} Rank)</span><br />
+					<span style="font-size: 8px;">HP Cost: {{com.hpcost}}</br>
+					+{{com.might}} Might Bonus, +{{com.hit}} Hit Bonus<br />
+					<span class="italicText">{{com.desc}}</span>
+					</span>
+				</div>
+			</div>
+			<div ng-if="char.race == 'Jera'">
+				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 10px;">Enchantment Cost: {{calcEnchantmentCost(char.maxHp)}} HP</div>
+				<div class="customDivider" style="top:18px"></div>
+				<div ng-repeat="com in char.racialInfo" ng-if="com.name.length > 0" class="racialInfoBlock">
+					<span class="boldText" style="font-size: 9px;">{{com.name}}</span><br />
+					<span class="italicText" style="font-size: 8px;">{{com.desc}}</span>
+				</div>
+			</div>
+			<div ng-if="char.race == 'Ayzer'">
+				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 10px;">Water Meter: <img ng-repeat="i in [1,2,3,4,5,6,7,8,9,10]" ng-src="{{$index < char.racialInfo.waterMeter ? 'IMG/waterdrop.png' : 'IMG/waterdrop_empty.png'}}" style="display: inline-block;" /></div>
+				<div class="customDivider" style="top:18px"></div>
+				<div ng-repeat="com in racialSkills.Ayzer | waterCostSort" ng-if="com.name.length > 0 && com.name != 'Name'" style="margin-top: 3px;">
+					<span class="boldText" style="font-size: 9px;">{{com.name}}: </span><span class="italicText" style="font-size: 8px;">({{com.waterCost}} Water) {{com.desc}}</span>
 				</div>
 			</div>
 		</div>

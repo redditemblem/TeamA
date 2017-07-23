@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 6) + 0.1;
+	const updateVal = (100 / 7) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -9,7 +9,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	var enemies = null;
 	var rows = [];
 	var cols = [];
-	var map, characterData, enemyData, itemIndex, skillIndex, coordMapping, terrainIndex, terrainLocs;
+	var map, characterData, enemyData, itemIndex, skillIndex, racialSkillIndex, coordMapping, terrainIndex, terrainLocs;
 	
 	this.getCharacters = function(){ return characters; };
 	this.getMap = function(){ return map; };
@@ -17,6 +17,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	this.getColumns = function(){ return cols; };
 	this.getTerrainTypes = function(){ return terrainIndex; };
 	this.getTerrainMappings = function(){ return terrainLocs; };
+	this.getRacialInfo = function(){ return racialSkillIndex; };
 
 	this.loadMapData = function(){ fetchCharacterData(); };
 	this.calculateRanges = function(){ getMapDimensions(); };
@@ -117,6 +118,67 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 }
 
     	 updateProgressBar();
+    	 fetchRacialSkillIndex();
+      });
+	};
+
+	function fetchRacialSkillIndex() {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "ROWS",
+		range: 'Racial Abilities!A:F',
+      }).then(function(response) {
+		 var skills = response.result.values;
+		 racialSkillIndex = {};
+		 var skillBlock = "";
+
+		for(var i = 0; i < skills.length; i++){
+			var s = skills[i];
+			
+			if(s.length == 0) continue;
+
+			//New header section
+			if(s.length == 1){
+				skillBlock = s[0];
+				racialSkillIndex[skillBlock] = {};
+				continue;
+			}
+
+			switch(skillBlock){
+				case "Laguz" :
+					if(s[0].length == 1){
+						racialSkillIndex[skillBlock][s[1]] = {
+							'rank' : s[0],
+							'name' : s[1],
+							'hpcost' : s[2],
+							'might' : s[3],
+							'hit' : s[4],
+							'desc' : s[5]
+						};
+					}
+					break;
+				case "Jera" :
+					if(s[0].length > 0){
+						racialSkillIndex[skillBlock][s[0]] = {
+							'name' : s[0],
+							'req' : s[2],
+							'desc' : s[4]
+						};
+					}
+					break;
+				case "Ayzer" :
+					if(s[0].length > 0){
+						racialSkillIndex[skillBlock][s[0]] = {
+							'name' : s[0],
+							'waterCost' : s[1],
+							'desc' : s[2]
+						};
+					}
+					break;
+			}
+		 }
+
+    	 updateProgressBar();
     	 processCharacters();
       });
 	};
@@ -192,8 +254,15 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				};
 				
 				//Populate racial info
-				for(var j = 63; j < 79; j++)
-					currObj.racialInfo[j - 62] = c[j];
+				switch(currObj.race){
+					case "Jera" :
+						for(var j = 63; j < 68; j++)
+							currObj.racialInfo[j - 62] = getRacialAbility(c[j], currObj.race);
+						break;
+					case "Ayzer":
+						currObj.racialInfo.waterMeter = parseInt(c[63]);
+						break;
+				}
 
 				//Skills
 				for(var k = 29; k < 36; k++)
@@ -221,7 +290,15 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		}
 		updateProgressBar();
 		map = "abc";
-    };
+	};
+	
+	function convertToHex(str) {
+		var hex = '';
+		for(var i=0;i<str.length;i++) {
+			hex += ''+str.charCodeAt(i).toString(16);
+		}
+		return hex;
+	}
     
 	function fetchMapUrl() {
       gapi.client.sheets.spreadsheets.values.get({
@@ -472,5 +549,14 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'notes' : "This skill could not be located."
 			}
 		else return skillIndex[name];
+	};
+
+	function getRacialAbility(name, race){
+		name = name.trim();
+		if(name == undefined || name.length == 0 || racialSkillIndex[race][name] == undefined)
+			return {
+				'name' : name != undefined ? name : ""
+			}
+		else return racialSkillIndex[race][name];
 	};
 }]);

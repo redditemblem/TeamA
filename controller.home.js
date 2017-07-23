@@ -50,6 +50,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		$scope.columns = DataService.getColumns();
 		$scope.terrainTypes = DataService.getTerrainTypes();
 		$scope.terrainLocs = DataService.getTerrainMappings();
+		$scope.racialSkills = DataService.getRacialInfo();
 	}
     
     //*************************\\
@@ -230,7 +231,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     $scope.fetchWpnRankHorzPos = function(index){ return weaponRankHorzPos[index]; };
     $scope.fetchWpnDescVerticalPos = function(index){ return weaponDescVerticalPos[index]; };
     $scope.fetchSklVerticalPos = function(index){ return skillVerticalPos[index]; };
-    $scope.fetchSklDescVerticalPos = function(index){ return skillDescVerticalPos[index]; };
+	$scope.fetchSklDescVerticalPos = function(index){ return skillDescVerticalPos[index]; };
  
     //***********************\\
     // FUNCTIONS FOR STAT    \\
@@ -343,7 +344,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 			returnStr = returnStr.substring(0, returnStr.length-2);
 		return returnStr;
 	};
-    
+	
+	$scope.calcEnchantmentCost = function(hp){
+		return Math.floor(hp / 4);
+	};
     //*************************\\
     // FUNCTIONS FOR INVENTORY \\
     // & WEAPONS PROFICIENCY   \\
@@ -499,3 +503,24 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     	}
     };
 }]);
+
+app.filter('waterCostSort', function () {
+  // custom value function for sorting
+  function sortFunc(obj) {
+    return parseInt(obj.waterCost);
+  }
+
+  return function (obj) {
+    var array = [];
+    Object.keys(obj).forEach(function (key) {
+      // inject key into each object so we can refer to it from the template
+      obj[key].name = key;
+      array.push(obj[key]);
+    });
+    // apply a custom sorting function
+    array.sort(function (a, b) {
+      return sortFunc(a) - sortFunc(b);
+    });
+    return array;
+  };
+});
