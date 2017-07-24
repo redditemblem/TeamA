@@ -364,6 +364,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		return Math.floor(parseInt(maxHp) * percent);
 	};
 
+	$scope.calcHeatUnitTemp = function(units){
+		return (((parseInt(units) / 45) * 100) - 18) + "px";
+	};
+
     //*************************\\
     // FUNCTIONS FOR INVENTORY \\
     // & WEAPONS PROFICIENCY   \\
@@ -423,11 +427,11 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     
     //Returns true if the weapon at the index is not an item
     $scope.notItem = function(type){
-    	return type != "Staff" && type != "Consumable" && type != "Mystery";
+    	return type != "Staff" && type != "Consumable" && type != "Item" && type != "";
     };
     
     $scope.setDescriptionLoc = function(type){
-    	if(type != "Staff" && type != "Consumable" && type != "Mystery") return "45px";
+    	if(type != "Staff" && type != "Consumable" && type != "Item" && type != "") return "60px";
     	else return "25px";
     };
 

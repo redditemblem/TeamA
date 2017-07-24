@@ -103,9 +103,10 @@
 			<div class="customDivider" style="top:22px"></div>
 			<div ng-if="notItem(char.equippedWeapon.class)">
 				<div class="popOutText itemMightPos">Might: {{char.equippedWeapon.might}}</div>
-				<div class="popOutText itemMightPos" style="left: 95px;">Hit: {{char.equippedWeapon.hit}}</div>
-				<div class="popOutText itemMightPos" style="right: 0px;">Rng: {{char.equippedWeapon.range}}</div>
-				<div class="customDivider" style="top:41px"></div>
+					<div class="popOutText itemMightPos" style="right:0px">Hit: {{char.equippedWeapon.hit}}</div>
+					<div class="popOutText itemWeightPos">Crit: {{char.equippedWeapon.crit}}</div>
+					<div class="popOutText itemWeightPos" style="right:0px">Range: {{char.equippedWeapon.range}}</div>
+					<div class="customDivider" style="top:58px"></div>
 			</div>
 			<div class="popOutText" ng-style="{top: setDescriptionLoc(char.equippedWeapon.class)}"><span class="italicText">{{char.equippedWeapon.effect}}<br/></span><span>{{char.equippedWeapon.desc}}</span>
 			</div>
@@ -120,9 +121,10 @@
 				<div class="customDivider" style="top:22px"></div>
 				<div ng-if="notItem(weapon.class)">
 					<div class="popOutText itemMightPos">Might: {{weapon.might}}</div>
-					<div class="popOutText itemMightPos" style="left: 95px;">Hit: {{weapon.hit}}</div>
-					<div class="popOutText itemMightPos" style="right: 0px;">Rng: {{weapon.range}}</div>
-					<div class="customDivider" style="top:41px"></div>
+					<div class="popOutText itemMightPos" style="right:0px">Hit: {{weapon.hit}}</div>
+					<div class="popOutText itemWeightPos">Crit: {{weapon.crit}}</div>
+					<div class="popOutText itemWeightPos" style="right:0px">Range: {{weapon.range}}</div>
+					<div class="customDivider" style="top:58px"></div>
 				</div>
 				<div class="popOutText" ng-style="{top: setDescriptionLoc(weapon.class)}"><span class="italicText">{{weapon.effect}}<br/></span><span>{{weapon.desc}}</span>
 				</div>
@@ -150,8 +152,8 @@
 				</div>
 			</div>
 			<div ng-if="char.race == 'Kano'">
-				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 10px;">{{char.racialInfo.heatUnits}} Heat Units</div>
-				<div class="customDivider" style="top:18px"></div>
+				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 20px;">Temperature: <span class="heatMeter"><span class="heatMeterLine" ng-style="{left: calcHeatUnitTemp(char.racialInfo.heatUnits)}"><span class="heatMeterNum" />{{char.racialInfo.heatUnits}}°</span></span></div>
+				<div class="customDivider" style="top:30px"></div>
 				<div ng-repeat="com in racialSkills.Kano" ng-if="com.heatUnits != 'Heat Units'" style="margin-top: 3px;">
 					<span class="boldText" style="font-size: 9px;">{{com.heatUnits}} Units Req: </span><span style="font-size: 8px;">({{calcHpPercentCost(com.hpPenalty, char.maxHp)}} HP Cost) <span class="italicText">{{com.statGains}}</span></span>
 				</div>

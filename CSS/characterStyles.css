@@ -48,6 +48,28 @@
 	background-color:#727472;
 }
 
+.heatMeter{
+	display: inline-block;
+	width: 100px;
+	height: 10px;
+	background: linear-gradient(to right, green , yellow, orange, red); /* Standard syntax */
+}
+
+.heatMeterLine{
+	position: relative;
+	border-right: 2px solid black;
+	height: 8px;
+	width: 3px;
+}
+
+.heatMeterNum{
+	position: relative;
+	color: white;
+	font-size: 10px;
+	top: 12px;
+	left: 10px;
+}
+
 .statBox{
 	position: absolute;
 	height: 17px;
@@ -93,8 +115,9 @@
 	position: absolute;
 	left:31px;
 	top:6px;
-	font-size: 11px;
+	font-size: 10px;
 }
+
 
 .indentedWeaponIcon{
 	position: absolute;
