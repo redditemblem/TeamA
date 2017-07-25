@@ -138,13 +138,20 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			if(s.length == 0) continue;
 
 			//New header section
-			if(s.length == 1){
+			if(s.length == 1 && !(skillBlock == "Beorc" && Object.keys(racialSkillIndex.Beorc).length == 0)){
 				skillBlock = s[0];
 				racialSkillIndex[skillBlock] = {};
 				continue;
 			}
 
 			switch(skillBlock){
+				case "Beorc" :
+					if(s[0].length > 0){
+						racialSkillIndex[skillBlock][i] = {
+							'desc' : s[0]
+						};
+					}
+					break;
 				case "Laguz" :
 					if(s[0].length == 1){
 						racialSkillIndex[skillBlock][s[1]] = {
