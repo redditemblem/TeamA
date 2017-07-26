@@ -226,6 +226,13 @@
 	height:125px;
 }
 
+.statInfoPos{
+	overflow-y: hidden;
+	width:150px;
+	left:280px;
+	height:60px;
+}
+
 .racialAbilityInfoPos{
 	overflow-y: hidden;
 	width:360px;

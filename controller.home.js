@@ -368,6 +368,16 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		return (((parseInt(units) / 45) * 100) - 18) + "px";
 	};
 
+	$scope.checkStatLength = function(stat){
+		return stat.length > 0;
+	};
+
+	$scope.checkWpnStatLength = function(stat){
+		if(stat == undefined) return false;
+		var num = stat.match(/^[0-9]+/)[0];
+		return parseInt(num) != 0;
+	};
+
     //*************************\\
     // FUNCTIONS FOR INVENTORY \\
     // & WEAPONS PROFICIENCY   \\

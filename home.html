@@ -1,5 +1,5 @@
 <div class="backgroundBox"></div>
-<div id="dropArea" class="mapBox">
+<div id="dropArea" class="authBackground">
 	<img id="map" class="absolutePos" src="IMG/map.png">
 
 	<!--Draw tile names-->
@@ -68,7 +68,7 @@
 			<span class="currHPText">{{char.currHp}} /</span>
 			<span class="maxHPText">{{char.maxHp}}</span>
 		</div>
-		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText statBox" ng-style="{top: stat[2]}">
+		<div ng-repeat="stat in statsList" ng-mouseenter="statHoverIn(cIndex, $index)" ng-mouseleave="statHoverOut(cIndex, $index)" class="infoElement darkTan tanText hoverTan statBox" ng-style="{top: stat[2]}">
 			<span class="indentedStatLabel">{{stat[0]}}</span>
 			<span class="indentedStat">{{char[stat[0]]}}</span>
 		</div>
@@ -196,6 +196,17 @@
 				</div>
 				<div class="customDivider" style="top:20px"></div>
 				<div class="popOutText popOutBody">{{skill.finalEff}}</div>
+			</div>
+		</div>
+		<!--Stat info boxes-->
+		<div ng-repeat="stat in statsList">
+			<div ng-if="statHoverOn(cIndex, $index)" class="infoElement green whiteText statInfoPos" ng-style="{top: stat[2]}">
+				<span class="popOutText popOutHeader">
+					<span>Base: {{char[stat[0]]}}<br /></span>
+					<span ng-if="checkWpnStatLength(char.equippedWeapon[stat[0]])">{{char.equippedWeapon.name}}: {{char.equippedWeapon[stat[0]]}}<br /></span>
+					<span ng-if="checkStatLength(char[stat[0]+'Buff'])">Buff/Debuff: {{char[stat[0]+'Buff']}}<br /></span>
+					<span ng-if="checkStatLength(char[stat[0]+'Boost'])">Boost: {{char[stat[0]+'Boost']}}<br /></span>
+				</span>
 			</div>
 		</div>
 	</div>
