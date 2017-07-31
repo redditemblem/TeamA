@@ -35,7 +35,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     
     //Constants
 	const DEFAULT_NAMETAG_COLOR = "#FFA600";
-    const STAT_DEFAULT_COLOR = "#E5C68D";
+    const STAT_DEFAULT_COLOR = "#ffffff";
     const STAT_BUFF_COLOR = "#42adf4";
     const STAT_DEBUFF_COLOR = "#960000";
     
@@ -246,70 +246,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //Returns true if the value in the passed attribute is >= 0
     $scope.checkRate = function(stat){ return parseInt(stat) >= 0; };
     
-    /* Calculates total buff/debuffs for each stat (str/mag/skl/etc) and
-     * returns the appropriate text color as a hex value
-     * red <- total<0
-     * blue <- total>0
-     * tan <- total=0
-     * 
-     * toggle = 0 for char, 1 for enemy
-     */
-    $scope.determineStatColor = function(character, index, stat, toggle){
-    	var char;
-    	
-    	if(toggle == "0") char = $scope.charaData[character];
-    	else char = $scope.enemyData[character];
-    	
-    	//Determine appropriate indicies for stat being evaluated (passed string)
-    	var debuff = char[stat + "Buff"];
-    	var weaponBuff = char["w" + stat + "Buff"];
-    	var pairUp = char["p" + stat + "Buff"];
-    	
-    	if(debuff == "") debuff = 0;
-    	else debuff = parseInt(debuff);
-    	
-    	weaponBuff = parseInt(weaponBuff);
-    	
-    	if(pairUp == "") pairUp = 0;
-    	else pairUp = parseInt(pairUp);
-    	
-    	var totalBuffs = debuff + weaponBuff + pairUp;
-    	if(totalBuffs > 0)
-    		return STAT_BUFF_COLOR; //blue buff
-    	else if(totalBuffs < 0)
-    		return STAT_DEBUFF_COLOR //red debuff
-    	return STAT_DEFAULT_COLOR;
-    };
-    
-    $scope.calcEnemyBaseStat = function(enemy, stat){
-    	var char = $scope.enemyData[enemy];
-    	
-    	//Determine appropriate indicies for stat being evaluated (passed string)
-    	var total = char[stat];
-    	var debuff = char[stat + "Buff"];
-    	var weaponBuff = char["w" + stat + "Buff"];
-    	var pairUp = char["p" + stat + "Buff"];
-    
-    	total = parseInt(total);
-    	debuff = parseInt(debuff);
-    	weaponBuff = parseInt(weaponBuff);
-    	if(pairUp == "") pairUp = 0;
-    	else pairUp = parseInt(pairUp);
-    	
-    	return total - (debuff + weaponBuff + pairUp);
-    };
-    
     $scope.validSkill = function(skill){
     	return skill != "" && skill != "None";
-    };
-
-    $scope.checkShields = function(num, shields){
-    	num = parseInt(num);
-    	shields = parseInt(shields);
-    	
-    	if(shields == 10) return "IMG/blueshield.png";
-    	else if(shields >= num) return "IMG/filledshield.png";
-    	else return "IMG/emptyshield.png";
     };
 
 	$scope.getPairName = function(pos){
@@ -372,10 +310,57 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		return stat.length > 0;
 	};
 
-	$scope.checkWpnStatLength = function(stat){
+	$scope.checkWpnStatLength = function(index, s){
+		if(s == "Spd") s = "OSpd";
+		var stat = $scope.charaData[index].equippedWeapon[s];
+		
 		if(stat == undefined) return false;
-		var num = stat.match(/^[0-9]+/)[0];
+		var num = stat.match(/^(-)[0-9]+/)[0];
 		return parseInt(num) != 0;
+	};
+	
+	$scope.getWpnStatValue = function(index, s){
+		if(s == "Spd") s = "OSpd";
+		var stat = $scope.charaData[index].equippedWeapon[s];
+		
+		var num = stat.match(/^(-)[0-9]+/)[0];
+		return parseInt(num);
+	};
+
+	$scope.calculateStat = function(index, stat){
+		var char = $scope.charaData[index];
+		var base = char[stat];
+		var buff = char[stat + "Buff"];
+		var boost = char[stat + "Boost"];
+		
+		if(stat == "Spd") stat = "OSpd";
+		var wpn = char.equippedWeapon[stat];
+
+		base = parseInt(base);
+		buff = (buff.length > 0 ? parseInt(buff) : 0);
+		boost = (boost.length > 0 ? parseInt(boost) : 0);
+		wpn = (wpn != undefined ? parseInt(wpn) : 0);
+
+		return base + buff + boost + wpn;
+	};
+
+	$scope.getStatColor = function(index, stat){
+		var char = $scope.charaData[index];
+		var buff = char[stat + "Buff"];
+		var boost = char[stat + "Boost"];
+		
+		var wpn;
+		if(stat == "Spd") wpn = char.equippedWeapon.OSpd;
+		else wpn = char.equippedWeapon[stat];
+
+		buff = (buff.length > 0 ? parseInt(buff) : 0);
+		boost = (boost.length > 0 ? parseInt(boost) : 0);
+		wpn = parseInt(wpn);
+
+		var change = buff + boost + wpn;
+		if(change > 0) return STAT_BUFF_COLOR;
+		else if(change < 0) return STAT_DEBUFF_COLOR;
+		else return STAT_DEFAULT_COLOR;
 	};
 
     //*************************\\
@@ -418,8 +403,29 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //Calculates the percentage of weapon proficicency for a specific weapon,
     //then returns the width of the progress bar in pixels
     $scope.calcWeaponExp = function(exp){
-		return ((exp/25) * (boxWidth-2));
-    };
+		exp = parseInt(exp);
+		
+		var toNextLvl;
+		if(exp < 10) toNextLvl = 10;
+		else if(exp < 30){ toNextLvl = 20; exp -= 10; } 
+		else if(exp < 70){ toNextLvl = 40; exp -= 30; }
+		else if(exp < 150){ toNextLvl = 80; exp -= 70; }
+		else if(exp < 300){ toNextLvl = 150; exp -= 150; }
+		else{ toNextLvl = 1; exp = 1; } //max at S rank
+
+		return (exp/toNextLvl) * 32;
+	};
+	
+	$scope.calcRankLetter = function(exp){
+		exp = parseInt(exp);
+		
+		if(exp < 10) return "E";
+		else if(exp < 30) return "D";
+		else if(exp < 70) return "C";
+		else if(exp < 150) return "B";
+		else if(exp < 300) return "A";
+		else return "S";
+	};
     
     //Checks if there is a value in the index
     $scope.validDebuff = function(value){

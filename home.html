@@ -58,8 +58,8 @@
 			<span ng-if="existsWeapon(w.class)" title="{{w.class}} Rank" style="position:relative">
 				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
 				<div class="weaponRankBackground"></div>
-				<div class="weaponRankBar" ng-style="{width:calcWeaponExp(w.exp)+'px'}"></div>
-				<!--<div class="weaponRankLtrPos redText">{{w.rank}}</div>-->
+				<div class="weaponRankBar" ng-style="{width: calcWeaponExp(w.exp)+'px'}"></div>
+				<div class="weaponRankLtrPos redText" style="font-size: 14px;">{{calcRankLetter(w.exp)}}</div>
 			</span>
 		</div>
 		<!--Stats-->
@@ -68,9 +68,9 @@
 			<span class="currHPText">{{char.currHp}} /</span>
 			<span class="maxHPText">{{char.maxHp}}</span>
 		</div>
-		<div ng-repeat="stat in statsList" ng-mouseenter="statHoverIn(cIndex, $index)" ng-mouseleave="statHoverOut(cIndex, $index)" class="infoElement darkTan tanText hoverTan statBox" ng-style="{top: stat[2]}">
-			<span class="indentedStatLabel">{{stat[0]}}</span>
-			<span class="indentedStat">{{char[stat[0]]}}</span>
+		<div ng-repeat="stat in statsList" ng-mouseenter="statHoverIn(cIndex, $index)" ng-mouseleave="statHoverOut(cIndex, $index)" class="infoElement darkTan hoverTan statBox" ng-style="{top: stat[2]}">
+			<span class="indentedStatLabel tanText">{{stat[0]}}</span>
+			<span class="indentedStat" ng-style="{color: getStatColor(cIndex, stat[0])}">{{calculateStat(cIndex, stat[0])}}</span>
 		</div>
 		<!--Inventory-->
 		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement redText hoverTan itemsPos lightTan" style="top: 5px;">
@@ -203,7 +203,7 @@
 			<div ng-if="statHoverOn(cIndex, $index)" class="infoElement green whiteText statInfoPos" ng-style="{top: stat[2]}">
 				<span class="popOutText popOutHeader">
 					<span>Base: {{char[stat[0]]}}<br /></span>
-					<span ng-if="checkWpnStatLength(char.equippedWeapon[stat[0]])">{{char.equippedWeapon.name}}: {{char.equippedWeapon[stat[0]]}}<br /></span>
+					<span ng-if="checkWpnStatLength(cIndex, stat[0])">{{char.equippedWeapon.name}}: {{getWpnStatValue(cIndex, stat[0])}}<br /></span>
 					<span ng-if="checkStatLength(char[stat[0]+'Buff'])">Buff/Debuff: {{char[stat[0]+'Buff']}}<br /></span>
 					<span ng-if="checkStatLength(char[stat[0]+'Boost'])">Boost: {{char[stat[0]+'Boost']}}<br /></span>
 				</span>
