@@ -93,6 +93,14 @@
 		<div ng-repeat="skill in char.skills" class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
 			<span class="indentedSkillName" ng-if="validSkill(skill.name)">{{skill.name}}</span>
 		</div>
+		<!--Additional Info-->
+		<div class="infoElement darkTan tanText leafsPos">
+			<span class="indentedStatLabel tanText">Leafs</span>
+			<span class="indentedStat">{{char.gold}}</span>
+		</div>
+		<div class="infoElement darkTan tanText tagsPos hoverTan" ng-mouseover="tagsHoverIn(cIndex)" ng-mouseleave="tagsHoverOut(cIndex)">
+			Tags
+		</div>
 		<!--Inventory Desc-->
 		<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, -1) && validWeapon(char.equippedWeapon.name)" style="top: 5px;">
 			<div class="popOutText itemNamePos boldText">{{formatWeaponName(char.equippedWeapon.name)}}</div>
@@ -130,11 +138,11 @@
 				</div>
 			</div>
 		</div>
-		<!--Accesories-->
+		<!--Accesories Info-->
 		<div ng-repeat="item in char.accessories">
 			<div class="infoElement green whiteText itemInfoPos" ng-if="accessoryHoverOn(cIndex, $index) && validWeapon(item.name)" ng-style="{top: fetchWpnDescVerticalPos($index + 5)}">
 				<div class="popOutText itemNamePos boldText">{{item.name}}</div>
-				<div class="popOutText itemRankPos">{{item.class}} ({{item.rank}} Slot<span ng-if="parseInt">s</span>)</div>
+				<div class="popOutText itemRankPos">{{item.class}} ({{item.rank}} Slots)</div>
 				<div class="customDivider" style="top:22px"></div>
 				<div class="popOutText" style="top: 25px;"><span class="italicText">{{item.effect}}<br/></span><span>{{item.desc}}</span>
 				</div>
@@ -208,6 +216,12 @@
 					<span ng-if="checkStatLength(char[stat[0]+'Boost'])">Boost: {{char[stat[0]+'Boost']}}<br /></span>
 				</span>
 			</div>
+		</div>
+		<!--Tags Info-->
+		<div ng-if="tagsHoverOn(cIndex)" class="infoElement green whiteText tagInfoPos">
+			<span class="popOutText popOutHeader">
+				<span ng-repeat="tag in char.tags">{{tag}}<br /></span>
+			</span>
 		</div>
 	</div>
 </div>

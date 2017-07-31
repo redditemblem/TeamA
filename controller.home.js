@@ -478,9 +478,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     $scope.pairUpHoverOut = function(char){ $scope[char + "pair"] = false; };
     $scope.pairUpHoverOn = function(char){ return $scope[char + "pair"] == true; };
 
-	$scope.statusHoverIn = function(char){ $scope[char + "status"] = true; };
-	$scope.statusHoverOut = function(char){ $scope[char + "status"] = false; };
-	$scope.statusHoverOn = function(char){ return $scope[char + "status"] == true; };
+	$scope.tagsHoverIn = function(char){ $scope[char + "tags"] = true; };
+	$scope.tagsHoverOut = function(char){ $scope[char + "tags"] = false; };
+	$scope.tagsHoverOn = function(char){ return $scope[char + "tags"] == true; };
 
 	$scope.accessoryHoverIn = function(char, index){ $scope[char + "acc_" + index] = true; };
 	$scope.accessoryHoverOut = function(char, index){ $scope[char + "acc_" + index] = false; };

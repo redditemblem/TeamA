@@ -233,6 +233,31 @@
 	height:63px;
 }
 
+.leafsPos{
+	width:100px;
+	top: 250px;
+	left: 380px;
+	height:17px;
+}
+
+.tagsPos{
+	width:43px;
+	top: 250px;
+	left: 485px;
+	height:17px;
+	line-height: 17px;
+	font-size: 11px;
+	padding-left: 17px;
+}
+
+.tagInfoPos{
+	overflow-y: hidden;
+	top: 180px;
+	width:150px;
+	left:330px;
+	height:88px;
+}
+
 .racialAbilityInfoPos{
 	overflow-y: hidden;
 	width:360px;

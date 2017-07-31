@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 7) + 0.1;
+	const updateVal = (100 / 8) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -9,7 +9,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	var enemies = null;
 	var rows = [];
 	var cols = [];
-	var map, characterData, enemyData, itemIndex, skillIndex, racialSkillIndex, coordMapping, terrainIndex, terrainLocs;
+	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, racialSkillIndex, coordMapping, terrainIndex, terrainLocs;
 	
 	this.getCharacters = function(){ return characters; };
 	this.getMap = function(){ return map; };
@@ -114,6 +114,28 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'classes' : s[2],
 				'finalEff' : s[3] != undefined ? s[3] : "",
 				'notes' : s[4] != undefined ? s[4] : ""
+			};
+		 }
+
+    	 updateProgressBar();
+    	 fetchClassIndex();
+      });
+	};
+
+	function fetchClassIndex() {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "ROWS",
+		range: 'Class Data!A2:AR',
+      }).then(function(response) {
+		 var c = response.result.values;
+		 classIndex = {};
+		  
+		 for(var i = 0; i < c.length; i++){
+			var s = c[i];
+			classIndex[s[0]] = {
+				'name' : s[0],
+				'tags' : s[3]
 			};
 		 }
 
@@ -319,6 +341,16 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 				for(var m = 24; m < 29; m++)
 					currObj.inventory["itm_" + (m-23)] = getItem(c[m]);
+
+				//Tags
+				var tags = [];
+				tags.push(currObj.race);
+				if(currObj.race == "Angel") tags.push("Flying");
+
+				tags = tags.concat(tags, getClassTagsArray(currObj.class));
+				tags = tags.concat(tags, c[19].split(","));
+
+				currObj.tags = Array.from(new Set(tags));
 
 				characters["char_" + i] = currObj;
 			}
@@ -593,5 +625,11 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'name' : name != undefined ? name : ""
 			}
 		else return racialSkillIndex[race][name];
+	};
+
+	function getClassTagsArray(cls){
+		var clsObj = classIndex[cls];
+		if(clsObj != undefined) return clsObj.tags.split(",");
+		else return [];
 	};
 }]);
