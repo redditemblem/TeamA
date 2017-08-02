@@ -76,7 +76,7 @@ img{
 	width: 13px;
 	height: 2px;
 	left: 0px;
-	top: 12px;
+	top: 14px;
 	background-color: dimgray;
 }
 
@@ -84,7 +84,7 @@ img{
 	position: absolute;
 	height: 2px;
 	left: 0px;
-	top: 12px;
+	top: 14px;
 	background-color: red;
 }
 
@@ -93,7 +93,7 @@ img{
 	width: 12px;
 	height: 1px;
 	left: 0px;
-	top: 12px;
+	top: 14px;
 	border: 1px solid black;
 }
 

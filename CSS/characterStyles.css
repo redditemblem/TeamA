@@ -423,13 +423,7 @@
 }
 
 .enemyNum{
-	position: absolute;
-	width: 9px;
-	height: 12px;
-	right: 2px;
+	position: relative;
 	bottom: 2px;
-	text-align: right;
-	font-weight: bold;
-	font-size: 10px;
-	color: white;
+	right: 0px;
 }

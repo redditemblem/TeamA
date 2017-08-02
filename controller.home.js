@@ -171,9 +171,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     $scope.getEnemyNum = function(name){
     	if(name.lastIndexOf(" ") == -1 || name == undefined)
     		return "";
-    	name = name.substring(name.lastIndexOf(" ")+1, name.length);
-    	
-    	if(name.match(/^[0-9]+$/) != null) return name;
+    	name = name.substring(name.lastIndexOf(" "), name.length);
+		name = name.trim();
+		
+    	if(name.match(/^[0-9]+$/) != null) return "IMG/NUM/num_" + name + ".png";
     	else return "";
     };
     
