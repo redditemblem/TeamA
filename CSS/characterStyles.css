@@ -108,7 +108,7 @@
 	position: absolute;
 	left:10px;
 	top:6px;
-	font-size: 11px;
+	font-size: 10px;
 }
 
 .indentedWeaponName{
@@ -216,7 +216,7 @@
 .skillPos{
 	width:165px;
 	left:380px;
-	height:25px;
+	height:23px;
 }
 
 .skillInfoPos{
@@ -235,26 +235,62 @@
 
 .leafsPos{
 	width:100px;
-	top: 250px;
+	top: 230px;
 	left: 380px;
-	height:17px;
+	height:19px;
 }
 
 .tagsPos{
 	width:43px;
-	top: 250px;
+	top: 230px;
 	left: 485px;
-	height:17px;
-	line-height: 17px;
+	height:19px;
+	line-height: 19px;
 	font-size: 11px;
 	padding-left: 17px;
 }
 
 .tagInfoPos{
 	overflow-y: hidden;
-	top: 180px;
-	width:150px;
-	left:330px;
+	top: 170px;
+	width:100px;
+	left:380px;
+	height:88px;
+}
+
+.statusPos{
+	width:80px;
+	top: 252px;
+	left: 380px;
+	height:19px;
+	line-height: 19px;
+	font-size: 10px;
+	padding-left: 10px;
+}
+
+.statusInfoPos{
+	overflow-y: hidden;
+	top: 191px;
+	width:225px;
+	left:150px;
+	height:80px;
+}
+
+.behaviorPos{
+	width:57px;
+	top: 252px;
+	left: 475px;
+	height:19px;
+	line-height: 19px;
+	font-size: 10px;
+	padding-left: 13px;
+}
+
+.behaviorInfoPos{
+	overflow-y: hidden;
+	top: 184px;
+	width:175px;
+	left:295px;
 	height:88px;
 }
 
@@ -413,13 +449,6 @@
 	font-size:12px;
 	left:20px;
 	top:14px;
-}
-
-.statusInfoPos{
-	overflow-y: hidden;
-	width:250px;
-	left:185px;
-	height:125px;
 }
 
 .enemyNum{

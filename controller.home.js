@@ -30,14 +30,18 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	const weaponRankHorzPos = ["290px", "340px", "290px", "340px"];
 	const weaponRankVertPos = ["210px", "210px", "240px", "240px"];
     const weaponDescVerticalPos = ["25px", "45px", "65px", "85px", "105px", "125px", "145px", "165px"];
-    const skillVerticalPos = ["35px", "65px", "95px", "125px", "155px", "185px", "215px", "245px"];
+    const skillVerticalPos = ["33px", "61px", "89px", "117px", "145px", "173px", "201px"];
     const skillDescVerticalPos = ["5px", "15px", "22px", "29px", "36px", "43px", "50px", "57px", "63px"];
     
     //Constants
-	const DEFAULT_NAMETAG_COLOR = "#FFA600";
     const STAT_DEFAULT_COLOR = "#ffffff";
     const STAT_BUFF_COLOR = "#42adf4";
-    const STAT_DEBUFF_COLOR = "#960000";
+	const STAT_DEBUFF_COLOR = "#960000";
+	
+	const NAMETAG_BLUE = "#153af3";
+	const NAMETAG_RED = "#c00c13";
+	const NAMETAG_GREEN = "#33bb33";
+	const NAMETAG_PERIWINKLE = "#9988dd";
     
     //Reroutes the user if they haven't logged into the app
     //Loads data from the DataService if they have
@@ -452,11 +456,14 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     	else return "25px";
     };
 
-	$scope.determineNametagColor = function(char){
-		if(char.indexOf("char_") != -1) return DEFAULT_NAMETAG_COLOR;
-		
-		if($scope.charaData[char].affiliation == "") return DEFAULT_NAMETAG_COLOR;
-		else return $scope.charaData[char].affiliation;
+	$scope.determineNametagColor = function(aff){
+		switch(aff){
+			case "Party" : return NAMETAG_BLUE;
+			case "Evil Enemies" : return NAMETAG_RED;
+			case "Ally" : return NAMETAG_GREEN;
+			case "Other" : return NAMETAG_PERIWINKLE;
+			default: return "#000000";
+		}
 	};
     
     //***************************\\
@@ -486,6 +493,14 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	$scope.accessoryHoverIn = function(char, index){ $scope[char + "acc_" + index] = true; };
 	$scope.accessoryHoverOut = function(char, index){ $scope[char + "acc_" + index] = false; };
 	$scope.accessoryHoverOn = function(char, index){ return $scope[char + "acc_" + index] == true; };
+
+	$scope.statusHoverIn = function(char){ $scope[char + "status"] = true; };
+	$scope.statusHoverOut = function(char){ $scope[char + "status"] = false; };
+	$scope.statusHoverOn = function(char){ return $scope[char + "status"] == true; };
+
+	$scope.behaviorHoverIn = function(char){ $scope[char + "behv"] = true; };
+	$scope.behaviorHoverOut = function(char){ $scope[char + "behv"] = false; };
+	$scope.behaviorHoverOn = function(char){ return $scope[char + "behv"] == true; };
     
     //*************************\\
     // SUPPORT FOR DRAGABILITY \\

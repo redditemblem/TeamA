@@ -37,7 +37,7 @@
 			<img src="IMG/switchpairup.png">
 		</div>
 		<!--Name, Class, Lvl-->
-		<div class="infoElement whiteText charNamePos" ng-style="{'background-color': determineNametagColor(cIndex)}" style="text-align: center;">
+		<div class="infoElement whiteText charNamePos" ng-style="{'background-color': determineNametagColor(char.affiliation)}" style="text-align: center;">
 			<span style="position: relative; font-size: 18px; top: calc(50% - 15px);">{{char.name}}</span><br />
 			<span style="position: relative; top: 2px; font-size: 10px;">Lvl. {{calculateCharLvl(char.exp)}} {{char.race}} {{char.class}}</span>
 		</div>
@@ -95,11 +95,17 @@
 		</div>
 		<!--Additional Info-->
 		<div class="infoElement darkTan tanText leafsPos">
-			<span class="indentedStatLabel tanText">Leafs</span>
-			<span class="indentedStat">{{char.gold}}</span>
+			<span class="indentedStatLabel tanText" style="top: 5px !important;">Leafs</span>
+			<span class="indentedStat" style="top: 3px !important;">{{char.gold}}</span>
 		</div>
 		<div class="infoElement darkTan tanText tagsPos hoverTan" ng-mouseover="tagsHoverIn(cIndex)" ng-mouseleave="tagsHoverOut(cIndex)">
 			Tags
+		</div>
+		<div class="infoElement darkTan tanText statusPos hoverTan" ng-mouseover="statusHoverIn(cIndex)" ng-mouseleave="statusHoverOut(cIndex)">
+			{{char.statusEffect.name}}
+		</div>
+		<div class="infoElement darkTan tanText behaviorPos hoverTan" ng-mouseover="behaviorHoverIn(cIndex)" ng-mouseleave="behaviorHoverOut(cIndex)">
+			Behavior
 		</div>
 		<!--Inventory Desc-->
 		<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, -1) && validWeapon(char.equippedWeapon.name)" style="top: 5px;">
@@ -150,7 +156,7 @@
 		</div>
 		<!--Racial Ability Info Box-->
 		<div ng-if="skillHoverOn(cIndex, -1)" class="infoElement green whiteText racialAbilityInfoPos" ng-style="{height: (char.race == 'Ayzer' ? '255px' : '235px')}" style="top: 5px;">
-			<div ng-if="char.race == 'Beorc'">
+			<div ng-if="char.race == 'Beorc' || char.race == 'Branded'">
 				<div ng-repeat="com in racialSkills.Beorc" style="margin-top: 5px;">
 					<span style="font-size: 9px;">{{com.desc}}</span>
 				</div>
@@ -199,9 +205,6 @@
 		<div ng-repeat="skill in char.skills">
 			<div ng-if="skillHoverOn(cIndex, $index) && validSkill(skill.name)" class="infoElement green whiteText skillInfoPos" ng-style="{top: fetchWpnDescVerticalPos($index)}">
 				<div class="boldText popOutText popOutHeader">{{skill.name}}</div>
-				<div class="italicText popOutText popOutHeader" style="right: 0px;">
-					{{$index == 0 ? "Innate Skill" : ($index >= 1 && $index < 5 ? "Class Skill" : ($index == 5 ? "Mastery Skill" : "Ultimate Skill"))}}
-				</div>
 				<div class="customDivider" style="top:20px"></div>
 				<div class="popOutText popOutBody">{{skill.finalEff}}</div>
 			</div>
@@ -222,6 +225,19 @@
 			<span class="popOutText popOutHeader">
 				<span ng-repeat="tag in char.tags">{{tag}}<br /></span>
 			</span>
+		</div>
+		<!--Status Info-->
+		<div ng-if="statusHoverOn(cIndex)" class="infoElement green whiteText statusInfoPos">
+			<div class="boldText popOutText popOutHeader">{{char.statusEffect.name}}</div>
+			<div ng-if="char.statusEffect.turns.length > 0" class="italicText popOutText popOutHeader" style="right: 0px;">
+				{{char.statusEffect.turns}} Turns
+			</div>
+			<div class="customDivider" style="top:21px"></div>
+			<span class="popOutText popOutBody">{{char.statusEffect.effect}}</span>
+		</div>
+		<!--Behavior Info-->
+		<div ng-if="behaviorHoverOn(cIndex)" class="infoElement green whiteText behaviorInfoPos">
+			<span class="popOutText popOutHeader">{{char.behavior}}</span>
 		</div>
 	</div>
 </div>

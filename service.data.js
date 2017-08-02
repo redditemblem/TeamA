@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 8) + 0.1;
+	const updateVal = (100 / 9) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -9,7 +9,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	var enemies = null;
 	var rows = [];
 	var cols = [];
-	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, racialSkillIndex, coordMapping, terrainIndex, terrainLocs;
+	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, racialSkillIndex, coordMapping, terrainIndex, terrainLocs;
 	
 	this.getCharacters = function(){ return characters; };
 	this.getMap = function(){ return map; };
@@ -140,6 +140,29 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 }
 
     	 updateProgressBar();
+    	 fetchStatusIndex();
+      });
+	};
+
+	function fetchStatusIndex() {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "ROWS",
+		range: 'Status Effects!A2:C',
+      }).then(function(response) {
+		 var stat = response.result.values;
+		 statusIndex = {};
+		  
+		 for(var i = 0; i < stat.length; i++){
+			var s = stat[i];
+			statusIndex[s[0]] = {
+				'name' : s[0],
+				'turns' : s[1],
+				'effect' : s[2]
+			};
+		 }
+
+    	 updateProgressBar();
     	 fetchRacialSkillIndex();
       });
 	};
@@ -266,7 +289,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'equippedWeapon' : c[23],
 					'inventory' : {},
 					'skills' : {},
-					'statusEffect' : c[36],
 					'HpBuff' : c[37],
 					'StrBuff' : c[38],
 					'MagBuff' : c[39],
@@ -304,7 +326,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						}
 					},
 					'racialInfo' : {},
-					'desc' : c[79]
+					'desc' : c[81] != undefined ? c[81] : "",
+					'behavior' : c[82] != undefined ? c[82] : ""
 				};
 				
 				//Populate racial info
@@ -351,6 +374,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				tags = tags.concat(tags, c[19].split(","));
 
 				currObj.tags = Array.from(new Set(tags));
+
+				//Status
+				currObj.statusEffect = getStatusEffect(c[36]);
 
 				characters["char_" + i] = currObj;
 			}
@@ -631,5 +657,16 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		var clsObj = classIndex[cls];
 		if(clsObj != undefined) return clsObj.tags.split(",");
 		else return [];
+	};
+
+	function getStatusEffect(name){
+		name = name.trim();
+		if(name == undefined || name.length == 0 || statusIndex[name] == undefined)
+			return {
+				'name' : "No Status",
+				'turns' : "",
+				'effect' : "This unit's feeling pretty normal."
+			}
+		else return statusIndex[name];
 	};
 }]);
