@@ -632,7 +632,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function getSkill(name){
-		name = name.trim();
 		if(name == undefined || name.length == 0 || skillIndex[name] == undefined)
 			return {
 				'name' : name != undefined ? name : "",
@@ -645,7 +644,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function getRacialAbility(name, race){
-		name = name.trim();
 		if(name == undefined || name.length == 0 || racialSkillIndex[race][name] == undefined)
 			return {
 				'name' : name != undefined ? name : ""
@@ -660,7 +658,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function getStatusEffect(name){
-		name = name.trim();
 		if(name == undefined || name.length == 0 || statusIndex[name] == undefined)
 			return {
 				'name' : "No Status",
