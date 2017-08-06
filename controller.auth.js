@@ -5,7 +5,11 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
     var checkGapi = $interval(checkAuth, 250);
     $scope.loadingIcon = pickLoadingIcon();
     var bar = document.getElementById('progress'); 
-    
+	
+	//Hide dialogs at start
+	$scope.showShop = false;
+	$scope.showConvoy = false;
+
     //Set div visibility
     var authorizeDiv = document.getElementById('authorize-div');
 	var unavailableDiv = document.getElementById('unavailable-div');
@@ -29,6 +33,9 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		}
 	};
 
+	function displayShopDialog(){ $scope.showShop = true; $scope.$apply(); };
+	function displayConvoyDialog(){ $scope.showConvoy = true; $scope.$apply(); };
+
     //Continue to check gapi until it's loaded
     function checkAuth() {
     	if(gapi.client != undefined){
@@ -38,12 +45,14 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
     }
 
     //Initiate auth flow in response to user clicking authorize button.
-    $scope.loadAPI = function(event) {
+    $scope.loadAPI = function(event, type) {
     	gapi.client.init({
     		'apiKey': id, 
     		'discoveryDocs': ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
     	}).then(function(){
-			testWebAppAvailability();
+			if(type == 2) displayConvoyDialog();
+			else if(type == 3) displayShopDialog();
+			else testWebAppAvailability();
     	});
     };
 
