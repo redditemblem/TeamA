@@ -127,7 +127,7 @@ table{
     position: relative;
     font-size: 18px;
     font-weight: bold;
-    color: red;
+    color: purple;
     right: 1px;
     bottom: 6px;
 }
@@ -182,5 +182,5 @@ table{
 }
 
 .red{
-    background-color: red;
+    background-color: purple;
 }

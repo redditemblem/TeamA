@@ -70,11 +70,15 @@
                 <div class="checkbox" ng-click="showBow=!showBow"><span class="check" ng-if="showBow">&#10004;</span></div>
                 <span class="checkboxLabel">Bow</span>
             </span>
+            <button class="showChkbx showAllButton" ng-click="setAllCheckboxes()">
+                <span ng-if="allChecked()">Deselect All</span>
+                <span ng-if="!allChecked()">Select All</span>
+            </button>
+            <br />
             <span class="showChkbx">
                 <div class="checkbox" ng-click="showKnife=!showKnife"><span class="check" ng-if="showKnife">&#10004;</span></div>
                 <span class="checkboxLabel">Knife</span>
             </span>
-            <br />
             <span class="showChkbx">
                 <div class="checkbox" ng-click="showTome=!showTome"><span class="check" ng-if="showTome">&#10004;</span></div>
                 <span class="checkboxLabel">Tome</span>
@@ -87,16 +91,11 @@
                 <div class="checkbox" ng-click="showOther=!showOther"><span class="check" ng-if="showOther">&#10004;</span></div>
                 <span class="checkboxLabel">Other</span>
             </span>
-            <button class="showChkbx showAllButton" ng-click="setAllCheckboxes()">
-                <span ng-if="allChecked()">Deselect All</span>
-                <span ng-if="!allChecked()">Select All</span>
-            </button>
         </div><div class="sortGrouping">
             <button ng-click="updateSortOrder('name')" class="sortButton" ng-class="{'red' : getItemSortOrder() == 'name'}">Name</button>
             <button ng-click="updateSortOrder('type')" class="sortButton" ng-class="{'red' : getItemSortOrder() == 'type'}">Type</button>
             <button ng-click="updateSortOrder('rank')" class="sortButton" ng-class="{'red' : getItemSortOrder() == 'rank'}">Rank</button>
             <br />
-            <button ng-click="updateSortOrder('-uses')" class="sortButton" ng-class="{'red' : getItemSortOrder() == '-uses'}">Uses</button>
             <button ng-click="updateSortOrder('owner')" class="sortButton" ng-class="{'red' : getItemSortOrder() == 'owner'}">Owner</button>
             <button ng-click="updateSortOrder('-value')" class="sortButton" ng-class="{'red' : getItemSortOrder() == '-value'}">Value</button>
         </div>
