@@ -17,7 +17,7 @@ app.directive('convoy', function(){
 		//link: function ($scope, element, attrs) { } //DOM manipulation
 	}
 });
-/*app.directive('shop', function(){
+app.directive('shop', function(){
 	return {
 		restrict: 'E', 
 		scope: {
@@ -26,4 +26,4 @@ app.directive('convoy', function(){
 		templateUrl: 'shop.html',
 		controller: 'ShopCtrl', //Embed a custom controller in the directive
 	}
-});*/
+});

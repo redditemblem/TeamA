@@ -1,0 +1,127 @@
+<div class="convoyFrame">
+    <div style="height: 45px; vertical-align: bottom;">
+        <div style="float: right; height: 16px;">
+            <img src="IMG/refresh.png" ng-click="fetchShop()" class="hoverImage" title="Refresh shop data" />
+            <img src="IMG/close.png" ng-click="closeShop()" class="hoverImage" title="Close shop" />
+        </div>
+        <table class="header">
+            <colgroup>
+                <col width="10%" />
+                <col width="8%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="12%" />
+                <col width="15%" />
+            </colgroup>
+            <tr>
+                <td>Name</td>
+                <td>Type</td>
+                <td>Stock</td>
+                <td>Cost</td>
+                <td>Rank</td>
+                <td>Might</td>
+                <td>Hit</td>
+                <td>Crit</td>
+                <td>Rng</td>
+                <td>Effect</td>
+                <td>Description</td>
+            </tr>
+        </table>
+    </div>
+    <div class="convoyTableContainer">
+        <table class="inventory">
+            <colgroup>
+                <col width="10%" />
+                <col width="8%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="5%" />
+                <col width="12%" />
+                <col width="15%" />
+            </colgroup>
+            <tbody ng-repeat="item in items | orderBy: getItemSortOrder()" ng-if="displayItemType(item.type) && (item.stock > 0 || displayInStock)">
+                 <tr class="inventoryRow">
+                    <td style="text-align: center;">{{item.name}}</td>
+                    <td style="text-align: center;" ng-style="{'background-color' : getRowColor(item.type)}">{{item.type}}</td>
+                    <td style="text-align: center;">{{item.stock}}</td>
+                    <td style="text-align: center;">
+                        {{item.cost}} L<br />
+                        <span ng-if="item.sale < 100" style="color: red;">(-{{100 - item.sale}}%)</span>
+                    </td>
+                    <td style="text-align: center;">{{item.rank}}</td>
+                    <td>{{item.might}}</td>
+                    <td>{{item.hit}}</td>
+                    <td>{{item.crit}}</td>
+                    <td>{{item.range}}</td>
+                    <td>{{item.effect}}</td>
+                    <td>{{item.desc}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="height: 60px;">
+        <div style="margin-top: 15px; padding-left: 10px; display: inline-block; height: 50px; width: 455px;">
+            <span class="showChkbx">
+                <div class="checkbox" ng-click="showSword=!showSword"><span class="check" ng-if="showSword">&#10004;</span></div>
+                <span class="checkboxLabel">Sword</span>
+            </span>
+            <span class="showChkbx">
+                <div class="checkbox" ng-click="showLance=!showLance"><span class="check" ng-if="showLance">&#10004;</span></div>
+                <span class="checkboxLabel">Lance</span>
+            </span>
+            <span class="showChkbx">
+                <div class="checkbox" ng-click="showAxe=!showAxe"><span class="check" ng-if="showAxe">&#10004;</span></div>
+                <span class="checkboxLabel">Axe</span>
+            </span>
+            <span class="showChkbx">
+                <div class="checkbox" ng-click="showBow=!showBow"><span class="check" ng-if="showBow">&#10004;</span></div>
+                <span class="checkboxLabel">Bow</span>
+            </span>
+            <button class="showChkbx showAllButton" ng-click="setAllCheckboxes()">
+                <span ng-if="allChecked()">Deselect All</span>
+                <span ng-if="!allChecked()">Select All</span>
+            </button>
+            <br />
+            <span class="showChkbx">
+                <div class="checkbox" ng-click="showKnife=!showKnife"><span class="check" ng-if="showKnife">&#10004;</span></div>
+                <span class="checkboxLabel">Knife</span>
+            </span>
+            <span class="showChkbx">
+                <div class="checkbox" ng-click="showTome=!showTome"><span class="check" ng-if="showTome">&#10004;</span></div>
+                <span class="checkboxLabel">Tome</span>
+            </span>
+            <span class="showChkbx">
+                <div class="checkbox" ng-click="showStaff=!showStaff"><span class="check" ng-if="showStaff">&#10004;</span></div>
+                <span class="checkboxLabel">Staff</span>
+            </span>
+            <span class="showChkbx">
+                <div class="checkbox" ng-click="showOther=!showOther"><span class="check" ng-if="showOther">&#10004;</span></div>
+                <span class="checkboxLabel">Other</span>
+            </span>
+        </div><div style="vertical-align: middle; display: inline-block; height: 50px; width: 175px;">
+            <span class="showChkbx" style="width: 150px !important;">
+                <div class="checkbox" ng-click="displayInStock=!displayInStock"><span class="check" ng-if="displayInStock">&#10004;</span></div>
+                <span class="checkboxLabel" style="font-size: 9px !important">Show Out-of-Stock Items</span>
+            </span>
+        </div><div  style="margin-top: 15px; display: inline-block; height: 50px; width: 360px;">
+            <button ng-click="updateSortOrder('name')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'name'}">Name</button>
+            <button ng-click="updateSortOrder('type')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'type'}">Type</button>
+            <button ng-click="updateSortOrder('cost')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'cost'}">Price</button>
+            <button ng-click="updateSortOrder('rank')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'rank'}">Rank</button>
+            <br />
+            <button ng-click="updateSortOrder('-mightVal')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-mightVal'}">Might</button>
+            <button ng-click="updateSortOrder('-hitVal')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-hitVal'}">Hit</button>
+            <button ng-click="updateSortOrder('-critVal')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-critVal'}">Crit</button>
+            <button ng-click="updateSortOrder('rangeVal')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'rangeVal'}">Range</button>
+        </div>
+    </div>
+</div>
