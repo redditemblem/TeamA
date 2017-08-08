@@ -501,6 +501,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	$scope.behaviorHoverIn = function(char){ $scope[char + "behv"] = true; };
 	$scope.behaviorHoverOut = function(char){ $scope[char + "behv"] = false; };
 	$scope.behaviorHoverOn = function(char){ return $scope[char + "behv"] == true; };
+
+	$scope.nameHoverIn = function(char){ $scope[char + "name"] = true; };
+	$scope.nameHoverOut = function(char){ $scope[char + "name"] = false; };
+	$scope.nameHoverOn = function(char){ return $scope[char + "name"] == true; };
     
     //*************************\\
     // SUPPORT FOR DRAGABILITY \\
