@@ -28,9 +28,11 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
       'Axe' : '#5eba60',
       'Bow' : '#fccc7e',
       'Knife' : '#fafc7e',
-      'Tome' : '#fc7eaa',
+      'Light' : '#fbffc9',
+      'Anima' : '#fc7eaa',
+      'Dark' : '#6c5372',
       'Staff' : '#ceebed'
-    };
+    }
 
     //Filter settings
     var sortOrder = 'name';
@@ -39,7 +41,9 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
     $scope.showAxe = true;
     $scope.showBow = true;
     $scope.showKnife = true;
-    $scope.showTome = true;
+    $scope.showLight = true;
+    $scope.showAnima = true;
+    $scope.showDark = true;
     $scope.showStaff = true;
     $scope.showOther = true;
 
@@ -62,8 +66,8 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
     };
 
     $scope.allChecked = function(){
-      return $scope.showSword && $scope.showLance && $scope.showAxe && $scope.showBow && 
-          $scope.showKnife && $scope.showTome && $scope.showStaff && $scope.showOther;
+      return $scope.showSword && $scope.showLance && $scope.showAxe && $scope.showBow && $scope.showKnife
+          && $scope.showLight && $scope.showAnima && $scope.showDark && $scope.showStaff && $scope.showOther;
     };
 
     $scope.setAllCheckboxes = function(){
@@ -73,7 +77,9 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
         $scope.showAxe = val;
         $scope.showBow = val;
         $scope.showKnife = val;
-        $scope.showTome = val;
+        $scope.showLight = val;
+        $scope.showAnima = val;
+        $scope.showDark = val;
         $scope.showStaff = val;
         $scope.showOther = val;
     };

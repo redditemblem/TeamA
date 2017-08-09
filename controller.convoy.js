@@ -28,7 +28,9 @@ app.controller('ConvoyCtrl', ['$scope', 'ConvoyDataService', function($scope, Co
       'Axe' : '#5eba60',
       'Bow' : '#fccc7e',
       'Knife' : '#fafc7e',
-      'Tome' : '#fc7eaa',
+      'Light' : '#fbffc9',
+      'Anima' : '#fc7eaa',
+      'Dark' : '#6c5372',
       'Staff' : '#ceebed'
     }
 
@@ -39,7 +41,9 @@ app.controller('ConvoyCtrl', ['$scope', 'ConvoyDataService', function($scope, Co
     $scope.showAxe = true;
     $scope.showBow = true;
     $scope.showKnife = true;
-    $scope.showTome = true;
+    $scope.showLight = true;
+    $scope.showAnima = true;
+    $scope.showDark = true;
     $scope.showStaff = true;
     $scope.showOther = true;
 
@@ -49,7 +53,6 @@ app.controller('ConvoyCtrl', ['$scope', 'ConvoyDataService', function($scope, Co
 
     $scope.displayItemType = function(type){
       if(type == "None" || type == "Gear" || type == "Consumable" || type == "Item") return $scope.showOther;
-      if(type == "Anima" || type == "Light" || type == "Dark") return $scope.showTome;
       return $scope["show" + type] == true;
     };
 
@@ -62,8 +65,8 @@ app.controller('ConvoyCtrl', ['$scope', 'ConvoyDataService', function($scope, Co
     };
 
     $scope.allChecked = function(){
-      return $scope.showSword && $scope.showLance && $scope.showAxe && $scope.showBow && 
-          $scope.showKnife && $scope.showTome && $scope.showStaff && $scope.showOther;
+      return $scope.showSword && $scope.showLance && $scope.showAxe && $scope.showBow && $scope.showKnife
+          && $scope.showLight && $scope.showAnima && $scope.showDark && $scope.showStaff && $scope.showOther;
     };
 
     $scope.setAllCheckboxes = function(){
@@ -73,7 +76,9 @@ app.controller('ConvoyCtrl', ['$scope', 'ConvoyDataService', function($scope, Co
         $scope.showAxe = val;
         $scope.showBow = val;
         $scope.showKnife = val;
-        $scope.showTome = val;
+        $scope.showLight = val;
+        $scope.showAnima = val;
+        $scope.showDark = val;
         $scope.showStaff = val;
         $scope.showOther = val;
     };
