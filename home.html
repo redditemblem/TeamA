@@ -1,19 +1,25 @@
 <div class="backgroundBox"></div>
-<div id="dropArea" class="authBackground">
+<div id="dropArea" class="mapBox">
 	<img id="map" class="absolutePos" src="IMG/map.png">
 
 	<!--Draw tile names-->
 	<div ng-repeat="(yIndex,row) in rows" class="glowBoxIndent absolutePos" ng-style="{top: determineGlowY(yIndex)}">
 		<div class="glowBox"
 			 ng-repeat="(indexX,column) in columns"
-			 title="({{column}},{{row}}) {{terrainLocs[column+','+row].type}}: {{terrainTypes[terrainLocs[column+','+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+','+row].type].def}}⛨"
+			 title="({{column}},{{row}}) {{terrainLocs[column+','+row].type}}: {{terrainTypes[terrainLocs[column+','+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+','+row].type].def}}⛨ {{terrainTypes[terrainLocs[column+','+row].type].heal}}♥"
 			 ng-style="{left: determineGlowX(indexX), 'background-color': determineGlowColor(column+','+row)}">
 		</div>
 	</div>
 	
 	<!--Draw characters-->
 	<div ng-repeat="(cIndex,char) in charaData">
-		<div id="{{cIndex}}" ng-if="validPosition(char.position)" ng-click="displayData(cIndex)" class="absolutePos charDiv hoverImage" title="{{char.position}}" ng-style="{top: determineCharY(char.position), left: determineCharX(char.position)}">
+		<div id="{{cIndex}}" 
+			 ng-if="validPosition(char.position)"
+			 ng-click="displayData(cIndex)"
+			 class="absolutePos charDiv hoverImage"
+			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨ {{terrainTypes[terrainLocs[char.position].type].heal}}♥"
+			 ng-style="{top: determineCharY(char.position), left: determineCharX(char.position)}"
+		>
 			<!--Unit sprite-->
 			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" />
 			<img ng-src="{{getEnemyNum(char.name)}}" class="enemyNum" />

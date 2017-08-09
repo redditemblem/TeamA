@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 9) + 0.1;
+	const updateVal = (100 / 12) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -256,8 +256,50 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 }
 
     	 updateProgressBar();
-    	 processCharacters();
+    	 fetchTerrainIndex();
       });
+	};
+
+	function fetchTerrainIndex(){
+		gapi.client.sheets.spreadsheets.values.get({
+			spreadsheetId: sheetId,
+			majorDimension: "ROWS",
+			range: 'Terrain Chart!A2:K',
+		}).then(function(response) {
+			var rows = response.result.values;
+			terrainIndex = {};
+
+			for(var i = 0; i < rows.length; i++){
+				var r = rows[i];
+				terrainIndex[r[0]] = {
+					'avo' : r[1] != "-" ? parseInt(r[1]) : 0,
+					'def' : r[2] != "-" ? parseInt(r[2]) : 0,
+					'heal' : r[3] != "-" ? parseInt(r[3].match(/^[0-9]+/)) : 0,
+					'Foot' :  r[4],
+					'Armor' : r[5],
+					'Mage' : r[6],
+					'Mounted' : r[7],
+					'Flier' : r[8],
+					'effect' : r[9]
+				}
+			}
+
+			updateProgressBar();
+			fetchTerrainChart();
+		});
+	};
+
+	function fetchTerrainChart(){
+	    gapi.client.sheets.spreadsheets.values.get({
+			spreadsheetId: sheetId,
+			majorDimension: "ROWS",
+			range: 'Terrain Map!A:ZZ',
+	    }).then(function(response) {
+			coordMapping = response.result.values;
+
+			updateProgressBar();
+			processCharacters();
+		});
 	};
 
     function processCharacters(){
@@ -381,18 +423,12 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				characters["char_" + i] = currObj;
 			}
 		}
+		
+		map = "IMG/map.png";
 		updateProgressBar();
-		map = "abc";
+		//fetchMapUrl();
 	};
 	
-	function convertToHex(str) {
-		var hex = '';
-		for(var i=0;i<str.length;i++) {
-			hex += ''+str.charCodeAt(i).toString(16);
-		}
-		return hex;
-	}
-    
 	function fetchMapUrl() {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
@@ -402,7 +438,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
       }).then(function(response) {
 		 map = response.result.values[0][0];
 		 if(map != "") map = map.substring(8, map.length-2);
-    	 updateProgressBar();
+		 
+		 updateProgressBar();
+		 getMapDimensions();
       });
 	};
 	
@@ -414,18 +452,17 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
     	var map = document.getElementById('mapImg');
 		var height = map.naturalHeight; //calculate the height of the map
         	
-		height -= (boxWidth * 2);
 		height = height / (boxWidth + gridWidth);
 		for(var i = 0; i < height; i++)
 			rows.push(i+1);
 			
 		var width = map.naturalWidth; //calculate the width of the map
-		width -= (boxWidth * 3);
 		width = width / (boxWidth + gridWidth);
 		
 		for(var i = 0; i < width; i++)
 			cols.push(i+1);
 
+		updateProgressBar();
 		initializeTerrain();
 	};
 
@@ -437,16 +474,16 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					terrainLocs[cols[c] + "," + rows[r]] = getDefaultTerrainObj();
 			
 		//Update terrain types from input list
-		/*for(var r = 1; r < coordMapping.length; r++){
-			var index = coordMapping[r][0].replace( /\s/g, ""); //remove spaces
-			if(terrainLocs[index] != undefined)
-				terrainLocs[index].type = coordMapping[r][1];
+		for(var r = 0; r < coordMapping.length; r++){
+			var row = coordMapping[r];
+			for(var c = 0; c < cols.length && c < row.length; c++){
+				if(row[c].length > 0) terrainLocs[cols[c] + "," + rows[r]].type = row[c];
+			}
 		}
 
 		for(var c in characters)
 			if(terrainLocs[characters[c].position] != undefined)
 				terrainLocs[characters[c].position].occupiedAffiliation = c.indexOf("char_") > -1 ? "char" : characters[c].affiliation;
-		*/
 
 		updateProgressBar();
 		//calculateCharacterRanges();
@@ -454,7 +491,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 	function getDefaultTerrainObj(){
 		return {
-			'type' : "Plain",
+			'type' : "Plains",
 			'movCount' : 0,
 			'atkCount' : 0,
 			'healCount' : 0,

@@ -36,7 +36,8 @@ img{
 	left:0px;
 	height:100%;
 	width:100%;
-	background-color: black;
+	background-image: url("../IMG/background.png");
+    background-repeat: repeat;
 }
 
 .mapBox{
