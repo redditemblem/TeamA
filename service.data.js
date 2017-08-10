@@ -126,7 +126,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         majorDimension: "ROWS",
-		range: 'Class Data!A2:AR',
+		range: 'Class Data!B2:AR',
       }).then(function(response) {
 		 var c = response.result.values;
 		 classIndex = {};
@@ -135,7 +135,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			var s = c[i];
 			classIndex[s[0]] = {
 				'name' : s[0],
-				'tags' : s[3]
+				'tags' : s[3] != undefined ? s[3].split(",") : [],
+				'desc' : s[42] != undefined ? s[42] : ""
 			};
 		 }
 
@@ -310,115 +311,118 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				var currObj = {
 					'name'   : c[0],
 					'spriteUrl' : c[1],
-					'class'  : c[2],
+					'class'  : getClass(c[2]),
 					'race' : c[3],
 					'affinity' : c[4],
 					'affiliation' : c[5],
 					'position' : c[6],
-					'currHp' : c[7],
-					'maxHp'  : c[8],
-					'Str' : c[9],
-					'Mag' : c[10],
-					'Skl' : c[11],
-					'Spd' : c[12],
-					'Lck' : c[13],
-					'Def' : c[14],
-					'Res' : c[15],
-					'Mov' : c[16],
-					'exp' : c[17],
-					'gold' : c[18],
+					'rescuing' : c[7],
+					'currHp' : c[8],
+					'maxHp'  : c[9],
+					'Str' : c[10],
+					'Mag' : c[11],
+					'Skl' : c[12],
+					'Spd' : c[13],
+					'Lck' : c[14],
+					'Def' : c[15],
+					'Res' : c[16],
+					'Mov' : c[17],
+					'exp' : c[18],
+					'gold' : c[19],
 					'accessories' : {},
-					'equippedWeapon' : c[23],
+					'equippedWeapon' : c[24],
 					'inventory' : {},
 					'skills' : {},
-					'HpBuff' : c[37],
-					'StrBuff' : c[38],
-					'MagBuff' : c[39],
-					'SklBuff' : c[40],
-					'SpdBuff' : c[41],
-					'LckBuff' : c[42],
-					'DefBuff' : c[43],
-					'ResBuff' : c[44],
-					'MovBuff' : c[45],
-					'HpBoost' : c[46],
-					'StrBoost' : c[47],
-					'MagBoost' : c[48],
-					'SklBoost' : c[49],
-					'SpdBoost' : c[50],
-					'LckBoost' : c[51],
-					'DefBoost' : c[52],
-					'ResBoost' : c[53],
-					'MovBoost' : c[54],
+					'HpBuff' : c[38],
+					'StrBuff' : c[39],
+					'MagBuff' : c[40],
+					'SklBuff' : c[41],
+					'SpdBuff' : c[42],
+					'LckBuff' : c[43],
+					'DefBuff' : c[44],
+					'ResBuff' : c[45],
+					'MovBuff' : c[46],
+					'HpBoost' : c[47],
+					'StrBoost' : c[48],
+					'MagBoost' : c[49],
+					'SklBoost' : c[50],
+					'SpdBoost' : c[51],
+					'LckBoost' : c[52],
+					'DefBoost' : c[53],
+					'ResBoost' : c[54],
+					'MovBoost' : c[55],
 					'weaponRanks' : {
 						'w1' : {
-							'class' : c[55],
-							'exp'   : c[56]
+							'class' : c[56],
+							'exp'   : c[57]
 						},
 						'w2' : {
-							'class' : c[57],
-							'exp'   : c[58]
+							'class' : c[58],
+							'exp'   : c[59]
 						},
 						'w3' : {
-							'class' : c[59],
-							'exp'   : c[60]
+							'class' : c[60],
+							'exp'   : c[61]
 						},
 						'w4' : {
-							'class' : c[61],
-							'exp'   : c[62]
+							'class' : c[62],
+							'exp'   : c[63]
 						}
 					},
 					'racialInfo' : {},
-					'desc' : c[81] != undefined ? c[81] : "",
-					'behavior' : c[82] != undefined ? c[82] : ""
+					'behavior' : c[82] != undefined ? c[82] : "",
+					'desc' : c[83] != undefined ? c[83] : "",
+					'portrait' : c[84] != undefined ? c[84] : ""
 				};
 				
 				//Populate racial info
 				switch(currObj.race){
 					case "Kano":
-						currObj.racialInfo.heatUnits = parseInt(c[63]);
+						currObj.racialInfo.heatUnits = parseInt(c[64]);
 						break;
 					case "Jera" :
-						for(var j = 63; j < 68; j++)
-							currObj.racialInfo[j - 62] = getRacialAbility(c[j], currObj.race);
+						for(var j = 64; j < 69; j++)
+							currObj.racialInfo[j - 63] = getRacialAbility(c[j], currObj.race);
 						break;
 					case "Ayzer":
-						currObj.racialInfo.waterMeter = parseInt(c[63]);
+						currObj.racialInfo.waterMeter = parseInt(c[64]);
 						break;
 				}
 
 				//Skills
-				for(var k = 29; k < 36; k++)
-					currObj.skills["skl_" + (k-28)] = getSkill(c[k]);
+				for(var k = 30; k < 37; k++)
+					currObj.skills["skl_" + (k-29)] = getSkill(c[k]);
 
 				//Accessories
-				for(var l = 20; l < 23; l++)
-					currObj.accessories["acc_" + (l-19)] = getItem(c[l]);
+				for(var l = 21; l < 24; l++)
+					currObj.accessories["acc_" + (l-20)] = getItem(c[l]);
 
 				//Inventory
-				var inv = c.slice(24, 29); //grab inventory items
+				var inv = c.slice(25, 30); //grab inventory items
 				var eqpIndex = inv.indexOf(currObj.equippedWeapon);
 				if(eqpIndex > -1){
-					c.splice(eqpIndex + 24, 1); //remove item
-					c.splice(28, 0, ""); //insert a blank at the end
+					c.splice(eqpIndex + 25, 1); //remove item
+					c.splice(29, 0, ""); //insert a blank at the end
 				}
 
 				currObj.equippedWeapon = getItem(currObj.equippedWeapon);
 
-				for(var m = 24; m < 29; m++)
-					currObj.inventory["itm_" + (m-23)] = getItem(c[m]);
+				for(var m = 25; m < 30; m++)
+					currObj.inventory["itm_" + (m-24)] = getItem(c[m]);
 
 				//Tags
-				var tags = [];
-				tags.push(currObj.race);
-				if(currObj.race == "Angel") tags.push("Flying");
+				currObj.class.tags.push(currObj.race);
+				if(currObj.race == "Angel") currObj.class.tags.push("Flying");
 
-				tags = tags.concat(tags, getClassTagsArray(currObj.class));
-				tags = tags.concat(tags, c[19].split(","));
+				currObj.class.tags = currObj.class.tags.concat(currObj.class.tags, c[20].split(","));
+				currObj.class.tags.forEach(function(element, index){ 
+					currObj.class.tags[index] = element.trim(); 
+				});
 
-				currObj.tags = Array.from(new Set(tags));
+				currObj.class.tags = Array.from(new Set(currObj.class.tags))
 
 				//Status
-				currObj.statusEffect = getStatusEffect(c[36]);
+				currObj.statusEffect = getStatusEffect(c[37]);
 
 				characters["char_" + i] = currObj;
 			}
@@ -688,10 +692,14 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		else return racialSkillIndex[race][name];
 	};
 
-	function getClassTagsArray(cls){
-		var clsObj = classIndex[cls];
-		if(clsObj != undefined) return clsObj.tags.split(",");
-		else return [];
+	function getClass(name){
+		if(name == undefined || name.length == 0 || classIndex[name] == undefined)
+			return {
+				'name' : name != undefined ? name : "",
+				'tags' : [],
+				'desc' : ""
+			}
+		else return classIndex[name];
 	};
 
 	function getStatusEffect(name){

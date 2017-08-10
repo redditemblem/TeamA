@@ -45,7 +45,7 @@
 		<!--Name, Class, Lvl-->
 		<div class="infoElement whiteText charNamePos" ng-mouseenter="nameHoverIn(cIndex)" ng-mouseleave="nameHoverOut(cIndex)" ng-style="{'background-color': determineNametagColor(char.affiliation)}" style="text-align: center;">
 			<span style="position: relative; font-size: 18px; top: calc(50% - 15px);">{{char.name}}</span><br />
-			<span style="position: relative; top: 2px; font-size: 10px;">Lvl. {{calculateCharLvl(char.exp)}} {{char.race}} {{char.class}}</span>
+			<span style="position: relative; top: 2px; font-size: 10px;">Lvl. {{calculateCharLvl(char.exp)}} {{char.race}} {{char.class.name}}</span>
 		</div>
 		<!--Battle stats-->
 		<div ng-repeat="stat in battleStatsList" class="infoElement darkTan tanText battleStatBox" ng-style="{top: stat[1]}">
@@ -115,8 +115,10 @@
 		</div>
 		<!--Name Desc-->
 		<div class="infoElement green whiteText nameInfoPos" ng-if="nameHoverOn(cIndex)">
-			<span style="font-size: 10px; display: inline-block; vertical-align: top;" ng-style="{width: ($index % 2 == 0 ? '220px' : '300px')}">{{char.desc}}</span>
-			<img ng-src="IMG/portrait.png" ng-if="$index % 2 == 0" style="display: inline-block;" />
+			<span style="font-size: 10px; display: inline-block; vertical-align: top;" ng-style="{width: (char.portrait.length > 0 ? '220px' : '300px')}">{{char.desc}}</span>
+			<img ng-src="{{char.portrait}}" ng-if="char.portrait.length > 0" style="display: inline-block;" />
+			<span style="font-size: 10px; margin-bottom: 5px; display: inline-block;"><span class="boldText">{{char.race}}:</span> My race description!</span>
+			<span style="font-size: 10px; display: inline-block;"><span class="boldText">{{char.class.name}}:</span> {{char.class.desc}}</span>
 		</div>
 		<!--Inventory Desc-->
 		<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, -1) && validWeapon(char.equippedWeapon.name)" style="top: 5px;">
@@ -234,7 +236,7 @@
 		<!--Tags Info-->
 		<div ng-if="tagsHoverOn(cIndex)" class="infoElement green whiteText tagInfoPos">
 			<span class="popOutText popOutHeader">
-				<span ng-repeat="tag in char.tags">{{tag}}<br /></span>
+				<span ng-repeat="tag in char.class.tags">{{tag}}<br /></span>
 			</span>
 		</div>
 		<!--Status Info-->
