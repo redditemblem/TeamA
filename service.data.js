@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 12) + 0.1;
+	const updateVal = (100 / 13) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -9,7 +9,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	var enemies = null;
 	var rows = [];
 	var cols = [];
-	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, racialSkillIndex, coordMapping, terrainIndex, terrainLocs;
+	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, racialIndex, coordMapping, terrainIndex, terrainLocs;
 	
 	this.getCharacters = function(){ return characters; };
 	this.getMap = function(){ return map; };
@@ -17,7 +17,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	this.getColumns = function(){ return cols; };
 	this.getTerrainTypes = function(){ return terrainIndex; };
 	this.getTerrainMappings = function(){ return terrainLocs; };
-	this.getRacialInfo = function(){ return racialSkillIndex; };
+	this.getRacialInfo = function(){ return racialIndex; };
 
 	this.loadMapData = function(){ fetchCharacterData(); };
 	this.calculateRanges = function(){ getMapDimensions(); };
@@ -164,6 +164,41 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 }
 
     	 updateProgressBar();
+    	 fetchRaceIndex();
+      });
+	};
+
+	function fetchRaceIndex() {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "ROWS",
+		range: 'Racial Mechanics!A2:B',
+      }).then(function(response) {
+		 var r = response.result.values;
+		 racialIndex = {};
+		  
+		 for(var i = 0; i < r.length; i++){
+			var race = r[i];
+			
+			var name = race[0];
+			if(name == "Ingwaz / Angel") name = "Angel";
+
+			racialIndex[name] = {
+				'name' : name,
+				'desc' : name != "Beorc" ? race[1] : race[1].substring(0, race[1].indexOf("/")).trim(),
+				'abilities' : {}
+			};
+
+			if(name == "Beorc"){
+				racialIndex["Branded"] = {
+					'name' : "Branded",
+					'desc' : race[1].substring(race[1].indexOf("/") + 1, race[1].length).trim(),
+					'abilities' : {}
+				};
+			}
+		 }
+
+    	 updateProgressBar();
     	 fetchRacialSkillIndex();
       });
 	};
@@ -175,7 +210,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		range: 'Racial Abilities!A:F',
       }).then(function(response) {
 		 var skills = response.result.values;
-		 racialSkillIndex = {};
 		 var skillBlock = "";
 
 		for(var i = 0; i < skills.length; i++){
@@ -184,23 +218,22 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			if(s.length == 0) continue;
 
 			//New header section
-			if(s.length == 1 && !(skillBlock == "Beorc" && Object.keys(racialSkillIndex.Beorc).length == 0)){
+			if(s.length == 1 && !(skillBlock == "Beorc" && Object.keys(racialIndex.Beorc.abilities).length == 0)){
 				skillBlock = s[0];
-				racialSkillIndex[skillBlock] = {};
 				continue;
 			}
 
 			switch(skillBlock){
 				case "Beorc" :
 					if(s[0].length > 0){
-						racialSkillIndex[skillBlock][i] = {
+						racialIndex.Beorc.abilities[i] = {
 							'desc' : s[0]
 						};
 					}
 					break;
 				case "Laguz" :
 					if(s[0].length == 1){
-						racialSkillIndex[skillBlock][s[1]] = {
+						racialIndex.Laguz.abilities[s[1]] = {
 							'rank' : s[0],
 							'name' : s[1],
 							'hpcost' : s[2],
@@ -212,7 +245,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					break;
 				case "Florkana" :
 					if(s[0].length > 0){
-						racialSkillIndex[skillBlock][s[0]] = {
+						racialIndex.Florkana.abilities[s[0]] = {
 							'terrain' : s[0],
 							'effect' : s[1]
 						};
@@ -220,7 +253,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					break;
 				case "Ayzer" :
 					if(s[0].length > 0){
-						racialSkillIndex[skillBlock][s[0]] = {
+						racialIndex.Ayzer.abilities[s[0]] = {
 							'name' : s[0],
 							'waterCost' : s[1],
 							'desc' : s[2]
@@ -229,7 +262,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					break;
 				case "Kano" :
 					if(s[0].length > 0){
-						racialSkillIndex[skillBlock][s[0]] = {
+						racialIndex.Kano.abilities[s[0]] = {
 							'heatUnits' : s[0],
 							'hpPenalty' : s[1],
 							'statGains' : s[2]
@@ -238,7 +271,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					break;
 				case "Jera" :
 					if(s[0].length > 0){
-						racialSkillIndex[skillBlock][s[0]] = {
+						racialIndex.Jera.abilities[s[0]] = {
 							'name' : s[0],
 							'req' : s[2],
 							'desc' : s[4]
@@ -247,7 +280,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					break;
 				case "Angel" :
 					if(s[0].length > 0){
-						racialSkillIndex[skillBlock][s[0]] = {
+						racialIndex.Angel.abilities[s[0]] = {
 							'supportRace' : s[0],
 							'desc' : s[1]
 						};
@@ -369,7 +402,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 							'exp'   : c[63]
 						}
 					},
-					'racialInfo' : {},
+					'racialInfo' : [],
 					'behavior' : c[82] != undefined ? c[82] : "",
 					'desc' : c[83] != undefined ? c[83] : "",
 					'portrait' : c[84] != undefined ? c[84] : ""
@@ -382,7 +415,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						break;
 					case "Jera" :
 						for(var j = 64; j < 69; j++)
-							currObj.racialInfo[j - 63] = getRacialAbility(c[j], currObj.race);
+							if(c[j].length > 0 && c[j] != "Empty")
+								currObj.racialInfo.push(c[j]);
 						break;
 					case "Ayzer":
 						currObj.racialInfo.waterMeter = parseInt(c[64]);
@@ -682,14 +716,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'notes' : "This skill could not be located."
 			}
 		else return skillIndex[name];
-	};
-
-	function getRacialAbility(name, race){
-		if(name == undefined || name.length == 0 || racialSkillIndex[race][name] == undefined)
-			return {
-				'name' : name != undefined ? name : ""
-			}
-		else return racialSkillIndex[race][name];
 	};
 
 	function getClass(name){

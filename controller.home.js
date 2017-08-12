@@ -54,7 +54,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		$scope.columns = DataService.getColumns();
 		$scope.terrainTypes = DataService.getTerrainTypes();
 		$scope.terrainLocs = DataService.getTerrainMappings();
-		$scope.racialSkills = DataService.getRacialInfo();
+		$scope.races = DataService.getRacialInfo();
 	}
     
     //*************************\\
@@ -288,6 +288,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		return returnStr;
 	};
 
+	$scope.getAffinityIcon = function(affinity){
+		if(affinity.length == 0) return "";
+		affinity = affinity.toLowerCase();
+		return "IMG/AFF/" + affinity + ".png";
+	};
+
 	//*************************\\
     //     RACIAL ABILITIES	   \\
     //*************************\\
@@ -385,7 +391,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     $scope.getWeaponClassIcon = function(type, override){
 		if(override.length > 0) return override;
     	type = type.toLowerCase();
-    	return "IMG/type_" + type + ".png";
+    	return "IMG/TYPE/type_" + type + ".png";
     };
     
     //Checks if the passed "type" is listed in the effectiveness column of a character's weapon
@@ -402,7 +408,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //Returns the weapon rank icon relevant to the passed weapon type
     $scope.weaponIcon = function(weaponName){ 	
     	var c = weaponName.toLowerCase();
-    	return "IMG/rank_" + c + ".png";
+    	return "IMG/RANK/rank_" + c + ".png";
     };
     
     //Calculates the percentage of weapon proficicency for a specific weapon,
