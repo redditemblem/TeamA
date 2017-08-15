@@ -338,23 +338,6 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		return parseInt(num);
 	};
 
-	$scope.calculateStat = function(index, stat){
-		var char = $scope.charaData[index];
-		var base = char[stat];
-		var buff = char[stat + "Buff"];
-		var boost = char[stat + "Boost"];
-		
-		if(stat == "Spd") stat = "OSpd";
-		var wpn = char.equippedWeapon[stat];
-
-		base = parseInt(base);
-		buff = (buff.length > 0 ? parseInt(buff) : 0);
-		boost = (boost.length > 0 ? parseInt(boost) : 0);
-		wpn = (wpn != undefined ? parseInt(wpn) : 0);
-
-		return base + buff + boost + wpn;
-	};
-
 	$scope.getStatColor = function(index, stat){
 		var char = $scope.charaData[index];
 		var buff = char[stat + "Buff"];
@@ -425,17 +408,6 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		else{ toNextLvl = 1; exp = 1; } //max at S rank
 
 		return (exp/toNextLvl) * 32;
-	};
-	
-	$scope.calcRankLetter = function(exp){
-		exp = parseInt(exp);
-		
-		if(exp < 10) return "E";
-		else if(exp < 30) return "D";
-		else if(exp < 70) return "C";
-		else if(exp < 150) return "B";
-		else if(exp < 300) return "A";
-		else return "S";
 	};
     
     //Checks if there is a value in the index

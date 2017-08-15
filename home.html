@@ -53,7 +53,7 @@
 		<!--Battle stats-->
 		<div ng-repeat="stat in battleStatsList" class="infoElement darkTan tanText battleStatBox" ng-style="{top: stat[1]}">
 			<span class="indentedStatLabel">{{stat[0]}}</span>
-			<span class="indentedStat">3</span>
+			<span class="indentedStat">{{char[stat[0]]}}</span>
 		</div>
 		<!--Experience bar-->
 		<div class="infoElement redText charExpPos">
@@ -68,7 +68,7 @@
 				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
 				<div class="weaponRankBackground"></div>
 				<div class="weaponRankBar" ng-style="{width: calcWeaponExp(w.exp)+'px'}"></div>
-				<div class="weaponRankLtrPos redText" style="font-size: 14px;">{{calcRankLetter(w.exp)}}</div>
+				<div class="weaponRankLtrPos redText" style="font-size: 14px;">{{w.rank}}</div>
 			</span>
 		</div>
 		<!--Stats-->
@@ -79,7 +79,7 @@
 		</div>
 		<div ng-repeat="stat in statsList" ng-mouseenter="statHoverIn(cIndex, $index)" ng-mouseleave="statHoverOut(cIndex, $index)" class="infoElement darkTan hoverTan statBox" ng-style="{top: stat[2]}">
 			<span class="indentedStatLabel tanText">{{stat[0]}}</span>
-			<span class="indentedStat" ng-style="{color: getStatColor(cIndex, stat[0])}">{{calculateStat(cIndex, stat[0])}}</span>
+			<span class="indentedStat" ng-style="{color: getStatColor(cIndex, stat[0])}">{{char['True'+stat[0]]}}</span>
 		</div>
 		<!--Inventory-->
 		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement redText hoverTan itemsPos lightTan" style="top: 5px;">

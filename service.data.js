@@ -9,7 +9,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	var enemies = null;
 	var rows = [];
 	var cols = [];
-	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, racialIndex, coordMapping, terrainIndex, terrainLocs;
+	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, weaponRankBonuses, racialIndex, coordMapping, terrainIndex, terrainLocs;
 	
 	this.getCharacters = function(){ return characters; };
 	this.getMap = function(){ return map; };
@@ -164,6 +164,57 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 }
 
     	 updateProgressBar();
+    	 fetchWeaponRankBonuses();
+      });
+	};
+
+	function fetchWeaponRankBonuses() {
+      gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "ROWS",
+		range: 'Weapon Rank Bonuses!A3:S',
+      }).then(function(response) {
+		 var bonuses = response.result.values;
+		 weaponRankBonuses = {};
+		  
+		 for(var i = 0; i < bonuses.length; i++){
+			var b = bonuses[i];
+			weaponRankBonuses[b[0]] = {
+				'class' : b[0],
+				'E' : {
+					'dmg' : b[1] != "-" ? parseInt(b[1]) : 0,
+					'hit' : b[2] != "-" ? parseInt(b[2]) : 0,
+					'crit' : b[3] != "-" && b[3].indexOf("crit") != -1 ? parseInt(b[3].match(/^[0-9]+/)) : 0,
+				},
+				'D' : {
+					'dmg' : b[4] != "-" ? parseInt(b[4]) : 0,
+					'hit' : b[5] != "-" ? parseInt(b[5]) : 0,
+					'crit' : b[6] != "-" && b[6].indexOf("crit") != -1? parseInt(b[6].match(/^[0-9]+/)) : 0,
+				},
+				'C' : {
+					'dmg' : b[7] != "-" ? parseInt(b[7]) : 0,
+					'hit' : b[8] != "-" ? parseInt(b[8]) : 0,
+					'crit' : b[9] != "-" && b[9].indexOf("crit") != -1 ? parseInt(b[9].match(/^[0-9]+/)) : 0,
+				},
+				'B' : {
+					'dmg' : b[10] != "-" ? parseInt(b[10]) : 0,
+					'hit' : b[11] != "-" ? parseInt(b[11]) : 0,
+					'crit' : b[12] != "-" && b[12].indexOf("crit") != -1 ? parseInt(b[12].match(/^[0-9]+/)) : 0,
+				},
+				'A' : {
+					'dmg' : b[13] != "-" ? parseInt(b[13]) : 0,
+					'hit' : b[14] != "-" ? parseInt(b[14]) : 0,
+					'crit' : b[15] != "-" && b[15].indexOf("crit") != -1 ? parseInt(b[15].match(/^[0-9]+/)) : 0,
+				},
+				'S' : {
+					'dmg' : b[16] != "-" ? parseInt(b[16]) : 0,
+					'hit' : b[17] != "-" ? parseInt(b[17]) : 0,
+					'crit' : b[18] != "-" && b[18].indexOf("crit") != -1 ? parseInt(b[18].match(/^[0-9]+/)) : 0,
+				}
+			};
+		 }
+
+    	 updateProgressBar();
     	 fetchRaceIndex();
       });
 	};
@@ -199,7 +250,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 }
 
     	 updateProgressBar();
-    	 fetchRacialSkillIndex();
+		 //fetchRacialSkillIndex();
+		 fetchTerrainIndex();
       });
 	};
 
@@ -387,19 +439,23 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'weaponRanks' : {
 						'w1' : {
 							'class' : c[56],
-							'exp'   : c[57]
+							'exp'   : c[57],
+							'rank' : calcRankLetter(c[57])
 						},
 						'w2' : {
 							'class' : c[58],
-							'exp'   : c[59]
+							'exp'   : c[59],
+							'rank' : calcRankLetter(c[59])
 						},
 						'w3' : {
 							'class' : c[60],
-							'exp'   : c[61]
+							'exp'   : c[61],
+							'rank' : calcRankLetter(c[61])
 						},
 						'w4' : {
 							'class' : c[62],
-							'exp'   : c[63]
+							'exp'   : c[63],
+							'rank' : calcRankLetter(c[63])
 						}
 					},
 					'racialInfo' : [],
@@ -457,6 +513,23 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 				//Status
 				currObj.statusEffect = getStatusEffect(c[37]);
+
+				//True stats
+				currObj.TrueStr = calcTrueStat(currObj, "Str");
+				currObj.TrueMag = calcTrueStat(currObj, "Mag");
+				currObj.TrueSkl = calcTrueStat(currObj, "Skl");
+				currObj.TrueSpd = calcTrueStat(currObj, "Spd");
+				currObj.TrueLck = calcTrueStat(currObj, "Lck");
+				currObj.TrueDef = calcTrueStat(currObj, "Def");
+				currObj.TrueRes = calcTrueStat(currObj, "Res");
+				currObj.TrueMov = calcTrueStat(currObj, "Mov");
+
+				//Battle stats
+				currObj.Atk = calcAttack(currObj);
+				currObj.Hit = calcHit(currObj);
+				currObj.Crit = calcCrit(currObj);
+				currObj.Avo = calcAvo(currObj);
+				currObj.Eva = calcEva(currObj);
 
 				characters["char_" + i] = currObj;
 			}
@@ -736,5 +809,78 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'effect' : "This unit's feeling pretty normal."
 			}
 		else return statusIndex[name];
+	};
+
+	//-------------------\\
+	// STAT CALCULATIONS \\
+	//-------------------\\
+
+	function calcRankLetter(exp){
+		exp = parseInt(exp);
+		
+		if(exp < 10) return "E";
+		else if(exp < 30) return "D";
+		else if(exp < 70) return "C";
+		else if(exp < 150) return "B";
+		else if(exp < 300) return "A";
+		else return "S";
+	};
+
+	function getEquippedWeaponRank(char){
+		var eqWpnCls = char.equippedWeapon.class;
+
+		var wpnRank = "";
+		if(eqWpnCls == "Laguz"){
+			eqWpnCls = char.equippedWeapon.name.substring(0, char.equippedWeapon.name.indexOf("-")).trim();
+			wpnRank = char.equippedWeapon.name.substring(char.equippedWeapon.name.indexOf("-")+1).trim();
+		}else{
+			if(eqWpnCls == char.weaponRanks.w1.class) wpnRank = char.weaponRanks.w1.rank;
+			else if(eqWpnCls == char.weaponRanks.w2.class) wpnRank = char.weaponRanks.w2.rank;
+			else if(eqWpnCls == char.weaponRanks.w3.class) wpnRank = char.weaponRanks.w3.rank;
+			else if(eqWpnCls == char.weaponRanks.w4.class) wpnRank = char.weaponRanks.w4.rank;
+		}
+
+		if(wpnRank.length > 0) return weaponRankBonuses[eqWpnCls][wpnRank];
+		else return {'dmg' : 0, 'hit' : 0, 'crit' : 0 };
+	};
+
+	function calcAttack(char){
+		var dmgBonus = getEquippedWeaponRank(char).dmg;
+		return dmgBonus;
+	};
+
+	function calcHit(char){
+		var hitBonus = getEquippedWeaponRank(char).hit;
+
+		return Math.floor((char.TrueSkl * 2.5) + (char.TrueLck * 1.5) + hitBonus);
+	};
+
+	function calcAvo(char){
+		return Math.floor((char.TrueSpd * 2.5) + (char.TrueLck * 1.5));
+	};
+
+	function calcCrit(char){
+		var critBonus = getEquippedWeaponRank(char).crit;
+		return Math.floor((char.TrueSkl * 2.5) + critBonus);
+	};
+
+	function calcEva(char){
+		return Math.floor(char.TrueLck * 2.5);
+	};
+
+	function calcTrueStat(char, stat){
+		var base = char[stat];
+		var buff = char[stat + "Buff"];
+		var boost = char[stat + "Boost"];
+		
+		if(stat == "Spd") stat = "OSpd";
+		var wpn = char.equippedWeapon[stat];
+
+		base = parseInt(base);
+		buff = (buff.length > 0 ? parseInt(buff) : 0);
+		boost = (boost.length > 0 ? parseInt(boost) : 0);
+		wpn = (wpn != undefined ? parseInt(wpn) : 0);
+
+		return base + buff + boost + wpn;
 	};
 }]);
