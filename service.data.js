@@ -718,7 +718,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		if(range.indexOf("~") != -1 && range.length > 1)
 			range = range.substring(range.indexOf("~")+1, range.length);
 		range = range.trim();
-		return range.match(/^[0-9]+$/) != null ? parseInt(range) : 0;
+		return parseInt(range) || 0;
 	};
 
 	function isAttackingItem(wpnClass){
@@ -845,14 +845,24 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function calcAttack(char){
+		var eqWpn = char.equippedWeapon;
+		
+		var playerMight;
+		if(eqWpn.type == "Physical") playerMight = char.TrueStr;
+		else if(eqWpn.type == "Magical") playerMight = char.TrueMag;
+		else playerMight = 0;
+
+		var wpnMight = parseInt(eqWpn.might) || 0;
 		var dmgBonus = getEquippedWeaponRank(char).dmg;
-		return dmgBonus;
+
+		return Math.floor(playerMight + wpnMight + dmgBonus);
 	};
 
 	function calcHit(char){
+		var wpnHit =  parseInt(char.equippedWeapon.hit) || 0;
 		var hitBonus = getEquippedWeaponRank(char).hit;
 
-		return Math.floor((char.TrueSkl * 2.5) + (char.TrueLck * 1.5) + hitBonus);
+		return Math.floor((char.TrueSkl * 2.5) + (char.TrueLck * 1.5) + wpnHit + hitBonus);
 	};
 
 	function calcAvo(char){
@@ -860,8 +870,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function calcCrit(char){
+		var wpnCrit = parseInt(char.equippedWeapon.crit) || 0;
 		var critBonus = getEquippedWeaponRank(char).crit;
-		return Math.floor((char.TrueSkl * 2.5) + critBonus);
+		return Math.floor((char.TrueSkl * 2.5) + wpnCrit + critBonus);
 	};
 
 	function calcEva(char){
