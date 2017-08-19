@@ -492,10 +492,10 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						currObj.racialInfo = {
 							"Beorc/Branded": c[64],
 							"Laguz" : c[65],
-							"Florkana" : c[67],
-							"Kano" : c[68],
-							"Ayzer" : c[69],
-							"Jera" : c[70]
+							"Florkana" : c[66],
+							"Kano" : c[67],
+							"Ayzer" : c[68],
+							"Jera" : c[69]
 						}
 						break;
 				}
