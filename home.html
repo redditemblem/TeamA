@@ -179,7 +179,7 @@
 				</div>
 			</div>
 			<div ng-if="char.race == 'Laguz'">
-				<div ng-repeat="com in races.Laguz.abilities.Hoof" style="margin-top: 8px;">
+				<div ng-repeat="com in races.Laguz.abilities[char.laguzType]" style="margin-top: 8px;">
 					<span class="boldText" style="font-size: 9px;">{{com.name}} <span ng-if="com.rank != '-'">({{com.rank}} Rank)</span></span>
 					<span style="font-size: 8px;">[HP Cost: {{com.hpcost}}] +{{com.might}} Might, +{{com.hit}} Hit, +{{com.crit}} Crit<br />
 						<span class="italicText">{{com.desc}}</span>
@@ -220,7 +220,7 @@
 			</div>
 			<div ng-if="char.race == 'Angel'">
 				<div ng-repeat="com in races.Angel.abilities" ng-if="com.supportRace != 'Supporting Race'" style="margin-top: 3px;">
-					<span class="boldText" style="font-size: 9px;">{{com.supportRace}}: </span><span class="italicText" style="font-size: 8px;">{{com.desc}}</span>
+					<span class="boldText" style="font-size: 9px;">{{com.supportRace}} ({{char.racialInfo[com.supportRace]}}): </span><span class="italicText" style="font-size: 8px;">{{com.desc}}</span>
 				</div>
 			</div>
 		</div>

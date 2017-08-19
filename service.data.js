@@ -488,6 +488,31 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					case "Ayzer":
 						currObj.racialInfo.waterMeter = parseInt(c[64]);
 						break;
+					case "Angel" :
+						currObj.racialInfo = {
+							"Beorc/Branded": c[64],
+							"Laguz" : c[65],
+							"Florkana" : c[67],
+							"Kano" : c[68],
+							"Ayzer" : c[69],
+							"Jera" : c[70]
+						}
+						break;
+				}
+
+				//Laguz functions
+				if(currObj.race == "Laguz"){
+					switch(currObj.class.name){
+						case "Canine" :
+						case "Chief" : currObj.laguzType = "Fang"; break;
+						case "Small Cat" : 
+						case "Big Cat" : currObj.laguzType = "Claw"; break;
+						case "Equine" : currObj.laguzType = "Hoof"; break;
+						case "Avian" : currObj.laguzType = "Talon"; break;
+						case "Elephant" : currObj.laguzType = "Tusk"; break;
+						case "Dragon" : currObj.laguzType = "Breath"; break;
+						case "Heron" : currObj.laguzType = "Song"; break;
+					}
 				}
 
 				//Skills
