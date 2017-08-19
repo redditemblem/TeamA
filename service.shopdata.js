@@ -8,7 +8,7 @@ app.service('ShopDataService', ['$rootScope', function ($rootScope) {
         gapi.client.sheets.spreadsheets.values.get({
 			spreadsheetId: sheetId,
 			majorDimension: "ROWS",
-			range: 'Shop!B2:P',
+			range: 'Shop!B2:AF',
 	    }).then(function(response) {
 			var items = response.result.values;
 			inventory = [];
@@ -24,15 +24,20 @@ app.service('ShopDataService', ['$rootScope', function ($rootScope) {
 						'type' : c[4],
 						'rank' : c[5],
 						'might' : c[7],
-						'mightVal' : c[7].match(/^[0-9]+$/) != null ? parseInt(c[7].match(/^[0-9]+$/)) : 0,
+						'mightVal' : parseInt(c[7]) | 0,
 						'hit' : c[8],
-						'hitVal' : c[8].match(/^[0-9]+$/) != null ? parseInt(c[8].match(/^[0-9]+$/)) : 0,
+						'hitVal' : parseInt(c[8]) | 0,
 						'crit' : c[9],
-						'critVal' : c[9].match(/^[0-9]+$/) != null ? parseInt(c[9].match(/^[0-9]+$/)) : 0,
-						'range' : c[11],
-						'rangeVal' : c[11].match(/[0-9]+$/) != null ? parseInt(c[11].match(/[0-9]+$/)) : 0,
-						'effect' : c[12],
-						'desc' : c[14] != undefined ? c[14] : ""
+						'critVal' : parseInt(c[9]) | 0,
+						'avo' : c[10],
+						'eva' : c[11],
+						'proc' : c[12],
+						'ospd' : c[13],
+						'dspd' : c[14],
+						'range' : c[16],
+						'rangeVal' : parseInt(c[16].substring(c[16].lastIndexOf("-")).trim()) | 0,
+						'effect' : c[17],
+						'desc' : c[19] != undefined ? c[19] : ""
 					})
 				}
 			}

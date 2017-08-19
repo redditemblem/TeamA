@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 13) + 0.1;
+	const updateVal = (100 / 14) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -74,21 +74,25 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'might' : w[4],
 				'hit' : w[5],
 				'crit' : w[6],
-				'net' : w[7],
-				'range' : w[8],
-				'effect' : w[9],
-				'laguzEff' : w[10],
-				'desc' : w[11],
-				'HP' : w[12] != undefined ? w[12] : "",
-				'Str' : w[13] != undefined ? w[13] : "",
-				'Mag' : w[14] != undefined ? w[14] : "",
-				'Skl' : w[15] != undefined ? w[15] : "",
-				'OSpd' : w[16] != undefined ? w[16] : "",
-				'DSpd' : w[17] != undefined ? w[17] : "",
-				'Lck' : w[18] != undefined ? w[18] : "",
-				'Def' : w[19] != undefined ? w[19] : "",
-				'Res' : w[20] != undefined ? w[20] : "",
-				'icoOverride' : w[26] != undefined ? w[26] : ""
+				'avo' : w[7],
+				'eva' : w[8],
+				'proc' : w[9],
+				'ospd' : w[10],
+				'dspd' : w[11],
+				'range' : w[12],
+				'net' : w[13],
+				'effect' : w[14],
+				'laguzEff' : w[15],
+				'desc' : w[16],
+				'HP' : w[17] != undefined ? w[17] : "",
+				'Str' : w[18] != undefined ? w[18] : "",
+				'Mag' : w[19] != undefined ? w[19] : "",
+				'Skl' : w[20] != undefined ? w[20] : "",
+				'Spd' : w[21] != undefined ? w[21] : "",
+				'Lck' : w[22] != undefined ? w[22] : "",
+				'Def' : w[23] != undefined ? w[23] : "",
+				'Res' : w[24] != undefined ? w[24] : "",
+				'icoOverride' : w[28] != undefined ? w[28] : ""
 			}
 		  }
 
@@ -232,7 +236,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			var race = r[i];
 			
 			var name = race[0];
-			if(name == "Ingwaz / Angel") name = "Angel";
+			if(name == "Ingwaz") name = "Angel";
 
 			racialIndex[name] = {
 				'name' : name,
@@ -250,8 +254,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 }
 
     	 updateProgressBar();
-		 //fetchRacialSkillIndex();
-		 fetchTerrainIndex();
+		 fetchRacialSkillIndex();
       });
 	};
 
@@ -259,10 +262,11 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         majorDimension: "ROWS",
-		range: 'Racial Abilities!A:F',
+		range: 'Racial Abilities!A:G',
       }).then(function(response) {
 		 var skills = response.result.values;
 		 var skillBlock = "";
+		 var laguzBlock = "";
 
 		for(var i = 0; i < skills.length; i++){
 			var s = skills[i];
@@ -270,10 +274,14 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			if(s.length == 0) continue;
 
 			//New header section
-			if(s.length == 1 && !(skillBlock == "Beorc" && Object.keys(racialIndex.Beorc.abilities).length == 0)){
+			if(s.length == 1 
+			   && !(skillBlock == "Beorc" && Object.keys(racialIndex.Beorc.abilities).length < 1)
+			   && !(skillBlock == "Florkana" && Object.keys(racialIndex.Florkana.abilities).length < 2)){
 				skillBlock = s[0];
 				continue;
 			}
+
+			if(skillBlock == "Angel" && Object.keys(racialIndex.Angel.abilities).length == 6){ break; }
 
 			switch(skillBlock){
 				case "Beorc" :
@@ -284,27 +292,28 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					}
 					break;
 				case "Laguz" :
+					if(s[0] == "-"){ laguzBlock = s[1]; racialIndex.Laguz.abilities[laguzBlock] = {}; }
 					if(s[0].length == 1){
-						racialIndex.Laguz.abilities[s[1]] = {
-							'rank' : s[0],
+						racialIndex.Laguz.abilities[laguzBlock][s[1]] = {
+							'rank' : s[0].charAt(s[0].length-1),
 							'name' : s[1],
 							'hpcost' : s[2],
 							'might' : s[3],
 							'hit' : s[4],
-							'desc' : s[5]
+							'crit' : s[5],
+							'desc' : s[6]
 						};
 					}
 					break;
 				case "Florkana" :
 					if(s[0].length > 0){
-						racialIndex.Florkana.abilities[s[0]] = {
-							'terrain' : s[0],
-							'effect' : s[1]
+						racialIndex.Florkana.abilities[i] = {
+							'desc' : s[0]
 						};
 					}
 					break;
 				case "Ayzer" :
-					if(s[0].length > 0){
+					if(s[0].length > 0 && s[0] != "Name"){
 						racialIndex.Ayzer.abilities[s[0]] = {
 							'name' : s[0],
 							'waterCost' : s[1],
@@ -313,16 +322,17 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					}
 					break;
 				case "Kano" :
-					if(s[0].length > 0){
+					if(s[0].length > 0 && s[0] != "Temperature"){
 						racialIndex.Kano.abilities[s[0]] = {
-							'heatUnits' : s[0],
-							'hpPenalty' : s[1],
-							'statGains' : s[2]
+							'temp' : s[0],
+							'statChanges' : s[1],
+							'hpPenalty' : s[3],
+							'decrease' : s[4]
 						};
 					}
 					break;
 				case "Jera" :
-					if(s[0].length > 0){
+					if(s[0].length > 0 && s[0] != "Enhancement Name"){
 						racialIndex.Jera.abilities[s[0]] = {
 							'name' : s[0],
 							'req' : s[2],
@@ -331,10 +341,11 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					}
 					break;
 				case "Angel" :
-					if(s[0].length > 0){
+					if(s[0].length > 0 && s[0] != "Adjacent Race"){
 						racialIndex.Angel.abilities[s[0]] = {
 							'supportRace' : s[0],
-							'desc' : s[1]
+							'desc' : s[1],
+							'thres' : s[5]
 						};
 					}
 					break;
@@ -866,7 +877,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function calcAvo(char){
-		return Math.floor((char.TrueSpd * 2.5) + (char.TrueLck * 1.5));
+		var wpnAvo =  parseInt(char.equippedWeapon.avo) || 0;
+		return Math.floor((char.TrueSpd * 2.5) + (char.TrueLck * 1.5) + wpnAvo);
 	};
 
 	function calcCrit(char){
@@ -876,7 +888,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function calcEva(char){
-		return Math.floor(char.TrueLck * 2.5);
+		var wpnEva =  parseInt(char.equippedWeapon.eva) || 0;
+		return Math.floor((char.TrueLck * 2.5) + wpnEva);
 	};
 
 	function calcTrueStat(char, stat){

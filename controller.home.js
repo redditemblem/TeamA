@@ -314,7 +314,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	};
 
 	$scope.calcHeatUnitTemp = function(units){
-		return (((parseInt(units) / 45) * 100) - 18) + "px";
+		return ((parseInt(units) / 50) * 100) + "px";
 	};
 
 	$scope.checkStatLength = function(stat){

@@ -57,7 +57,7 @@
 
 .heatMeterLine{
 	position: relative;
-	border-right: 2px solid black;
+	border-left: 2px solid black;
 	height: 8px;
 	width: 3px;
 }
@@ -67,7 +67,7 @@
 	color: white;
 	font-size: 10px;
 	top: 12px;
-	left: 10px;
+	left: -7px;
 }
 
 .statBox{

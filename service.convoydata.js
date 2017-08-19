@@ -21,13 +21,21 @@ app.service('ConvoyDataService', ['$rootScope', function ($rootScope) {
 						'owner' : c[1],
 						'type' : c[2],
 						'rank' : c[3],
-						'might' : c[5].match(/^-?[0-9]+$/) != null ? parseInt(c[5]) : 0,
-						'hit' : c[6].match(/^-?[0-9]+$/) != null ? parseInt(c[6]) : 0,
-						'crit' : c[7].match(/^-?[0-9]+$/) != null ? parseInt(c[7]) : 0,
-						'range' : c[9],
-						'effect' : c[10],
-						'desc' : c[12],
-						'value' : c[26] != undefined && c[26].match(/^-?[0-9]+$/) != null ? parseInt(c[26]) : 0,
+						'might' : c[5],
+						'mightVal' : parseInt(c[5]) | 0,
+						'hit' : c[6],
+						'hitVal' : parseInt(c[6]) | 0,
+						'crit' : c[7],
+						'critVal' : parseInt(c[7]) | 0,
+						'avo' : c[8],
+						'eva' : c[9],
+						'proc' : c[10],
+						'ospd' : c[11],
+						'dspd' : c[12],
+						'range' : c[14],
+						'rangeVal' : parseInt(c[14].substring(c[14].lastIndexOf("-")).trim()) | 0,
+						'effect' : c[15],
+						'desc' : c[17] != undefined ? c[17] : ""
 					})
 				}
 			}
