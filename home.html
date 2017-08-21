@@ -51,7 +51,7 @@
 			</span>
 		</div>
 		<!--Battle stats-->
-		<div ng-repeat="stat in battleStatsList" class="infoElement darkTan tanText battleStatBox" ng-style="{top: stat[1]}">
+		<div ng-repeat="stat in battleStatsList" class="infoElement darkTan2 tanText battleStatBox" ng-style="{top: stat[1]}">
 			<span class="indentedStatLabel">{{stat[0]}}</span>
 			<span class="indentedStat">{{char[stat[0]]}}</span>
 		</div>
@@ -72,17 +72,17 @@
 			</span>
 		</div>
 		<!--Stats-->
-		<div class="infoElement darkTan tanText HPText">
+		<div class="infoElement darkTan2 tanText HPText">
 			<span class="HpStatLabel">HP</span>
 			<span class="currHPText">{{char.currHp}} /</span>
 			<span class="maxHPText">{{char.maxHp}}</span>
 		</div>
-		<div ng-repeat="stat in statsList" ng-mouseenter="statHoverIn(cIndex, $index)" ng-mouseleave="statHoverOut(cIndex, $index)" class="infoElement darkTan hoverTan statBox" ng-style="{top: stat[2]}">
+		<div ng-repeat="stat in statsList" ng-mouseenter="statHoverIn(cIndex, $index)" ng-mouseleave="statHoverOut(cIndex, $index)" class="infoElement darkTan hoverTan3 statBox" ng-style="{top: stat[2]}">
 			<span class="indentedStatLabel tanText">{{stat[0]}}</span>
 			<span class="indentedStat" ng-style="{color: getStatColor(cIndex, stat[0])}">{{char['True'+stat[0]]}}</span>
 		</div>
 		<!--Inventory-->
-		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement redText hoverTan itemsPos lightTan" style="top: 5px;">
+		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement redText hoverTan2 itemsPos paleTan" style="top: 5px;">
 			<span class="indentedWeaponIcon" ng-if="validWeapon(char.equippedWeapon.name)"><img ng-src="{{getWeaponClassIcon(char.equippedWeapon.class, char.equippedWeapon.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
 			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)">{{char.equippedWeapon.name}}</span>
 		</div>
@@ -91,29 +91,29 @@
 			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
 		</div>
 		<!--Accessories-->
-		<div ng-repeat="item in char.accessories" ng-mouseenter="accessoryHoverIn(cIndex, $index)" ng-mouseleave="accessoryHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index + 5)}">
+		<div ng-repeat="item in char.accessories" ng-mouseenter="accessoryHoverIn(cIndex, $index)" ng-mouseleave="accessoryHoverOut(cIndex, $index)" class="infoElement redText hoverTan2 itemsPos paleTan" ng-style="{top: fetchWeaponVerticalPos($index + 5)}">
 			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class, item.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
 			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
 		</div>
 		<!--Skills-->
-		<div class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, -1)" ng-mouseleave="skillHoverOut(cIndex, -1)" style="top: 5px;">
+		<div class="infoElement redText hoverTan2 paleTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, -1)" ng-mouseleave="skillHoverOut(cIndex, -1)" style="top: 5px;">
 			<span class="indentedSkillName">Racial Ability Info</span>
 		</div>
 		<div ng-repeat="skill in char.skills" class="infoElement redText hoverTan lightTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
 			<span class="indentedSkillName" ng-if="validSkill(skill.name)">{{skill.name}}</span>
 		</div>
 		<!--Additional Info-->
-		<div class="infoElement darkTan tanText leafsPos">
+		<div class="infoElement paleTan tanText leafsPos">
 			<span class="indentedStatLabel tanText" style="top: 5px !important;">Leafs</span>
 			<span class="indentedStat" style="top: 3px !important;">{{char.gold}}</span>
 		</div>
-		<div class="infoElement darkTan tanText tagsPos hoverTan" ng-mouseover="tagsHoverIn(cIndex)" ng-mouseleave="tagsHoverOut(cIndex)">
+		<div class="infoElement paleTan tanText tagsPos hoverTan2" ng-mouseover="tagsHoverIn(cIndex)" ng-mouseleave="tagsHoverOut(cIndex)">
 			Tags
 		</div>
-		<div class="infoElement darkTan tanText statusPos hoverTan" ng-mouseover="statusHoverIn(cIndex)" ng-mouseleave="statusHoverOut(cIndex)">
+		<div class="infoElement paleTan tanText statusPos hoverTan2" ng-mouseover="statusHoverIn(cIndex)" ng-mouseleave="statusHoverOut(cIndex)">
 			{{char.statusEffect.name}}
 		</div>
-		<div class="infoElement darkTan tanText behaviorPos hoverTan" ng-mouseover="behaviorHoverIn(cIndex)" ng-mouseleave="behaviorHoverOut(cIndex)">
+		<div class="infoElement paleTan tanText behaviorPos hoverTan2" ng-mouseover="behaviorHoverIn(cIndex)" ng-mouseleave="behaviorHoverOut(cIndex)">
 			Behavior
 		</div>
 		<!--Name Desc-->

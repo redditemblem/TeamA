@@ -62,16 +62,6 @@ img{
 	filter: brightness(60%);
 }
 
-.hoverBrown:hover{
-	background-color: #5f605f !important;
-	cursor: pointer !important;
-}
-
-.hoverTan:hover{
-	background-color: #f2e4cc !important;
-	cursor: pointer !important;
-}
-
 .healthBarBack{
 	position: absolute;
 	width: 13px;
@@ -104,7 +94,7 @@ img{
 	height: 5px;
 	left: 2px;
 	top: 17px;
-	background-color: dimgray;
+	background-color: #393939;
 }
 
 .expBarFront{
@@ -112,7 +102,7 @@ img{
 	height: 5px;
 	left: 2px;
 	top: 17px;
-	background-color: red;
+	background-color: #8c8c8c;
 }
 
 .expBarBorder{
@@ -223,11 +213,32 @@ img{
 .italicText{ font-style: italic; }
 
 .navy{ background-color: #727472; }
-.paleTan{ background-color: #cecece; }
-.lightTan{ background-color: #e0e0e0; }
-.yellowTan{ background-color: #c0c0c0 ; }
-.darkTan{ background-color: #727472; }
+.paleTan{ background-color: #78508c  ; }
+.lightTan{ background-color: #966eb4 ; }
+.yellowTan{ background-color: #beaadc ; }
+.darkTan{ background-color: #6e6eb4 ; }
+.darkTan2{ background-color: #645096  ; }
 .olive{ background-color: #212121; }
 .lightGreen{ background-color: #39af2b; }
-.green{ background-color: #5b0808; opacity: 0.95;}
+.green{ background-color: gray; opacity: 0.95;}
 .blackBorder{ border: 1px solid black; }
+
+.hoverBrown:hover{
+	background-color: #5f605f !important;
+	cursor: pointer !important;
+}
+
+.hoverTan:hover{
+	background-color: #b88fe6 !important;
+	cursor: pointer !important;
+}
+
+.hoverTan2:hover{
+	background-color: #ab83bf !important;
+	cursor: pointer !important;
+}
+
+.hoverTan3:hover{
+	background-color: #8f8fd6 !important;
+	cursor: pointer !important;
+}
