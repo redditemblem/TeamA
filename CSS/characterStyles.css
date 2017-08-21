@@ -36,7 +36,16 @@
 	height: 3px;
 	left: 0px;
 	bottom: -3px;
-	background-color: #8c8c8c;
+	background-color: #FFA600;
+}
+
+.weaponRankBorder{
+	position: absolute;
+	width: 29px;
+	height: 2px;
+	left: 0px;
+	bottom: -3px;
+	border: 1px solid black;
 }
 
 .weaponRankBackground{
@@ -45,7 +54,7 @@
 	height: 3px;
 	left: 0px;
 	bottom: -3px;
-	background-color: #393939;
+	background-color: dimgray;
 }
 
 .heatMeter{

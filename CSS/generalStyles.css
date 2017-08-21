@@ -94,7 +94,7 @@ img{
 	height: 5px;
 	left: 2px;
 	top: 17px;
-	background-color: #393939;
+	background-color: dimgray;
 }
 
 .expBarFront{
@@ -102,7 +102,7 @@ img{
 	height: 5px;
 	left: 2px;
 	top: 17px;
-	background-color: #8c8c8c;
+	background-color: #FFA600;
 }
 
 .expBarBorder{
