@@ -1,6 +1,14 @@
 <div class="backgroundBox"></div>
 <div id="dropArea" class="mapBox">
-	<img id="map" class="absolutePos" src="IMG/map.png">
+	<img id="map" src="IMG/map.png" style="display: block;">
+	<img ng-src="IMG/time_out.png" />
+	<button class="buttonGridStyle buttonHover" ng-click="toggleGrid()">
+		Grid Style: 
+		<div ng-if="showGrid==0">None</div>
+		<div ng-if="showGrid==1">Thin</div>
+		<div ng-if="showGrid==2">Medium</div>
+		<div ng-if="showGrid==3">Thick</div>
+	</button>
 
 	<!--Draw tile names-->
 	<div ng-repeat="(yIndex,row) in rows" class="glowBoxIndent absolutePos" ng-style="{top: determineGlowY(yIndex)}">
@@ -8,6 +16,7 @@
 			 ng-repeat="(indexX,column) in columns"
 			 title="({{column}},{{row}}) {{terrainLocs[column+','+row].type}}: {{terrainTypes[terrainLocs[column+','+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+','+row].type].def}}⛨ {{terrainTypes[terrainLocs[column+','+row].type].heal}}♥"
 			 ng-style="{left: determineGlowX(indexX), 'background-color': determineGlowColor(column+','+row)}">
+			 <div class="glowBoxBorderBox" ng-class="{glowBoxBorder3:showGrid==3, glowBoxBorder2:showGrid==2, glowBoxBorder1:showGrid==1}"></div>
 		</div>
 	</div>
 	
@@ -18,7 +27,7 @@
 			 ng-click="displayData(cIndex)"
 			 class="absolutePos charDiv hoverImage"
 			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨ {{terrainTypes[terrainLocs[char.position].type].heal}}♥"
-			 ng-style="{top: determineCharY(char.position), left: determineCharX(char.position)}"
+			 ng-style="{left: determineCharX($index, char.position), top: determineCharY(char.position)}"
 		>
 			<!--Unit sprite-->
 			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" />
@@ -235,7 +244,7 @@
 		</div>
 		<!--Stat info boxes-->
 		<div ng-repeat="stat in statsList">
-			<div ng-if="statHoverOn(cIndex, $index)" class="infoElement green whiteText statInfoPos" ng-style="{top: stat[2]}">
+			<div ng-if="statHoverOn(cIndex, $index)" class="infoElement green whiteText statInfoPos" ng-style="{top: stat[3]}">
 				<span class="popOutText popOutHeader">
 					<span>Base: {{char[stat[0]]}}<br /></span>
 					<span ng-if="checkWpnStatLength(cIndex, stat[0])">{{char.equippedWeapon.name}}: {{getWpnStatValue(cIndex, stat[0])}}<br /></span>

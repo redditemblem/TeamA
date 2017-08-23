@@ -150,6 +150,33 @@ img{
 	display:inline-block;
 }
 
+.glowBoxBorderBox{
+	position:absolute;
+	margin: auto;
+	left:0;
+	right:0;
+	bottom:0;
+	top:0;
+	height:15px;
+	width:15px;
+}
+
+.glowBoxBorder0{
+	border: 0px solid rgba(0, 0, 0, .08);
+}
+
+.glowBoxBorder1{
+	border: 1px solid rgba(0, 0, 0, .08);
+}
+
+.glowBoxBorder2{
+	border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.glowBoxBorder3{
+	border: 1px solid rgba(0, 0, 0, .4);
+}
+
 .glowBox:hover{
 	box-shadow: 0px 0px 10px #00ffff;
 	z-index:1;
@@ -202,6 +229,21 @@ img{
 
 .itemNotesPos{
 	top:95px;
+}
+
+.buttonGridStyle{
+	position: relative;
+	width: 69px; 
+	height: 32px;
+	top: -22px;
+	left: -80px;
+	
+ 	border: 0px;
+ 	box-shadow: none;
+ 	background-color: #fafafa;
+ 	color: #505050;
+ 	font-family: "Verdana";
+	font-size:10px;
 }
 
 .centerText{ text-align: center; }
