@@ -414,7 +414,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'affinity' : c[4],
 					'affiliation' : c[5],
 					'position' : c[6],
-					'rescuing' : c[7],
+					'hasMoved' : c[7],
 					'currHp' : c[8],
 					'maxHp'  : c[9],
 					'Str' : c[10],

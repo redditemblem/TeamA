@@ -264,6 +264,8 @@ img{
 .lightGreen{ background-color: #39af2b; }
 .green{ background-color: gray; opacity: 0.95;}
 .blackBorder{ border: 1px solid black; }
+.grayscale{ filter: grayscale(100%); }
+
 
 .hoverBrown:hover{
 	background-color: #5f605f !important;

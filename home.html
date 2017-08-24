@@ -30,7 +30,7 @@
 			 ng-style="{left: determineCharX($index, char.position), top: determineCharY(char.position)}"
 		>
 			<!--Unit sprite-->
-			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" />
+			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{grayscale: char.hasMoved == 'Yes'}" />
 			<img ng-src="{{getEnemyNum(char.name)}}" class="enemyNum" />
 			<div class="healthBarBack"></div>
 			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*13)+'px'}"></div>
