@@ -445,10 +445,8 @@
 
 .pairUpIcon{
 	position: absolute;
-	width: 10px;
-	height: 11px;
-	left: 1px;
-	bottom: 8px;
+	left: 2px;
+	bottom: 0px;
 }
 
 .statusBox{

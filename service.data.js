@@ -137,11 +137,13 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		  
 		 for(var i = 0; i < c.length; i++){
 			var s = c[i];
-			classIndex[s[0]] = {
-				'name' : s[0],
-				'tags' : s[3] != undefined ? s[3].split(",") : [],
-				'desc' : s[42] != undefined ? s[42] : ""
-			};
+			if(s.length >= 39){
+				classIndex[s[0]] = {
+					'name' : s[0],
+					'tags' : s[2].length > 0 ? s[2].split(",") : [],
+					'desc' : s[42] != undefined ? s[42] : ""
+				};
+			}
 		 }
 
     	 updateProgressBar();
@@ -540,11 +542,10 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				currObj.class.tags.push(currObj.race);
 				if(currObj.race == "Angel") currObj.class.tags.push("Flying");
 
-				currObj.class.tags = currObj.class.tags.concat(currObj.class.tags, c[20].split(","));
-				currObj.class.tags.forEach(function(element, index){ 
-					currObj.class.tags[index] = element.trim(); 
-				});
+				if(c[20].length > 0)
+					currObj.class.tags = currObj.class.tags.concat(currObj.class.tags, c[20].split(","));
 
+				currObj.class.tags.forEach(function(element, index){ currObj.class.tags[index] = element.trim(); });
 				currObj.class.tags = Array.from(new Set(currObj.class.tags))
 
 				//Status
@@ -834,7 +835,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'tags' : [],
 				'desc' : ""
 			}
-		else return classIndex[name];
+		else return JSON.parse(JSON.stringify(classIndex[name]));
 	};
 
 	function getStatusEffect(name){

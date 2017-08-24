@@ -35,7 +35,8 @@
 			<div class="healthBarBack"></div>
 			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*13)+'px'}"></div>
 			<div class="healthBarBorder"></div>
-			<div ng-if="isPaired(char.position)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
+			<img ng-if="char.class.tags.indexOf('Boss') != -1" class="pairUpIcon" src="IMG/shield_boss.png" />
+			<img ng-if="isPaired(cIndex)" class="pairUpIcon" src="IMG/shield_pairup.png" />
 		</div>
 	</div>
 
@@ -48,7 +49,7 @@
 			<img src="IMG/close.png">
 		</div>
 		<!--Pair-Up button-->
-		<div class="infoElement dragBarButton hoverImage" title="Switch to Paired Unit" style="left:calc(100% - 38px)" ng-if="isPaired(char.position)" ng-click="findPairUpChar(cIndex)">
+		<div ng-if="isPaired(cIndex)" class="infoElement dragBarButton hoverImage" title="Switch to Paired Unit" style="left:calc(100% - 38px)" ng-click="findPairUpChar(cIndex)">
 			<img src="IMG/switchpairup.png">
 		</div>
 		<!--Name, Class, Lvl-->
