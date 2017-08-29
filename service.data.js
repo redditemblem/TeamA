@@ -586,7 +586,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 map = response.result.values[0][0];
 		 
 		 updateProgressBar();
-		 getMapDimensions();
       });
 	};
 	
