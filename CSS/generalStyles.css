@@ -246,6 +246,10 @@ img{
 	font-size:10px;
 }
 
+.buttonGridStyle:hover{
+	cursor: pointer;
+}
+
 .centerText{ text-align: center; }
 .rightText{ text-align: right; }
 .whiteText{ color: white; }

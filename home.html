@@ -1,14 +1,35 @@
 <div class="backgroundBox"></div>
 <div id="dropArea" class="mapBox">
-	<img id="map" src="IMG/map.png" style="display: block;">
-	<img ng-src="IMG/time_out.png" />
-	<button class="buttonGridStyle buttonHover" ng-click="toggleGrid()">
-		Grid Style: 
-		<div ng-if="showGrid==0">None</div>
-		<div ng-if="showGrid==1">Thin</div>
-		<div ng-if="showGrid==2">Medium</div>
-		<div ng-if="showGrid==3">Thick</div>
-	</button>
+	<img id="map" src="{{mapUrl}}" style="display: block;" />
+	<div style="display: block; height: 118px;">
+		<img ng-src="IMG/time_out.png" />
+		<button class="buttonGridStyle" ng-click="toggleGrid()">
+			Grid Style: 
+			<div ng-if="showGrid==0">None</div>
+			<div ng-if="showGrid==1">Thin</div>
+			<div ng-if="showGrid==2">Medium</div>
+			<div ng-if="showGrid==3">Thick</div>
+		</button>
+	</div>
+	<div style="display: block; height: 25px;">
+		<!--<div class="convoyButton" ng-click="redirectToHomePage()">
+			<img src="IMG/convoy_button.png" style="position: relative;"/>
+			<span class="convoyButtonText" style="left: 13px;">&#11013; Menu</span>
+		</div>
+		<div class="convoyButton" ng-click="refreshData()">
+			<img src="IMG/convoy_button.png" />
+			<span ng-if="!refreshing" class="convoyButtonText" style="left: 9px;">&#10226; Refresh</span>
+			<img src="IMG/loading.gif" class="convoyLoadingButton" ng-if="refreshing" />
+		</div>
+		<div class="convoyButton" ng-click="launchConvoyDialog()">
+			<img src="IMG/convoy_button.png" />
+			<span class="convoyButtonText" style="left: 18px;">Convoy</span>
+		</div>-->
+		<div class="convoyButton" ng-click="launchShopDialog()">
+			<img src="IMG/convoy_button.png" />
+			<span class="convoyButtonText" style="left: 24px;">Shop</span>
+		</div>
+	</div>
 
 	<!--Draw tile names-->
 	<div ng-repeat="(yIndex,row) in rows" class="glowBoxIndent absolutePos" ng-style="{top: determineGlowY(yIndex)}">
@@ -274,4 +295,7 @@
 			<span class="popOutText popOutHeader">{{char.behavior}}</span>
 		</div>
 	</div>
+
+	<convoy ng-if="showConvoy"></convoy>
+	<shop ng-if="showShop"></shop>
 </div>

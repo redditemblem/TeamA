@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 14) + 0.1;
+	const updateVal = (100 / 15) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -572,9 +572,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			}
 		}
 		
-		map = "IMG/map.png";
 		updateProgressBar();
-		//fetchMapUrl();
+		fetchMapUrl();
 	};
 	
 	function fetchMapUrl() {
@@ -582,10 +581,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
         spreadsheetId: sheetId,
         majorDimension: "COLUMNS",
 		valueRenderOption: "FORMULA",
-        range: 'Management!A2:A2',
+        range: 'Map Management!A2:A2',
       }).then(function(response) {
 		 map = response.result.values[0][0];
-		 if(map != "") map = map.substring(8, map.length-2);
 		 
 		 updateProgressBar();
 		 getMapDimensions();

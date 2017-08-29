@@ -57,12 +57,12 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
 
 	function testWebAppAvailability(){
-	  //gapi.client.sheets.spreadsheets.values.get({
-        //spreadsheetId: sheetId,
-        //majorDimension: "COLUMNS",
-        //range: 'Management!A1:A1',
-      //}).then(function(response) {
-		 var toggle = "On"; //response.result.values[0][0];
+	  gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: sheetId,
+        majorDimension: "COLUMNS",
+        range: 'Map Management!A1:A1',
+      }).then(function(response) {
+		 var toggle = response.result.values[0][0];
 		 if(toggle == "Off"){
 			authorizeDiv.style.display = 'none';
 			unavailableDiv.style.display = 'inline';
@@ -71,7 +71,7 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
     		loadingDiv.style.display = 'inline';
     		DataService.loadMapData();
 		 }
-      //});
+    	});
 	};
     
     function pickLoadingIcon(){

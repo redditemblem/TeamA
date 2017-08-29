@@ -5,6 +5,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	const gridWidth = 1;
 	var numDefeat = 0;
 	$scope.showGrid = 2;
+	var refreshListener;
 
 	$scope.battleStatsList = [
 	                ["Atk", "60px"],
@@ -58,6 +59,35 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		$scope.terrainLocs = DataService.getTerrainMappings();
 		$scope.races = DataService.getRacialInfo();
 	}
+
+	$scope.redirectToHomePage = function() {
+		$location.path('/');
+  	};
+
+	$scope.refreshData = function(){
+		if($scope.refreshing == true) return; //If already refreshing, don't make a second call
+		$scope.refreshing = true;
+		
+		refreshListener = $scope.$on('loading-bar-updated', function(event, data) {
+			if(data >= 100){
+				refreshListener(); //cancel listener
+				$scope.refreshing = false;
+				$scope.charaData = DataService.getCharacters();
+				$scope.mapUrl = DataService.getMap();
+				$scope.rows = DataService.getRows();
+				$scope.columns = DataService.getColumns();
+				$scope.terrainTypes = DataService.getTerrainTypes();
+				$scope.terrainLocs = DataService.getTerrainMappings();
+				$scope.races = DataService.getRacialInfo();
+				$scope.$apply();
+			}
+		});
+
+		MapDataService.loadMapData(mapType);
+	};
+
+	$scope.launchConvoyDialog = function() { $scope.showConvoy = true; };
+	$scope.launchShopDialog = function(){ $scope.showShop = true; };
     
     //*************************\\
     // FUNCTIONS FOR MAP TILE  \\
