@@ -36,4 +36,9 @@
 
 	<convoy ng-if="showConvoy"></convoy>
 	<shop ng-if="showShop"></shop>
+
+	<button class="audioButton" ng-click="toggleMusic()">
+		<span ng-if="!playMusic" style="font-size: 14px;">&#9654;</span>
+		<span ng-if="playMusic" style="font-size: 18px;">&#9208;</span>
+	</button>
 </div>

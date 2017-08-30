@@ -20,15 +20,15 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	bar.style.value = '0px';
 
 	//Global music variables
-	$scope.$root.playMusic = true;
+	$scope.playMusic = false;
 	$scope.$root.toggleMusic = function(){ 
 		var audio = document.getElementById("audioPlayer");
-		if($scope.$root.playMusic){
-			$scope.$root.playMusic = false;
+		if($scope.playMusic){
+			$scope.playMusic = false;
 			audio.pause();
 		}
 		else{
-			$scope.$root.playMusic = true;
+			$scope.playMusic = true;
 			audio.play();
 		}
 	};

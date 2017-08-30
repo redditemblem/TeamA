@@ -3,6 +3,12 @@
 	<img id="map" src="{{mapUrl}}" style="display: block;" />
 	<div style="display: block; height: 118px;">
 		<img ng-src="IMG/time_out.png" />
+		<button class="buttonPlayStyle" ng-click="toggleMusic()">
+			<span ng-if="!playMusic" style="font-size: 14px;">&#9654;</span>
+			<span ng-if="playMusic" style="font-size: 18px;">&#9208;</span>
+		</button>
+		<span class="speakerIcon">&#128266;</span>
+		<input id="musicVolumeSlider" type="range" class="rangeStyle" min="0" max="100" defaultValue="100" oninput="adjustMusicVolume()"/>
 		<button class="buttonGridStyle" ng-click="toggleGrid()">
 			Grid Style: 
 			<div ng-if="showGrid==0">None</div>

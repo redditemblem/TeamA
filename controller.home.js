@@ -592,3 +592,9 @@ app.filter('waterCostSort', function () {
     return array;
   };
 });
+
+function adjustMusicVolume(){
+	var player = document.getElementById("audioPlayer");
+	var slider = document.getElementById("musicVolumeSlider");
+	player.volume = parseInt(slider.value) / 100;
+};
