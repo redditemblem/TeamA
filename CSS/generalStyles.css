@@ -233,10 +233,10 @@ img{
 
 .buttonGridStyle{
 	position: relative;
-	width: 69px; 
-	height: 32px;
-	bottom: 22px;
-	right: 320px;
+	width: 150px; 
+	height: 20px;
+	bottom: 15px;
+	right: 215px;
 	
  	border: 0px;
  	box-shadow: none;
@@ -268,14 +268,15 @@ img{
 	font-family: "Verdana";
 	font-size: 16px;
 	bottom: 13px;
-	right: 510px;
+	right: 650px;
 }
 
 .rangeStyle{
 	position: relative;
 	width: 150px; 
-	bottom: 8px;
-	right: 510px;
+	height: 30px;
+	bottom: 3px;
+	right: 650px;
 }
 
 .centerText{ text-align: center; }

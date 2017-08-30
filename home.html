@@ -7,15 +7,15 @@
 			<span ng-if="!playMusic" style="font-size: 14px;">&#9654;</span>
 			<span ng-if="playMusic" style="font-size: 18px;">&#9208;</span>
 		</button>
+		<button class="buttonGridStyle" ng-click="toggleGrid()">
+				Grid Style: 
+				<span ng-if="showGrid==0"> None</span>
+				<span ng-if="showGrid==1"> Thin</span>
+				<span ng-if="showGrid==2"> Medium</span>
+				<span ng-if="showGrid==3"> Thick</span>
+		</button>
 		<span class="speakerIcon">&#128266;</span>
 		<input id="musicVolumeSlider" type="range" class="rangeStyle" min="0" max="100" defaultValue="100" oninput="adjustMusicVolume()"/>
-		<button class="buttonGridStyle" ng-click="toggleGrid()">
-			Grid Style: 
-			<div ng-if="showGrid==0">None</div>
-			<div ng-if="showGrid==1">Thin</div>
-			<div ng-if="showGrid==2">Medium</div>
-			<div ng-if="showGrid==3">Thick</div>
-		</button>
 	</div>
 	<div style="display: block; height: 25px;">
 		<!--<div class="convoyButton" ng-click="redirectToHomePage()">
