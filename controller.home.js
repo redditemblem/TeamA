@@ -224,7 +224,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
     	pos = pos.substring(0,pos.indexOf(",")); //grab first number
     	pos = parseInt(pos);
-    	return ((pos - 1) * (boxWidth + (gridWidth * 2)) + 1) + "px";
+    	return ((pos-1) * (boxWidth + gridWidth)) + "px";
     };
     
 	//Using a character's coordinates, calculates their vertical
@@ -238,7 +238,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		pos = pos.substring(pos.indexOf(",")+1, pos.indexOf("(") != -1 ? pos.indexOf("(") : pos.length); //grab first char
 		pos = pos.trim();
     	pos = parseInt(pos);
-    	return ((pos - 1) * (boxWidth + (gridWidth * 2)) + 1) + "px";
+    	return ((pos-1) * (boxWidth + gridWidth)) + "px";
     };
 
     //***********************\\
