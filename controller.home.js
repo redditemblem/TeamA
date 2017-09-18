@@ -128,16 +128,16 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     	var bool = $scope[char + "_displayBox"];
     	if(bool == undefined || bool == false){
     		positionCharBox(char);
-			//toggleCharRange(char, 1);
+			toggleCharRange(char, 1);
     		$scope[char + "_displayBox"] = true;
     	}else{
-			//toggleCharRange(char, -1);
+			toggleCharRange(char, -1);
     		$scope[char + "_displayBox"] = false;
     	}
     };
 
     $scope.removeData = function(char){
-		//toggleCharRange(char, -1);
+		toggleCharRange(char, -1);
     	$scope[char + "_displayBox"] = false;
     };
     
@@ -179,8 +179,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		pairBox.style.top = currBox.offsetTop + 'px';
 		pairBox.style.left = currBox.offsetLeft + 'px';
 		
-		//toggleCharRange(char, -1); //remove original char's data
-		//toggleCharRange(pairedUnit, 1); //display new char's data
+		toggleCharRange(char, -1); //remove original char's data
+		toggleCharRange(pairedUnit, 1); //display new char's data
     };
     
     function locatePairedUnit(char){

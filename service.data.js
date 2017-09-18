@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 15) + 0.1;
+	const updateVal = (100 / 16) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -130,7 +130,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         majorDimension: "ROWS",
-		range: 'Class Data!B2:AR',
+		range: 'Class Data!B2:AW',
       }).then(function(response) {
 		 var c = response.result.values;
 		 classIndex = {};
@@ -141,7 +141,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				classIndex[s[0]] = {
 					'name' : s[0],
 					'tags' : s[2].length > 0 ? s[2].split(",") : [],
-					'desc' : s[42] != undefined ? s[42] : ""
+					'desc' : s[42] != undefined ? s[42] : "",
+					'terrainType' : s[47] != undefined ? s[47] : ""
 				};
 			}
 		 }
@@ -374,12 +375,14 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'avo' : r[1] != "-" ? parseInt(r[1]) : 0,
 					'def' : r[2] != "-" ? parseInt(r[2]) : 0,
 					'heal' : r[3] != "-" ? parseInt(r[3].match(/^[0-9]+/)) : 0,
-					'Foot' :  r[4],
+					'Infantry' :  r[4],
 					'Armor' : r[5],
 					'Mage' : r[6],
-					'Mounted' : r[7],
-					'Flier' : r[8],
-					'effect' : r[9]
+					'Thief' : r[7],
+					'Pirate' : r[8],
+					'Mounted' : r[9],
+					'Flier' : r[10],
+					'effect' : r[11]
 				}
 			}
 
@@ -599,13 +602,13 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
         	
 		height = height / (boxWidth + gridWidth);
 		for(var i = 0; i < height; i++)
-			rows.push(i+1);
+			rows.push((i+1)+"");
 			
 		var width = map.naturalWidth; //calculate the width of the map
 		width = width / (boxWidth + gridWidth);
 		
 		for(var i = 0; i < width; i++)
-			cols.push(i+1);
+			cols.push((i+1)+"");
 
 		updateProgressBar();
 		initializeTerrain();
@@ -631,7 +634,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				terrainLocs[characters[c].position].occupiedAffiliation = c.indexOf("char_") > -1 ? "char" : characters[c].affiliation;
 
 		updateProgressBar();
-		//calculateCharacterRanges();
+		calculateCharacterRanges();
 	};
 
 	function getDefaultTerrainObj(){
@@ -644,120 +647,149 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		}
 	};
 
-	function calculateCharacterRanges(){
+    function calculateCharacterRanges() {
 		for(var c in characters){
 			var char = characters[c];
 			var list = [];
 			var atkList = [];
 			var healList = [];
-			
-			if(char.position.length > 0){
-				var horz = parseInt(char.position.substring(0, char.position.indexOf(",")));
-				var vert = parseInt(char.position.substring(char.position.indexOf(",")+1, char.position.length));
-				var range = parseInt(char.mov);
+		
+			if (char.position.length > 0) {
+				var horz = cols.indexOf(char.position.substring(0,char.position.indexOf(",")));
+				var vert = rows.indexOf(char.position.substring(char.position.indexOf(",")+1));
+				var range = parseInt(char.Mov);
 
 				var maxAtkRange = 0;
 				var maxHealRange = 0;
-
-				for(var i in char.inventory){
+				for (var i in char.inventory) {
 					var item = char.inventory[i];
 					var r = formatItemRange(item.range);
-					if(isAttackingItem(item.class) && r > maxAtkRange && r <= 5) maxAtkRange = r;
-					else if(!isAttackingItem(item.class) && r > maxHealRange && r <= 5) maxHealRange = r;
+					if (isAttackingItem(item.class) && r > maxAtkRange && r <= 10) maxAtkRange = r;
+					else if (!isAttackingItem(item.class) && r > maxHealRange && r <= 10) maxHealRange = r;
 				}
-				if(maxAtkRange > maxHealRange) maxHealRange = 0;
 
-				var affliliation = c.indexOf("char_") > -1 ? "char" : "enemy";
+				var eR = formatItemRange(char.equippedWeapon.range);
+				if (isAttackingItem(char.equippedWeapon.class) && eR > maxAtkRange && r <= 10) maxAtkRange = eR;
+				else if (!isAttackingItem(char.equippedWeapon.class) && eR > maxHealRange && r <= 10) maxHealRange = eR;
 
-				recurseRange(0, horz, vert, range, maxAtkRange, maxHealRange, char.class.movType, affliliation, list, atkList, healList, "_");
+				/*for(var s in char.skills){
+					var skl = char.skills[s];
+					switch(skl.name){
+						case "Pass" : hasPass = true; break;
+						case "Sea Legs" : hasSeaLegs = true; break;
+					}
+				}*/
+
+				var params = {
+					'atkRange' : maxAtkRange,
+					'healRange' : maxHealRange,
+					'terrainClass' : char.class.terrainType,
+					'affiliation' : c.indexOf("char_") > -1 ? "char" : char.affiliation
+				};
+
+				recurseRange(horz, vert, range, params, list, "_");
+				
+				list.forEach(function(e){
+					horz = cols.indexOf(e.substring(0,e.indexOf(",")));
+					vert = rows.indexOf(e.substring(e.indexOf(",")+1));
+
+					recurseItemRange(horz, vert, params.atkRange, list, atkList, "_");
+					recurseItemRange(horz, vert, params.healRange, list, healList, "_");
+				});
+
 				char.range = list;
 				char.atkRange = atkList;
 				char.healRange = healList;
-			}else{			
+			} else {
 				char.range = [];
 				char.atkRange = [];
 				char.healRange = [];
 			}
 		}
 
-		//Finish load
+		//Final progress update
 		updateProgressBar();
-	};
+    };
 
-	function recurseRange(mode, horzPos, vertPos, range, atkRange, healRange, terrainType, affiliation, list, atkList, healList, trace){
-		var coord = rows[horzPos] + cols[vertPos];
+    function recurseRange(horzPos, vertPos, range, params, list, trace){
+		//Don't calculate cost for starting tile
+		var coord = cols[horzPos]+","+rows[vertPos];
 		var tile = terrainLocs[coord];
 
 		//Mov mode calcs
-		if(trace.length > 1 && mode == 0){
-			var classCost = terrainIndex[tile.type][terrainType];
+		if(trace.length > 1){
+			var classCost = terrainIndex[tile.type][params.terrainClass];
 
-			//Unit cannot traverse tile if it has no cost or it is occupied by an enemy unit
-            if(   classCost == undefined
-               || classCost == "-"
-               || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != affiliation)
+            //Determine traversal cost
+			  if( classCost == undefined
+			   || classCost == "-"
+			   || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation)
+			   || (parseFloat(classCost) > range)
 			){
-				if(atkRange > 0){ range = atkRange; mode = 1; }
-				else if(healRange > 0){ range = healRange; mode = 2; }
-				else return;
-			}
+				return;
+            }
 			else range -= parseFloat(classCost);
 		}
 
-		//Attack/heal mode calcs
-		if(mode > 0){
-			var classCost = terrainIndex[terrainLocs[coord].type].Fliers;
-			if(classCost == undefined || classCost == "-") return;
-			range -= parseFloat(classCost);
-		}
-
-		if(mode == 0 && list.indexOf(coord) == -1) list.push(coord);
-		else if(mode == 1 && atkList.indexOf(coord) == -1) atkList.push(coord);
-		else if(healList.indexOf(coord) == -1) healList.push(coord);
-		
+		if(list.indexOf(coord) == -1) list.push(coord);
 		trace += coord + "_";
 
-		if(range <= 0){ //base case
-			if(mode == 0 && atkRange > 0){ range = atkRange; mode = 1; }
-			else if(mode != 2 && healRange > 0){ 
-				if(mode == 0) range = healRange;
-				else range = healRange - atkRange;
-				mode = 2; 
-			}
-			else return;
-		} 
+		if(range <= 0) //base case
+			return;
 
-		if(horzPos > 0 && trace.indexOf("_"+rows[horzPos-1]+cols[vertPos]+"_") == -1 &&
-			(mode == 0 || (list.indexOf("_"+rows[horzPos-1] + cols[vertPos]+"_") == -1 && 
-				(mode == 1 || atkList.indexOf("_"+rows[horzPos-1] + cols[vertPos]+"_") == -1))))
-			recurseRange(mode, horzPos-1, vertPos, range, atkRange, healRange, terrainType, affiliation, list, atkList, healList, trace);
+		if(horzPos > 0 && trace.indexOf("_"+cols[horzPos-1]+","+rows[vertPos]+"_") == -1)
+			recurseRange(horzPos-1, vertPos, range, params, list, trace);
 
-		if(horzPos < rows.length - 1 && trace.indexOf("_"+rows[horzPos+1] + cols[vertPos]+"_") == -1 &&
-			(mode == 0 || (list.indexOf("_"+rows[horzPos+1] + cols[vertPos]+"_") == -1 && 
-				(mode == 1 || atkList.indexOf("_"+rows[horzPos+1] + cols[vertPos]+"_") == -1))))
-			recurseRange(mode, horzPos+1, vertPos, range, atkRange, healRange, terrainType, affiliation, list, atkList, healList, trace);
+		if(horzPos < cols.length-1 && trace.indexOf("_"+cols[horzPos+1]+","+rows[vertPos]+"_") == -1)
+			recurseRange(horzPos+1, vertPos, range, params, list, trace);
 
-		if(vertPos > 0 && trace.indexOf("_"+rows[horzPos] + cols[vertPos-1]+"_") == -1 &&
-			(mode == 0 || (list.indexOf("_"+rows[horzPos] + cols[vertPos-1]+"_") == -1 && 
-				(mode == 1 || atkList.indexOf("_"+rows[horzPos] + cols[vertPos-1]+"_") == -1))))
-			recurseRange(mode, horzPos, vertPos-1, range, atkRange, healRange, terrainType, affiliation, list, atkList, healList, trace);
+		if(vertPos > 0 && trace.indexOf("_"+cols[horzPos]+","+rows[vertPos-1]+"_") == -1)
+			recurseRange(horzPos, vertPos-1, range, params, list, trace);
 
-		if(vertPos < cols.length - 1 && trace.indexOf("_"+rows[horzPos] + cols[vertPos+1]+"_") == -1 &&
-			(mode == 0 || (list.indexOf("_"+rows[horzPos] + cols[vertPos+1]+"_") == -1 && 
-				(mode == 1 || atkList.indexOf("_"+rows[horzPos] + cols[vertPos+1]+"_") == -1))))
-			recurseRange(mode, horzPos, vertPos+1, range, atkRange, healRange, terrainType, affiliation, list, atkList, healList, trace);
-	};
+		if(vertPos < rows.length-1 && trace.indexOf("_"+cols[horzPos]+","+rows[vertPos+1]+"_") == -1)
+			recurseRange(horzPos, vertPos+1, range, params, list, trace);
+    };
+    
+    function recurseItemRange(horzPos, vertPos, range, list, itemList, trace){
+		if(trace.length > 1){
+			var coord = cols[horzPos]+","+rows[vertPos];
+			var tile = terrainLocs[coord];
 
-	function formatItemRange(range){
-		if(range.indexOf("~") != -1 && range.length > 1)
-			range = range.substring(range.indexOf("~")+1, range.length);
-		range = range.trim();
-		return parseInt(range) || 0;
-	};
+			var classCost = terrainIndex[terrainLocs[coord].type].Flier;
+			if(classCost == undefined || classCost == "-") return;
+			else range -= 1;
 
-	function isAttackingItem(wpnClass){
-		return wpnClass != "Staff" && wpnClass != "Consumable";
-	};
+			if(itemList.indexOf(coord) == -1) itemList.push(coord);
+		}
+
+		trace += coord + "_";
+
+		if(range <= 0) //base case
+			return;
+
+		if(horzPos > 0 && trace.indexOf("_"+cols[horzPos-1]+","+rows[vertPos]+"_") == -1 && list.indexOf(cols[horzPos-1]+","+rows[vertPos]) == -1)
+			recurseItemRange(horzPos-1, vertPos, range, list, itemList, trace);
+
+		if(horzPos < cols.length-1 && trace.indexOf("_"+cols[horzPos+1]+","+rows[vertPos]+"_") == -1 && list.indexOf(cols[horzPos+1]+","+rows[vertPos]) == -1)
+			recurseItemRange(horzPos+1, vertPos, range, list, itemList, trace);
+
+		if(vertPos > 0 && trace.indexOf("_"+cols[horzPos]+rows[vertPos-1]+"_") == -1 && list.indexOf(cols[horzPos]+rows[vertPos-1]) == -1)
+			recurseItemRange(horzPos, vertPos-1, range, list, itemList, trace)
+
+		if(vertPos < rows.length-1 && trace.indexOf("_"+cols[horzPos]+rows[vertPos+1]+"_") == -1 && list.indexOf(cols[horzPos]+rows[vertPos+1]) == -1)
+			recurseItemRange(horzPos, vertPos+1, range, list, itemList, trace)
+	}
+
+    function formatItemRange(range) {
+        if (range.indexOf("-") != -1 && range.length > 1)
+            range = range.substring(range.indexOf("-") + 1, range.length);
+        range = range.trim();
+        return parseInt(range) | 0;
+    };
+
+    function isAttackingItem(wpnClass) {
+		return wpnClass != "Staff" && wpnClass != "Gear" && wpnClass != "Consumable" && wpnClass != "Item";
+    };
     
     //\\//\\//\\//\\//\\//
 	// HELPER FUNCTIONS //
@@ -830,7 +862,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			return {
 				'name' : name != undefined ? name : "",
 				'tags' : [],
-				'desc' : ""
+				'desc' : "",
+				'terrainType' : ""
 			}
 		else return JSON.parse(JSON.stringify(classIndex[name]));
 	};
