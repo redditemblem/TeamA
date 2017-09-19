@@ -184,6 +184,18 @@ img{
 	z-index:1;
 }
 
+.enhancementRune{
+	position: absolute;
+	left: calc(50% - 40px);
+	top: calc(50% - 40px);
+	height: 80px;
+	width: 80px;
+	pointer-events: none;
+	background-image: url("../IMG/rune.png");
+	filter: drop-shadow(0px 0px 3px red);
+	image-rendering: pixelated;
+}
+
 .absolutePos{
 	position:absolute;
 }

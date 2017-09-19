@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 16) + 0.1;
+	const updateVal = (100 / 17) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -9,7 +9,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	var enemies = null;
 	var rows = [];
 	var cols = [];
-	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, weaponRankBonuses, racialIndex, coordMapping, terrainIndex, terrainLocs;
+	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, weaponRankBonuses, racialIndex, coordMapping, effectsMapping, terrainIndex, terrainLocs;
 	
 	this.getCharacters = function(){ return characters; };
 	this.getMap = function(){ return map; };
@@ -400,6 +400,19 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			coordMapping = response.result.values;
 
 			updateProgressBar();
+			fetchEffectsChart();
+		});
+	};
+
+	function fetchEffectsChart(){
+	    gapi.client.sheets.spreadsheets.values.get({
+			spreadsheetId: sheetId,
+			majorDimension: "ROWS",
+			range: 'Effects Map!A:ZZ',
+	    }).then(function(response) {
+			effectsMapping = response.result.values;
+
+			updateProgressBar();
 			processCharacters();
 		});
 	};
@@ -629,6 +642,32 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			}
 		}
 
+		//Update terrain types from input list
+		for(var r = 0; r < effectsMapping.length; r++){
+			var row = effectsMapping[r];
+			for(var c = 0; c < cols.length && c < row.length; c++){
+				if(row[c].length > 0){
+					var coord = cols[c] + "," + rows[r];
+					switch(row[c]){
+						case "I" : 
+						case "II" : 
+						case "III" :
+						case "IV" : 
+						case "V" :
+						case "VI" :
+						case "VII" :
+						case "VIII" :
+						case "IX" : 
+						case "X" : 
+						case "XI" :
+						case "XII" :
+						case "XIII" : terrainLocs[coord].enhancement = row[c]; break;
+						case "Fire" : terrainLocs[coord].onFire = true; break;
+					}
+				}
+			}
+		}
+
 		for(var c in characters)
 			if(terrainLocs[characters[c].position] != undefined)
 				terrainLocs[characters[c].position].occupiedAffiliation = c.indexOf("char_") > -1 ? "char" : characters[c].affiliation;
@@ -643,7 +682,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			'movCount' : 0,
 			'atkCount' : 0,
 			'healCount' : 0,
-			'occupiedAffiliation' : ''
+			'occupiedAffiliation' : '',
+			'enhancement' : "",
+			'onFire' : false
 		}
 	};
 
