@@ -938,14 +938,18 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		var eqWpnCls = char.equippedWeapon.class;
 
 		var wpnRank = "";
+		if(eqWpnCls == char.weaponRanks.w1.class) wpnRank = char.weaponRanks.w1.rank;
+		else if(eqWpnCls == char.weaponRanks.w2.class) wpnRank = char.weaponRanks.w2.rank;
+		else if(eqWpnCls == char.weaponRanks.w3.class) wpnRank = char.weaponRanks.w3.rank;
+		else if(eqWpnCls == char.weaponRanks.w4.class) wpnRank = char.weaponRanks.w4.rank;
+
 		if(eqWpnCls == "Laguz"){
-			eqWpnCls = char.equippedWeapon.name.substring(0, char.equippedWeapon.name.indexOf("-")).trim();
-			wpnRank = char.equippedWeapon.name.substring(char.equippedWeapon.name.indexOf("-")+1).trim();
-		}else{
-			if(eqWpnCls == char.weaponRanks.w1.class) wpnRank = char.weaponRanks.w1.rank;
-			else if(eqWpnCls == char.weaponRanks.w2.class) wpnRank = char.weaponRanks.w2.rank;
-			else if(eqWpnCls == char.weaponRanks.w3.class) wpnRank = char.weaponRanks.w3.rank;
-			else if(eqWpnCls == char.weaponRanks.w4.class) wpnRank = char.weaponRanks.w4.rank;
+			if(char.equippedWeapon.name.indexOf("-") != -1)
+				eqWpnCls = char.equippedWeapon.name.substring(0, char.equippedWeapon.name.indexOf("-")).trim();
+			else eqWpnCls = char.equippedWeapon.name.trim();
+
+			eqWpnCls = eqWpnCls.replace("Spell", "");
+			eqWpnCls = eqWpnCls.charAt(0).toUpperCase() + eqWpnCls.slice(1);
 		}
 
 		if(wpnRank.length > 0) return weaponRankBonuses[eqWpnCls][wpnRank];
