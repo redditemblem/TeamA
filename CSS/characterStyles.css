@@ -41,7 +41,7 @@
 
 .weaponRankBorder{
 	position: absolute;
-	width: 29px;
+	width: 28px;
 	height: 2px;
 	left: 0px;
 	bottom: -3px;
@@ -420,7 +420,7 @@
 	font-size:12px;
 	width:240px;
 	left:175px;
-	height:110px;
+	height:135px;
 }
 
 .charNamePos{

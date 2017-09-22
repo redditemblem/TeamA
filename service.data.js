@@ -355,9 +355,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			for(var i = 0; i < rows.length; i++){
 				var r = rows[i];
 				terrainIndex[r[0]] = {
-					'avo' : r[1] != "-" ? parseInt(r[1]) : 0,
-					'def' : r[2] != "-" ? parseInt(r[2]) : 0,
-					'heal' : r[3] != "-" ? parseInt(r[3].match(/^(-)[0-9]+/)) : 0,
+					'avo' : parseInt(r[1]) | 0,
+					'def' : parseInt(r[2]) | 0,
+					'heal' : r[3].match(/^(-)[0-9]+/) != null ? parseInt(r[3].match(/^(-)[0-9]+/)[0]) : 0,
 					'Infantry' :  r[4],
 					'Armor' : r[5],
 					'Mage' : r[6],
@@ -641,16 +641,16 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						case "II" : 
 						case "III" :
 						case "IV" : 
-						case "V" :
-						case "VI" :
 						case "VII" :
 						case "VIII" :
 						case "IX" : 
 						case "X" : 
 						case "XIII" : terrainLocs[coord].enhancement = row[c]; break;
-						case "XI" : setEnhancementTiles(c, r, "noMovCost"); terrainLocs[coord].enhancement = row[c]; break;
-						case "XII" : setEnhancementTiles(c, r, "bonusMovCost"); terrainLocs[coord].enhancement = row[c]; break;
-						case "Fire" : terrainLocs[coord].onFire = true; break;
+						case "V" : setEnhancementTiles(c, r, "bonusHealVal", -20); terrainLocs[coord].enhancement = row[c]; break;
+						case "VI" : setEnhancementTiles(c, r, "bonusHealVal", 20); terrainLocs[coord].enhancement = row[c]; break;
+						case "XI" : setEnhancementTiles(c, r, "noMovCost", true); terrainLocs[coord].enhancement = row[c]; break;
+						case "XII" : setEnhancementTiles(c, r, "bonusMovCost", true); terrainLocs[coord].enhancement = row[c]; break;
+						case "Fire" : terrainLocs[coord].onFire = true; terrainLocs[coord].bonusHealVal = -20; break;
 					}
 				}
 			}
@@ -664,43 +664,43 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		calculateCharacterRanges();
 	};
 
-	function setEnhancementTiles(c, r, bool){
-		terrainLocs[cols[c]+","+rows[r]][bool] = true;
+	function setEnhancementTiles(c, r, key, val){
+		terrainLocs[cols[c]+","+rows[r]][key] = val;
 		terrainLocs[cols[c]+","+rows[r]].isEnhanced = true;
 		
 		if(terrainLocs[cols[c]+","+rows[r-1]] != undefined){
-			terrainLocs[cols[c]+","+rows[r-1]][bool] = true;
+			terrainLocs[cols[c]+","+rows[r-1]][key] = val;
 			terrainLocs[cols[c]+","+rows[r-1]].isEnhanced = true;
 		}
 		if(terrainLocs[cols[c]+","+rows[r+1]] != undefined){
-			terrainLocs[cols[c]+","+rows[r+1]][bool] = true;
+			terrainLocs[cols[c]+","+rows[r+1]][key] = val;
 			terrainLocs[cols[c]+","+rows[r+1]].isEnhanced = true;
 		}
 
 		if(terrainLocs[cols[c-1]+","+rows[r]] != undefined){
-			terrainLocs[cols[c-1]+","+rows[r]][bool] = true;
+			terrainLocs[cols[c-1]+","+rows[r]][key] = val;
 			terrainLocs[cols[c-1]+","+rows[r]].isEnhanced = true;
 		}
 		if(terrainLocs[cols[c+1]+","+rows[r]] != undefined){
-			terrainLocs[cols[c+1]+","+rows[r]][bool] = true;
+			terrainLocs[cols[c+1]+","+rows[r]][key] = val;
 			terrainLocs[cols[c+1]+","+rows[r]].isEnhanced = true;
 		}
 
 		if(terrainLocs[cols[c-1]+","+rows[r-1]] != undefined){
-			terrainLocs[cols[c-1]+","+rows[r-1]][bool] = true;
+			terrainLocs[cols[c-1]+","+rows[r-1]][key] = val;
 			terrainLocs[cols[c-1]+","+rows[r-1]].isEnhanced = true;
 		}
 		if(terrainLocs[cols[c-1]+","+rows[r+1]] != undefined){
-			terrainLocs[cols[c-1]+","+rows[r+1]][bool] = true;
+			terrainLocs[cols[c-1]+","+rows[r+1]][key] = val;
 			terrainLocs[cols[c-1]+","+rows[r+1]].isEnhanced = true;
 		}
 
 		if(terrainLocs[cols[c+1]+","+rows[r-1]] != undefined){
-			terrainLocs[cols[c+1]+","+rows[r-1]][bool] = true;
+			terrainLocs[cols[c+1]+","+rows[r-1]][key] = val;
 			terrainLocs[cols[c+1]+","+rows[r-1]].isEnhanced = true;
 		}
 		if(terrainLocs[cols[c+1]+","+rows[r+1]] != undefined){
-			terrainLocs[cols[c+1]+","+rows[r+1]][bool] = true;
+			terrainLocs[cols[c+1]+","+rows[r+1]][key] = val;
 			terrainLocs[cols[c+1]+","+rows[r+1]].isEnhanced = true;
 		}
 	};
@@ -716,7 +716,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			'isEnhanced' : false,
 			'noMovCost' : false,
 			'bonusMovCost' : false,
-			'onFire' : false
+			'onFire' : false,
+			'bonusHealVal' : 0
 		}
 	};
 
@@ -911,7 +912,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		if(name == undefined || name.length == 0 || itemIndex[name] == undefined)
 			return {
 				'name' : name != undefined ? name : "",
-				'class' : "",
+				'class' : "Mystery",
 				'rank' : "",
 				'type' : "",
 				'might' : "",

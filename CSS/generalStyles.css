@@ -148,7 +148,6 @@ img{
 	height:16px;
 	width:16px;
 	display:inline-block;
-	opacity: 0.5;
 }
 
 .glowBoxBorderBox{
@@ -160,7 +159,6 @@ img{
 	top:0;
 	height:15px;
 	width:15px;
-	opacity: 1.0;
 }
 
 .glowBoxBorder0{
@@ -322,6 +320,12 @@ img{
 	cursor: pointer !important;
 }
 
+.fireIcon{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
 .enhancementRune{
 	position: absolute;
 	left: calc(50% - 31px);
@@ -351,3 +355,48 @@ img{
   50%  { opacity: 0.50; }
   100% { opacity: 1.0; }
  }
+
+ p{
+	 margin: 0;
+	 padding: 0;
+ }
+
+ .scroll-up {	
+	overflow: hidden;
+	position: relative;
+   }
+   .scroll-up p {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	line-height: 14px;
+	/* Starting position */
+	-moz-transform:translateY(100%);
+	-webkit-transform:translateY(100%);	
+	transform:translateY(100%);
+	/* Apply animation to this element */	
+	-moz-animation: scroll-up 8s linear infinite;
+	-webkit-animation: scroll-up 8s linear infinite;
+	animation: scroll-up 8s linear infinite;
+   }
+   /* Move it (define the animation) */
+   @-moz-keyframes scroll-up {
+	0%   { -moz-transform: translateY(100%); }
+	100% { -moz-transform: translateY(-100%); }
+   }
+   @-webkit-keyframes scroll-up {
+	0%   { -webkit-transform: translateY(100%); }
+	100% { -webkit-transform: translateY(-100%); }
+   }
+   @keyframes scroll-up {
+	0%   { 
+	-moz-transform: translateY(100%); /* Browser bug fix */
+	-webkit-transform: translateY(100%); /* Browser bug fix */
+	transform: translateY(100%); 		
+	}
+	100% { 
+	-moz-transform: translateY(-100%); /* Browser bug fix */
+	-webkit-transform: translateY(-100%); /* Browser bug fix */
+	transform: translateY(-100%); 
+	}
+   }

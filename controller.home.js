@@ -224,7 +224,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
     	pos = pos.substring(0,pos.indexOf(",")); //grab first number
     	pos = parseInt(pos);
-    	return ((pos-1) * (boxWidth + gridWidth)) + "px";
+    	return (((pos-1) * (boxWidth + gridWidth)) + gridWidth) + "px";
     };
     
 	//Using a character's coordinates, calculates their vertical
@@ -271,6 +271,15 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     $scope.fetchWpnDescVerticalPos = function(index){ return weaponDescVerticalPos[index]; };
     $scope.fetchSklVerticalPos = function(index){ return skillVerticalPos[index]; };
 	$scope.fetchSklDescVerticalPos = function(index){ return skillDescVerticalPos[index]; };
+
+	$scope.textTooLong = function(textA, textB){
+		return (textA.length + textB.length) > 200;
+	};
+
+	$scope.setItemDescHeight = function(type){
+		if(type != "Item" && type != "Consumable" && type != "Gear" && type != "Mystery") return "70px";
+    	else return "108px";
+	};
  
     //***********************\\
     // FUNCTIONS FOR STAT    \\
@@ -455,16 +464,15 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
     
     $scope.hasWeaponRank = function(rank){
-    	return rank != "-";
+    	return rank != "" && rank != "-";
     };
     
-    //Returns true if the weapon at the index is not an item
     $scope.notItem = function(type){
-    	return type != "Staff" && type != "Consumable" && type != "Item" && type != "";
+    	return type != "Staff" && type != "Consumable" && type != "Item" && type != "Gear" && type != "Mystery";
     };
     
     $scope.setDescriptionLoc = function(type){
-    	if(type != "Staff" && type != "Consumable" && type != "Item" && type != "") return "60px";
+    	if(type != "Staff" && type != "Consumable" && type != "Item" && type != "Gear" && type != "Mystery") return "60px";
     	else return "25px";
     };
 
