@@ -45,7 +45,7 @@
 			 ng-style="{left: determineGlowX(indexX)}"
 		>
 			 <div style="width: 100%; height: 100%; opacity: 0.5;" ng-style="{'background-color': determineGlowColor(column+','+row)}"></div>
-			 <div class="enhancementRune" ng-if="terrainLocs[column+','+row].enhancement.length > 0" ng-style="{'background-image': 'url(../IMG/RUNE/'+terrainLocs[column+','+row].enhancement+'.png)'}"></div>
+			 <div class="enhancementRune" ng-if="terrainLocs[column+','+row].enhancement.length > 0" ng-style="{'background-image': 'url(./IMG/RUNE/'+terrainLocs[column+','+row].enhancement+'.png)'}"></div>
 			 <div class="fireIcon" ng-if="terrainLocs[column+','+row].onFire == true"><img ng-src="IMG/Fire.gif" /></div> 
 			 <div class="glowBoxBorderBox" ng-class="{glowBoxBorder3:showGrid==3, glowBoxBorder2:showGrid==2, glowBoxBorder1:showGrid==1}"></div>
 		</div>
