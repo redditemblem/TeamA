@@ -43,7 +43,7 @@
 			 ng-repeat="(indexX,column) in columns"
 			 title="({{column}},{{row}}) {{terrainLocs[column+','+row].type}}: {{terrainTypes[terrainLocs[column+','+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+','+row].type].def}}⛨ {{terrainTypes[terrainLocs[column+','+row].type].heal}}♥"
 			 ng-style="{left: determineGlowX(indexX), 'background-color': determineGlowColor(column+','+row)}">
-			 <div class="enhancementRune" ng-if="terrainLocs[column+','+row].enhancement.length > 0"></div>
+			 <div class="enhancementRune" ng-if="terrainLocs[column+','+row].enhancement.length > 0" ng-style="{'background-image': 'url(../IMG/RUNE/'+terrainLocs[column+','+row].enhancement+'.png)'}"></div>
 			 <div style="height: 100%; width: 100%; background-color: red;" ng-if="terrainLocs[column+','+row].onFire == true"></div>
 			 <div class="glowBoxBorderBox" ng-class="{glowBoxBorder3:showGrid==3, glowBoxBorder2:showGrid==2, glowBoxBorder1:showGrid==1}"></div>
 		</div>

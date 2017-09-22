@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 17) + 0.1;
+	const updateVal = (100 / 16) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -33,23 +33,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
         range: 'Character Tracker!B:ZZ',
       }).then(function(response) {
     	 characterData = response.result.values;
-    	 updateProgressBar();
-    	 fetchCharacterImages();
-      });
-	};
-	
-	function fetchCharacterImages() {
-      gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: sheetId,
-        majorDimension: "ROWS",
-		range: 'Character Tracker!B2:ZZ2',
-		valueRenderOption: 'FORMULA',
-      }).then(function(response) {
-		 var images = response.result.values[0];
-		  
-		 for(var i = 0; i < images.length && characterData.length; i++)
-			characterData[i].splice(1,1, processImageURL(images[i]));
-
     	 updateProgressBar();
     	 fetchWeaponIndex();
       });
@@ -364,7 +347,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		gapi.client.sheets.spreadsheets.values.get({
 			spreadsheetId: sheetId,
 			majorDimension: "ROWS",
-			range: 'Terrain Chart!A2:K',
+			range: 'Terrain Chart!A2:Q',
 		}).then(function(response) {
 			var rows = response.result.values;
 			terrainIndex = {};
@@ -374,7 +357,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				terrainIndex[r[0]] = {
 					'avo' : r[1] != "-" ? parseInt(r[1]) : 0,
 					'def' : r[2] != "-" ? parseInt(r[2]) : 0,
-					'heal' : r[3] != "-" ? parseInt(r[3].match(/^[0-9]+/)) : 0,
+					'heal' : r[3] != "-" ? parseInt(r[3].match(/^(-)[0-9]+/)) : 0,
 					'Infantry' :  r[4],
 					'Armor' : r[5],
 					'Mage' : r[6],
@@ -382,7 +365,12 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'Pirate' : r[8],
 					'Mounted' : r[9],
 					'Flier' : r[10],
-					'effect' : r[11]
+					'effect' : r[11],
+					'isStructure' : r[16] == "Man-made Structure",
+					'isForest' : r[16] == "Forest",
+					'isMountain' : r[16] == "Mountain",
+					'isLava' : r[16] == "Lava",
+					'isAquatic' : r[16] == "Aquatic"
 				}
 			}
 
@@ -659,9 +647,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						case "VIII" :
 						case "IX" : 
 						case "X" : 
-						case "XI" :
-						case "XII" :
 						case "XIII" : terrainLocs[coord].enhancement = row[c]; break;
+						case "XI" : setEnhancementTiles(c, r, "noMovCost"); terrainLocs[coord].enhancement = row[c]; break;
+						case "XII" : setEnhancementTiles(c, r, "bonusMovCost"); terrainLocs[coord].enhancement = row[c]; break;
 						case "Fire" : terrainLocs[coord].onFire = true; break;
 					}
 				}
@@ -670,10 +658,51 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 		for(var c in characters)
 			if(terrainLocs[characters[c].position] != undefined)
-				terrainLocs[characters[c].position].occupiedAffiliation = c.indexOf("char_") > -1 ? "char" : characters[c].affiliation;
+				terrainLocs[characters[c].position].occupiedAffiliation = characters[c].affiliation;
 
 		updateProgressBar();
 		calculateCharacterRanges();
+	};
+
+	function setEnhancementTiles(c, r, bool){
+		terrainLocs[cols[c]+","+rows[r]][bool] = true;
+		terrainLocs[cols[c]+","+rows[r]].isEnhanced = true;
+		
+		if(terrainLocs[cols[c]+","+rows[r-1]] != undefined){
+			terrainLocs[cols[c]+","+rows[r-1]][bool] = true;
+			terrainLocs[cols[c]+","+rows[r-1]].isEnhanced = true;
+		}
+		if(terrainLocs[cols[c]+","+rows[r+1]] != undefined){
+			terrainLocs[cols[c]+","+rows[r+1]][bool] = true;
+			terrainLocs[cols[c]+","+rows[r+1]].isEnhanced = true;
+		}
+
+		if(terrainLocs[cols[c-1]+","+rows[r]] != undefined){
+			terrainLocs[cols[c-1]+","+rows[r]][bool] = true;
+			terrainLocs[cols[c-1]+","+rows[r]].isEnhanced = true;
+		}
+		if(terrainLocs[cols[c+1]+","+rows[r]] != undefined){
+			terrainLocs[cols[c+1]+","+rows[r]][bool] = true;
+			terrainLocs[cols[c+1]+","+rows[r]].isEnhanced = true;
+		}
+
+		if(terrainLocs[cols[c-1]+","+rows[r-1]] != undefined){
+			terrainLocs[cols[c-1]+","+rows[r-1]][bool] = true;
+			terrainLocs[cols[c-1]+","+rows[r-1]].isEnhanced = true;
+		}
+		if(terrainLocs[cols[c-1]+","+rows[r+1]] != undefined){
+			terrainLocs[cols[c-1]+","+rows[r+1]][bool] = true;
+			terrainLocs[cols[c-1]+","+rows[r+1]].isEnhanced = true;
+		}
+
+		if(terrainLocs[cols[c+1]+","+rows[r-1]] != undefined){
+			terrainLocs[cols[c+1]+","+rows[r-1]][bool] = true;
+			terrainLocs[cols[c+1]+","+rows[r-1]].isEnhanced = true;
+		}
+		if(terrainLocs[cols[c+1]+","+rows[r+1]] != undefined){
+			terrainLocs[cols[c+1]+","+rows[r+1]][bool] = true;
+			terrainLocs[cols[c+1]+","+rows[r+1]].isEnhanced = true;
+		}
 	};
 
 	function getDefaultTerrainObj(){
@@ -684,6 +713,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			'healCount' : 0,
 			'occupiedAffiliation' : '',
 			'enhancement' : "",
+			'isEnhanced' : false,
+			'noMovCost' : false,
+			'bonusMovCost' : false,
 			'onFire' : false
 		}
 	};
@@ -724,8 +756,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				var params = {
 					'atkRange' : maxAtkRange,
 					'healRange' : maxHealRange,
+					'race' : char.race,
 					'terrainClass' : char.class.terrainType,
-					'affiliation' : c.indexOf("char_") > -1 ? "char" : char.affiliation
+					'affiliation' : char.affiliation
 				};
 
 				recurseRange(horz, vert, range, params, list, "_");
@@ -750,7 +783,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 		//Final progress update
 		updateProgressBar();
-    };
+	};
 
     function recurseRange(horzPos, vertPos, range, params, list, trace){
 		//Don't calculate cost for starting tile
@@ -760,16 +793,36 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		//Mov mode calcs
 		if(trace.length > 1){
 			var classCost = terrainIndex[tile.type][params.terrainClass];
+			if(classCost == undefined) return;
+
+			classCost = parseFloat(classCost) || 99;
+
+			//Racial movement params
+			switch(params.race){
+				case "Beorc" : if(terrainIndex[tile.type].isStructure  && classCost < 99) classCost = 0; break;
+				case "Laguz" : if(classCost > 1 && classCost < 99) classCost = (classCost / 2); break;
+				case "Florkana" : if(terrainIndex[tile.type].isForest  && classCost < 99) classCost = 0; break;
+				case "Kano" : if(terrainIndex[tile.type].isLava && classCost < 99) classCost = 0; 
+							  if(terrainIndex[tile.type].isMountain) classCost = 3; 
+							  break;
+				case "Ayzer" : if(terrainIndex[tile.type].isAquatic && classCost < 99) classCost = 0; break;
+				case "Jera" : if(terrainIndex[tile.type].isEnhanced && classCost < 99) classCost = (classCost / 2); break;
+			}
+			
+			if(classCost < 99){
+				if(tile.noMovCost) classCost = 0;
+				else if(tile.bonusMovCost && params.race == "Jera") classCost = 2;
+				else if(tile.bonusMovCost) classCost = 4;
+			}
 
             //Determine traversal cost
-			  if( classCost == undefined
-			   || classCost == "-"
-			   || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation)
-			   || (parseFloat(classCost) > range)
+			if(  classCost == 99
+			 || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation)
+			 || (classCost > range)
 			){
 				return;
-            }
-			else range -= parseFloat(classCost);
+			}
+			else range -= classCost;
 		}
 
 		if(list.indexOf(coord) == -1) list.push(coord);
@@ -949,7 +1002,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			else eqWpnCls = char.equippedWeapon.name.trim();
 
 			eqWpnCls = eqWpnCls.replace("Spell", "");
-			eqWpnCls = eqWpnCls.charAt(0).toUpperCase() + eqWpnCls.slice(1);
+			eqWpnCls = eqWpnCls.charAt(0).toUpperCase() + eqWpnCls.slice(1); //capitalize first letter
 		}
 
 		if(wpnRank.length > 0) return weaponRankBonuses[eqWpnCls][wpnRank];

@@ -324,31 +324,30 @@ img{
 
 .enhancementRune{
 	position: absolute;
-	left: calc(50% - 40px);
-	top: calc(50% - 40px);
-	height: 80px;
-	width: 80px;
+	left: calc(50% - 31px);
+	top: calc(50% - 31px);
+	height: 62px;
+	width: 62px;
 	pointer-events: none;
-	background-image: url("../IMG/rune.png");
-	image-rendering: pixelated;	
+	image-rendering: pixelated;
 	/* Apply animation to this element */
-	-moz-animation: fadeInFadeOut 3s linear infinite;
-	-webkit-animation: fadeInFadeOut 3s linear infinite;
-	animation: fadeInFadeOut 3s linear infinite;
+	-moz-animation: fadeInFadeOut 5s linear infinite;
+	-webkit-animation: fadeInFadeOut 5s linear infinite;
+	animation: fadeInFadeOut 5s linear infinite;
  }
  
  @-moz-keyframes fadeInFadeOut {
-  0%   { filter: drop-shadow(0px 0px 5px red); opacity: 1.0; }
-  50%  { filter: drop-shadow(0px 0px 1px red); opacity: 0.70; }
-  100% { filter: drop-shadow(0px 0px 5px red); opacity: 1.0; }
+  0%   { opacity: 1.0; }
+  50%  { opacity: 0.50; }
+  100% { opacity: 1.0; }
  }
  @-webkit-keyframes fadeInFadeOut {
-  0%   { filter: drop-shadow(0px 0px 5px red); opacity: 1.0; }
-  50%  { filter: drop-shadow(0px 0px 1px red); opacity: 0.70; }
-  100% { filter: drop-shadow(0px 0px 5px red); opacity: 1.0; }
+  0%   { opacity: 1.0; }
+  50%  { opacity: 0.50; }
+  100% { opacity: 1.0; }
  }
  @keyframes fadeInFadeOut {
-  0%   { filter: drop-shadow(0px 0px 5px red); opacity: 1.0; }
-  50%  { filter: drop-shadow(0px 0px 1px red); opacity: 0.70; }
-  100% { filter: drop-shadow(0px 0px 5px red); opacity: 1.0; }
+  0%   { opacity: 1.0; }
+  50%  { opacity: 0.50; }
+  100% { opacity: 1.0; }
  }
