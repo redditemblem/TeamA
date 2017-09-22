@@ -645,7 +645,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						case "VIII" :
 						case "IX" : 
 						case "X" : 
-						case "XIII" : terrainLocs[coord].enhancement = row[c]; break;
+						case "XIII" : setEnhancementTiles(c, r, null, null); terrainLocs[coord].enhancement = row[c]; break;
 						case "V" : setEnhancementTiles(c, r, "bonusHealVal", -20); terrainLocs[coord].enhancement = row[c]; break;
 						case "VI" : setEnhancementTiles(c, r, "bonusHealVal", 20); terrainLocs[coord].enhancement = row[c]; break;
 						case "XI" : setEnhancementTiles(c, r, "noMovCost", true); terrainLocs[coord].enhancement = row[c]; break;
