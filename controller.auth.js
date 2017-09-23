@@ -75,22 +75,17 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	};
     
     function pickLoadingIcon(){
-    	var rand = Math.floor((Math.random() * 14) + 1); //generate a number between 1 and 14
+    	var rand = Math.floor((Math.random() * 9) + 1); //generate a number between 1 and 14
     	switch(rand){
-	    	case 1: return "IMG/cavalier.gif"; break;
-	    	case 2: return "IMG/darkmage.gif"; break;
-	    	case 3: return "IMG/diviner.gif"; break;
-	    	case 4: return "IMG/fighter.gif"; break;
-	    	case 5: return "IMG/kitsune.gif"; break;
-	    	case 6: return "IMG/knight.gif"; break;
-	    	case 7: return "IMG/ninja.gif"; break;
-	    	case 8: return "IMG/samurai.gif"; break;
-	    	case 9: return "IMG/spearfighter.gif"; break;
-	    	case 10: return "IMG/thief.gif"; break;
-	    	case 11: return "IMG/archer.gif"; break;
-	    	case 12: return "IMG/skyknight.gif"; break;
-	    	case 13: return "IMG/wolfskin.gif"; break;
-	    	case 14: return "IMG/troubadour.gif"; break;
+	    	case 1: return "IMG/LOAD/Adriana.gif"; break;
+	    	case 2: return "IMG/LOAD/Cabaletto.gif"; break;
+	    	case 3: return "IMG/LOAD/Himaya.gif"; break;
+	    	case 4: return "IMG/LOAD/Mars.gif"; break;
+	    	case 5: return "IMG/LOAD/Miranda.gif"; break;
+	    	case 6: return "IMG/LOAD/Sally.gif"; break;
+	    	case 7: return "IMG/LOAD/Seed.gif"; break;
+	    	case 8: return "IMG/LOAD/Suleiman.gif"; break;
+	    	case 9: return "IMG/LOAD/Zain.gif"; break;
     	}
     };
 
