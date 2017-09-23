@@ -758,7 +758,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'atkRange' : maxAtkRange,
 					'healRange' : maxHealRange,
 					'race' : char.race,
-					'terrainClass' : char.class.terrainType,
+					'terrainClass' : char.race == "Angel" ? "Flier" : char.class.terrainType,
 					'affiliation' : char.affiliation
 				};
 
