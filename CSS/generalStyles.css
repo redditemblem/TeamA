@@ -179,7 +179,6 @@ img{
 
 .glowBox:hover{
 	box-shadow: 0px 0px 10px rgba(255, 0, 0, 1);
-	z-index:1;
 }
 
 .absolutePos{
@@ -188,8 +187,9 @@ img{
 
 .mapCharCentered{
 	position: absolute;
-	right: 0px;
-	bottom: 0px;  
+	left: 50%;
+	bottom: 0px;
+	-webkit-transform: translateX(-50%);
 }
 
 .floatAbove{
@@ -375,7 +375,7 @@ img{
 	-webkit-transform:translateY(100%);	
 	transform:translateY(100%);
 	/* Apply animation to this element */	
-	-moz-animation: scroll-up 12s linear infinite;
+	-moz-animation: scroll-up 20s linear infinite;
 	-webkit-animation: scroll-up 12s linear infinite;
 	animation: scroll-up 12s linear infinite;
    }
