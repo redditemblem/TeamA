@@ -159,12 +159,12 @@
 			Behavior
 		</div>
 		<!--Name Desc-->
-		<div class="infoElement green whiteText nameInfoPos" ng-if="nameHoverOn(cIndex)">
-			<span ng-if="char.desc.length > 0" style="font-size: 10px; display: inline-block; vertical-align: top;" ng-style="{width: (char.portrait.length > 0 ? '195px' : '300px')}">{{char.desc}}</span>
-			<img ng-src="{{char.portrait}}" ng-if="char.portrait.length > 0" style="display: inline-block;" />
-			<span style="font-size: 10px; margin-bottom: 5px; display: inline-block;"><span class="boldText">Affinity:</span> {{char.affinity}}</span>
-			<span style="font-size: 10px; margin-bottom: 5px; display: inline-block;"><span class="boldText">{{char.race}}:</span> {{races[char.race].desc}}</span>
-			<span style="font-size: 10px; display: inline-block;"><span class="boldText">{{char.class.name}}:</span> {{char.class.desc}}</span>
+		<div class="infoElement green whiteText nameInfoPos" ng-if="nameHoverOn(cIndex)"style="font-size: 10px;">
+			<img ng-src="{{char.portrait}}" ng-if="char.portrait.length > 0" style="float: right;" />
+			<span>{{char.desc}}</span><br style="display: block; content: ''; margin-bottom: 5px;" />
+			<span><span class="boldText">Affinity:</span> {{char.affinity}}</span><br style="display: block; content: ''; margin-bottom: 5px;" />
+			<span><span class="boldText">{{char.race}}:</span> {{races[char.race].desc}}</span><br style="display: block; content: ''; margin-bottom: 5px;" />
+			<span><span class="boldText">{{char.class.name}}:</span> {{char.class.desc}}</span>
 		</div>
 		<!--Inventory Desc-->
 		<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, -1) && validWeapon(char.equippedWeapon.name)" style="top: 5px;">
