@@ -282,7 +282,7 @@ img{
 .centerText{ text-align: center; }
 .rightText{ text-align: right; }
 .whiteText{ color: white; }
-.redText{ color: #13300e; }
+.redText{ color: #000000;}
 .tanText{ color: #eaeaea; }
 .boldText{ font-weight: bold; }
 .italicText{ font-style: italic; }
