@@ -383,20 +383,11 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
 	$scope.getStatColor = function(index, stat){
 		var char = $scope.charaData[index];
-		var buff = char[stat + "Buff"];
-		var boost = char[stat + "Boost"];
-		
-		var wpn;
-		if(stat == "Spd") wpn = char.equippedWeapon.OSpd;
-		else wpn = char.equippedWeapon[stat];
+		var base = parseInt(char[stat]) || 0;
+		var enhnc = parseInt(char["True"+stat]);
 
-		buff = (buff.length > 0 ? parseInt(buff) : 0);
-		boost = (boost.length > 0 ? parseInt(boost) : 0);
-		wpn = parseInt(wpn);
-
-		var change = buff + boost + wpn;
-		if(change > 0) return STAT_BUFF_COLOR;
-		else if(change < 0) return STAT_DEBUFF_COLOR;
+		if(enhnc > base) return STAT_BUFF_COLOR;
+		else if(enhnc < base) return STAT_DEBUFF_COLOR;
 		else return STAT_DEFAULT_COLOR;
 	};
 

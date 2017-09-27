@@ -565,6 +565,16 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				currObj.TrueRes = calcTrueStat(currObj, "Res");
 				currObj.TrueMov = calcTrueStat(currObj, "Mov");
 
+				//Subtract buffs/boosts from stat values
+				currObj.Str = revertStat(currObj, "Str");
+				currObj.Mag = revertStat(currObj, "Mag");
+				currObj.Skl = revertStat(currObj, "Skl");
+				currObj.Spd = revertStat(currObj, "Spd");
+				currObj.Lck = revertStat(currObj, "Lck");
+				currObj.Def = revertStat(currObj, "Def");
+				currObj.Res = revertStat(currObj, "Res");
+				currObj.Mov = revertStat(currObj, "Mov");
+
 				//Battle stats
 				currObj.Atk = calcAttack(currObj);
 				currObj.Hit = calcHit(currObj);
@@ -1048,18 +1058,24 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function calcTrueStat(char, stat){
-		var base = char[stat];
-		var buff = char[stat + "Buff"];
-		var boost = char[stat + "Boost"];
+		var base = parseInt(char[stat]) || 0;
 		
 		if(stat == "Spd") stat = "OSpd";
 		var wpn = char.equippedWeapon[stat];
+		wpn = (wpn != undefined ? parseInt(wpn) : 0);
+
+		return base + wpn;
+	};
+
+	function revertStat(char, stat){
+		var base = char[stat];
+		var buff = char[stat + "Buff"];
+		var boost = char[stat + "Boost"];
 
 		base = parseInt(base);
 		buff = (buff.length > 0 ? parseInt(buff) : 0);
 		boost = (boost.length > 0 ? parseInt(boost) : 0);
-		wpn = (wpn != undefined ? parseInt(wpn) : 0);
 
-		return base + buff + boost + wpn;
+		return base - buff - boost;
 	};
 }]);
