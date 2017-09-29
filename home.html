@@ -124,13 +124,13 @@
 			<span class="indentedStat" ng-style="{color: getStatColor(cIndex, stat[0])}">{{char['True'+stat[0]]}}</span>
 		</div>
 		<!--Inventory-->
-		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement redText hoverTan2 itemsPos paleTan" style="top: 5px;">
+		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement hoverTan2 itemsPos paleTan" style="top: 5px;">
 			<span class="indentedWeaponIcon" ng-if="validWeapon(char.equippedWeapon.name)"><img ng-src="{{getWeaponClassIcon(char.equippedWeapon.class, char.equippedWeapon.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
-			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)">{{char.equippedWeapon.name}}</span>
+			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)"  ng-class="{'greenText': char.equippedItem.name.indexOf('(D)')!=-1, 'redText': char.equippedItem.name.indexOf('(D)')==-1}">{{formatWeaponName(char.equippedWeapon.name)}}</span>
 		</div>
-		<div ng-repeat="item in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index)}">
+		<div ng-repeat="item in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index)}">
 			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class, item.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
-			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
+			<span class="indentedWeaponName" ng-if="validWeapon(item.name)" ng-class="{'greenText': item.name.indexOf('(D)')!=-1, 'redText': item.name.indexOf('(D)')==-1}">{{formatWeaponName(item.name)}}</span>
 		</div>
 		<!--Accessories-->
 		<div ng-repeat="item in char.accessories" ng-mouseenter="accessoryHoverIn(cIndex, $index)" ng-mouseleave="accessoryHoverOut(cIndex, $index)" class="infoElement redText hoverTan2 itemsPos paleTan" ng-style="{top: fetchWeaponVerticalPos($index + 5)}">

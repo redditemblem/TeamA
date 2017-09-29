@@ -283,6 +283,7 @@ img{
 .rightText{ text-align: right; }
 .whiteText{ color: white; }
 .redText{ color: #000000;}
+.greenText{ color: darkgreen;}
 .tanText{ color: #eaeaea; }
 .boldText{ font-weight: bold; }
 .italicText{ font-style: italic; }

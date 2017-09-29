@@ -450,8 +450,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
     
     $scope.formatWeaponName = function(name){
-    	if(name.indexOf("(") == -1) return name;
-    	else return name.substring(0, name.indexOf("(")-1);
+    	return name.replace("(D)", "");
     };
     
     $scope.hasWeaponRank = function(rank){
