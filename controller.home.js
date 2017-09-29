@@ -107,10 +107,11 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	$scope.determineGlowColor = function(loc){
 		if($scope.terrainLocs == undefined) return '';
 		var terrainInfo = $scope.terrainLocs[loc];
-		if(terrainInfo.movCount > 0) return 'blue';
-		if(terrainInfo.atkCount > 0) return 'red';
-		if(terrainInfo.healCount > 0) return 'green';
-		return '';
+
+		if(terrainInfo.movCount > 0) return 'rgba(0, 0, 255, 0.5)';
+        else if(terrainInfo.atkCount > 0) return 'rgba(255, 0, 0, 0.5)';
+        else if(terrainInfo.healCount > 0) return 'rgba(0, 255, 0, 0.5)';
+		else return '';
 	};
 
 	$scope.toggleGrid = function(){
@@ -469,7 +470,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	$scope.determineNametagColor = function(aff){
 		switch(aff){
 			case "The Pack" : return NAMETAG_BLUE;
-			case "Evil Enemies" : return NAMETAG_RED;
+			case "Enemies" : return NAMETAG_RED;
 			case "Ally" : return NAMETAG_GREEN;
 			case "Other" : return NAMETAG_PERIWINKLE;
 			default: return "#000000";

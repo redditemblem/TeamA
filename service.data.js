@@ -399,6 +399,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			range: 'Effects Map!A:ZZ',
 	    }).then(function(response) {
 			effectsMapping = response.result.values;
+			if(effectsMapping == undefined) effectsMapping = [];
 
 			updateProgressBar();
 			processCharacters();
@@ -810,13 +811,13 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 			//Racial movement params
 			switch(params.race){
-				case "Beorc" : if(terrainIndex[tile.type].isStructure  && classCost < 99) classCost = 0; break;
+				case "Beorc" : if(terrainIndex[tile.type].isStructure  && classCost < 99) classCost = 1; break;
 				case "Laguz" : if(classCost > 1 && classCost < 99) classCost = (classCost / 2); break;
-				case "Florkana" : if(terrainIndex[tile.type].isForest  && classCost < 99) classCost = 0; break;
-				case "Kano" : if(terrainIndex[tile.type].isLava && classCost < 99) classCost = 0; 
+				case "Florkana" : if(terrainIndex[tile.type].isForest  && classCost < 99) classCost = 1; break;
+				case "Kano" : if(terrainIndex[tile.type].isLava && classCost < 99) classCost = 1; 
 							  if(terrainIndex[tile.type].isMountain) classCost = 3; 
 							  break;
-				case "Ayzer" : if(terrainIndex[tile.type].isAquatic && classCost < 99) classCost = 0; break;
+				case "Ayzer" : if(terrainIndex[tile.type].isAquatic && classCost < 99) classCost = 1; break;
 				case "Jera" : if(terrainIndex[tile.type].isEnhanced && classCost < 99) classCost = (classCost / 2); break;
 			}
 			
