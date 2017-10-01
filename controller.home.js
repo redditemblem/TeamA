@@ -251,16 +251,14 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     	var sprite = document.getElementById(char);
     	var box = document.getElementById(char + '_box');
     	
-		var x = sprite.style.left;
+		//var x = sprite.style.left;
+		//x = parseInt(x.replace("px", ""));
+		var x = ($scope.columns.length + 1) * (boxWidth + gridWidth);
+
     	var y = sprite.style.top;
-    	x = parseInt(x.substring(0, x.length-2));
-    	y = parseInt(y.substring(0, y.length-2));
-    	
-    	if(x < 671) x += 40;	
-    	else x -= 671;
-    	
-    	if(y < 77) y += 40;
-    	else y -= 77;
+		y = parseInt(y.replace("px", ""));
+
+		if(y <= 20) y = 20;
     	
     	box.style.left = x + 'px';
     	box.style.top = y + 'px';
