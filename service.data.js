@@ -739,7 +739,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			var atkList = [];
 			var healList = [];
 		
-			if (char.position.length > 0) {
+			if (char.position.length > 0 && char.position != "Not Deployed" && char.position != "Defeated") {
 				var horz = cols.indexOf(char.position.substring(0,char.position.indexOf(",")));
 				var vert = rows.indexOf(char.position.substring(char.position.indexOf(",")+1));
 				var range = parseInt(char.Mov);
