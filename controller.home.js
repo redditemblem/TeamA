@@ -223,7 +223,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		if(pos == "Defeated" || pos == "Not Deployed")
 			return (((numDefeat % 30) * 16) + 16) + "px";
 
-    	pos = pos.substring(0,pos.indexOf(",")); //grab first number
+    	pos = pos.substring(0,pos.indexOf(","));
     	pos = parseInt(pos);
     	return (((pos-1) * (boxWidth + gridWidth)) + gridWidth) + "px";
     };
@@ -236,11 +236,18 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 			return (Math.floor((numDefeat-1)/30) + ($scope.rows.length*(gridWidth+boxWidth)) + 16) +"px";
 		}
 
-		pos = pos.substring(pos.indexOf(",")+1, pos.indexOf("(") != -1 ? pos.indexOf("(") : pos.length); //grab first char
-		pos = pos.trim();
+		pos = pos.substring(pos.indexOf(",")+1).trim();
     	pos = parseInt(pos);
     	return ((pos-1) * (boxWidth + gridWidth)) + "px";
-    };
+	};
+	
+	$scope.determineCharZ = function(pos){
+		if(pos == "Defeated" || pos == "Not Deployed") return "0";
+
+		pos = pos.substring(pos.indexOf(",")+1).trim(); //grab first number
+		return pos;
+
+	};
 
     //***********************\\
     // POSITION CALCULATIONS \\
@@ -368,8 +375,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		var stat = $scope.charaData[index].equippedWeapon[s];
 		
 		if(stat == undefined) return false;
-		var num = stat.match(/^(-)[0-9]+/)[0];
-		return parseInt(num) != 0;
+		var num = parseInt(stat) || 0;
+		return num != 0;
 	};
 	
 	$scope.getWpnStatValue = function(index, s){
@@ -483,7 +490,14 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //***************************\\
     // MOUSEOVER/MOUSEOUT EVENTS \\
     //***************************\\
-    
+	
+	$scope.boxHoverIn = function(char){ $scope[char+"_boxhover"] = true; };
+	$scope.boxHoverOut = function(char){ $scope[char+"_boxhover"] = false; };
+	$scope.boxHoverOn = function(char){ 
+		if($scope[char+"_boxhover"] == true) return ($scope.rows.length + 2) + "";
+		else return ($scope.rows.length + 1) + "";
+	};
+	
     $scope.weaponHoverIn = function(char, index){ $scope[char + "wpn_" + index] = true; };
     $scope.weaponHoverOut = function(char, index){ $scope[char + "wpn_" + index] = false; };
     $scope.weaponHoverOn = function(char, index){ return $scope[char + "wpn_" + index] == true; };

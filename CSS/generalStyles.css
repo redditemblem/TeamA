@@ -192,14 +192,6 @@ img{
 	-webkit-transform: translateX(-50%);
 }
 
-.floatAbove{
-	z-index:3;
-}
-
-.floatAbove:hover{
-	z-index:4;
-}
-
 .customDivider{
 	position:absolute;
 	width:96%;

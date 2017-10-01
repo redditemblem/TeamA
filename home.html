@@ -58,7 +58,7 @@
 			 ng-click="displayData(cIndex)"
 			 class="absolutePos charDiv hoverImage"
 			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨ {{terrainTypes[terrainLocs[char.position].type].heal}}♥"
-			 ng-style="{left: determineCharX($index, char.position), top: determineCharY(char.position)}"
+			 ng-style="{left: determineCharX($index, char.position), top: determineCharY(char.position), 'z-index': determineCharZ(char.position)}"
 		>
 			<!--Unit sprite-->
 			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{grayscale: char.hasMoved == 'Yes'}" />
@@ -72,8 +72,16 @@
 	</div>
 
     <!--Character Info Box-->
-	<div id="{{cIndex}}_box" ng-repeat="(cIndex,char) in charaData" class="characterInfo yellowTan floatAbove" draggable="true" ng-show="checkCharToggle(cIndex)">
-	<!--Drag bar-->
+	<div id="{{cIndex}}_box" 
+		 ng-repeat="(cIndex,char) in charaData"
+		 class="characterInfo yellowTan"
+		 draggable="true" 
+		 ng-show="checkCharToggle(cIndex)"
+		 ng-style="{'z-index': boxHoverOn(cIndex)}"
+		 ng-mouseenter="boxHoverIn(cIndex)"
+		 ng-mouseleave="boxHoverOut(cIndex)"
+	>
+		<!--Drag bar-->
 		<div class="absolutePos dragBar olive"></div>
 		<!--Close button-->
 		<div class="infoElement dragBarButton hoverImage" title="Close" style="left:calc(100% - 18px)" ng-click="removeData(cIndex)">
