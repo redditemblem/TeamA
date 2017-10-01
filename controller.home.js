@@ -474,6 +474,11 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 			default: return "#000000";
 		}
 	};
+
+	$scope.getItemDamageIcon = function(type){
+		if(type.length == 0) return "";
+		else return `IMG/${type}.png`;
+	};
     
     //***************************\\
     // MOUSEOVER/MOUSEOUT EVENTS \\

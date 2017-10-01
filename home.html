@@ -170,6 +170,7 @@
 		<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, -1) && validWeapon(char.equippedWeapon.name)" style="top: 5px;">
 			<div class="popOutText itemNamePos boldText">{{formatWeaponName(char.equippedWeapon.name)}}</div>
 			<div class="popOutText itemRankPos">
+				<img style="display: inline-block;" ng-src="{{getItemDamageIcon(char.equippedWeapon.type)}}" />
 				<span ng-if="hasWeaponRank(char.equippedWeapon.rank)">{{char.equippedWeapon.rank}} -</span>
 				{{char.equippedWeapon.class}}
 			</div>
@@ -191,6 +192,7 @@
 			<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, $index) && validWeapon(weapon.name)" ng-style="{top: fetchWpnDescVerticalPos($index)}">
 				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
 				<div class="popOutText itemRankPos">
+						<img style="display: inline-block;" ng-src="{{getItemDamageIcon(weapon.type)}}" />
 					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span>
 					{{weapon.class}}
 				</div>

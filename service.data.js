@@ -53,7 +53,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'name' : w[0],
 				'class' : w[1],
 				'rank' : w[2],
-				'type' : w[3],
+				'type' : w[3] != "-" ? w[3] : "",
 				'might' : w[4],
 				'hit' : w[5],
 				'crit' : w[6],
