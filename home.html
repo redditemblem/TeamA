@@ -55,7 +55,6 @@
 	<div ng-repeat="(cIndex,char) in charaData">
 		<div id="{{cIndex}}" 
 			 ng-if="validPosition(char.position)"
-			 ng-click="displayData(cIndex)"
 			 class="absolutePos charDiv hoverImage"
 			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨ {{terrainTypes[terrainLocs[char.position].type].heal}}♥"
 			 ng-style="{left: determineCharX($index, char.position), top: determineCharY(char.position), 'z-index': determineCharZ(char.position)}"
@@ -68,6 +67,7 @@
 			<div class="healthBarBorder"></div>
 			<img ng-if="char.class.tags.indexOf('Boss') != -1" class="pairUpIcon" src="IMG/shield_boss.png" />
 			<img ng-if="isPaired(cIndex)" class="pairUpIcon" src="IMG/shield_pairup.png" />
+			<div style="height: 16px; width: 16px; pointer-events: auto;" class="mapCharCentered" ng-click="displayData(cIndex)"></div>
 		</div>
 	</div>
 

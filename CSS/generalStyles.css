@@ -49,6 +49,7 @@ img{
 }
 
 .charDiv{
+	pointer-events: none;
 	height:15px;
 	width:15px;
 }

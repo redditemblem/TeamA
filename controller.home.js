@@ -430,6 +430,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     
     //Returns the weapon rank icon relevant to the passed weapon type
     $scope.weaponIcon = function(weaponName){ 	
+		if(weaponName == undefined) return "";
     	var c = weaponName.toLowerCase();
     	return "IMG/RANK/rank_" + c + ".png";
     };
