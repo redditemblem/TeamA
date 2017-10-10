@@ -41,7 +41,7 @@
 	<div ng-repeat="(yIndex,row) in rows" class="glowBoxIndent absolutePos" ng-style="{top: determineGlowY(yIndex)}">
 		<div class="glowBox"
 			 ng-repeat="(indexX,column) in columns"
-			 title="({{column}},{{row}}) {{terrainLocs[column+','+row].type}}: {{terrainTypes[terrainLocs[column+','+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+','+row].type].def}}⛨ {{terrainTypes[terrainLocs[column+','+row].type].heal + terrainLocs[column+','+row].bonusHealVal}}♥"
+			 title="({{column}},{{row}}) {{terrainLocs[column+','+row].type}}: {{terrainTypes[terrainLocs[column+','+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+','+row].type].def}}⛨  {{terrainTypes[terrainLocs[column+','+row].type].heal + terrainLocs[column+','+row].bonusHealVal}}♥"
 			 ng-style="{left: determineGlowX(indexX)}"
 		>
 			 <div style="width: 100%; height: 100%;" ng-style="{'background-color': determineGlowColor(column+','+row)}"></div>
@@ -56,12 +56,13 @@
 		<div id="{{cIndex}}" 
 			 ng-if="validPosition(char.position)"
 			 class="absolutePos charDiv hoverImage"
-			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨ {{terrainTypes[terrainLocs[char.position].type].heal}}♥"
+			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨  {{terrainTypes[terrainLocs[char.position].type].heal + terrainLocs[char.position].bonusHealVal}}♥"
 			 ng-style="{left: determineCharX($index, char.position), top: determineCharY(char.position), 'z-index': determineCharZ(char.position)}"
 		>
 			<!--Unit sprite-->
 			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{grayscale: char.hasMoved == 'Yes'}" />
 			<img ng-src="{{getEnemyNum(char.name)}}" class="enemyNum" />
+			<div class="fireIcon" ng-if="terrainLocs[char.position].onFire == true"><img ng-src="IMG/Fire.gif" style="opacity: 0.75;" /></div>
 			<div class="healthBarBack"></div>
 			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*13)+'px'}"></div>
 			<div class="healthBarBorder"></div>
