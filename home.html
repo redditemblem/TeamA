@@ -138,8 +138,8 @@
 			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)"  ng-class="{'greenText': char.equippedWeapon.name.indexOf('(D)')!=-1, 'redText': char.equippedWeapon.name.indexOf('(D)')==-1}">{{formatWeaponName(char.equippedWeapon.name)}}</span>
 		</div>
 		<div ng-repeat="item in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index)}">
-			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class, item.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
-			<span class="indentedWeaponName" ng-if="validWeapon(item.name)" ng-class="{'greenText': item.name.indexOf('(D)')!=-1, 'redText': item.name.indexOf('(D)')==-1}">{{formatWeaponName(item.name)}}</span>
+			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class, item.icoOverride)}}" ng-class="{'transparentItem': item.equipped == true}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
+			<span class="indentedWeaponName" ng-if="validWeapon(item.name)" ng-class="{'lightGrayText': item.equipped == true, 'greenText': item.name.indexOf('(D)')!=-1, 'redText': item.name.indexOf('(D)')==-1}">{{formatWeaponName(item.name)}}</span>
 		</div>
 		<!--Accessories-->
 		<div ng-repeat="item in char.accessories" ng-mouseenter="accessoryHoverIn(cIndex, $index)" ng-mouseleave="accessoryHoverOut(cIndex, $index)" class="infoElement redText hoverTan2 itemsPos paleTan" ng-style="{top: fetchWeaponVerticalPos($index + 5)}">
@@ -198,7 +198,7 @@
 			</div>
 		</div>
 		<div ng-repeat="weapon in char.inventory">
-			<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, $index) && validWeapon(weapon.name)" ng-style="{top: fetchWpnDescVerticalPos($index)}">
+			<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, $index) && validWeapon(weapon.name) && weapon.equipped == false" ng-style="{top: fetchWpnDescVerticalPos($index)}">
 				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
 				<div class="popOutText itemRankPos">
 						<img style="display: inline-block;" ng-src="{{getItemDamageIcon(weapon.type)}}" />

@@ -233,7 +233,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	$scope.determineCharY = function(pos){
 		if(pos == "Defeated" || pos == "Not Deployed"){
 			numDefeat +=1;
-			return (Math.floor((numDefeat-1)/30) + ($scope.rows.length*(gridWidth+boxWidth)) + 16) +"px";
+			return ((Math.floor((numDefeat-1)/30) * (gridWidth + boxWidth)) + ($scope.rows.length * (gridWidth + boxWidth)) + 16) +"px";
 		}
 
 		pos = pos.substring(pos.indexOf(",")+1).trim();

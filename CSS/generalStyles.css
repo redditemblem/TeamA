@@ -278,6 +278,7 @@ img{
 .redText{ color: #000000;}
 .greenText{ color: #50FF50;}
 .tanText{ color: #eaeaea; }
+.lightGrayText{ color: #6D4E86; }
 .boldText{ font-weight: bold; }
 .italicText{ font-style: italic; }
 
@@ -293,6 +294,7 @@ img{
 .blackBorder{ border: 1px solid black; }
 .grayscale{ filter: grayscale(100%); }
 
+.transparentItem{ opacity: 0.5; }
 
 .hoverBrown:hover{
 	background-color: #5f605f !important;

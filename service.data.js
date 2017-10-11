@@ -75,7 +75,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'Lck' : w[22] != undefined ? w[22] : "",
 				'Def' : w[23] != undefined ? w[23] : "",
 				'Res' : w[24] != undefined ? w[24] : "",
-				'icoOverride' : w[28] != undefined ? w[28] : ""
+				'icoOverride' : w[28] != undefined ? w[28] : "",
+				'equipped' : false
 			}
 		  }
 
@@ -531,17 +532,21 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					currObj.accessories["acc_" + (l-20)] = getItem(c[l]);
 
 				//Inventory
-				var inv = c.slice(25, 30); //grab inventory items
-				var eqpIndex = inv.indexOf(currObj.equippedWeapon);
-				if(eqpIndex > -1){
-					c.splice(eqpIndex + 25, 1); //remove item
-					c.splice(29, 0, ""); //insert a blank at the end
-				}
-
 				currObj.equippedWeapon = getItem(currObj.equippedWeapon);
 
 				for(var m = 25; m < 30; m++)
 					currObj.inventory["itm_" + (m-24)] = getItem(c[m]);
+
+				//Replace equipped item with ghost
+				var inv = c.slice(25, 30); //grab inventory items
+				var eqpIndex = inv.indexOf(currObj.equippedWeapon.name);
+				if(currObj.equippedWeapon.name.length > 0 && eqpIndex > -1){
+					var key = "itm_" + (eqpIndex+1);
+					currObj.inventory[key] = getDefaultWeaponObj(currObj.equippedWeapon.name);
+					currObj.inventory[key].class = currObj.equippedWeapon.class;
+					currObj.inventory[key].icoOverride = currObj.equippedWeapon.icoOverride;
+					currObj.inventory[key].equipped = true;
+				}
 
 				//Tags
 				currObj.class.tags.push(currObj.race);
@@ -921,34 +926,39 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		}
 
 		if(name == undefined || name.length == 0 || itemIndex[name] == undefined)
-			return {
-				'name' : name != undefined ? name : "",
-				'class' : "Mystery",
-				'rank' : "",
-				'type' : "",
-				'might' : "",
-				'hit' : "",
-				'crit' : "",
-				'net' : "",
-				'range' : "",
-				'effect' : "Couldn't locate this item.",
-				'laguzEff' : "",
-				'desc' : "",
-				'HP' : "",
-				'Str' : "",
-				'Mag' : "",
-				'Skl' : "",
-				'OSpd' : "",
-				'DSpd' : "",
-				'Lck' : "",
-				'Def' : "",
-				'Res' : "",
-				'icoOverride' : ""
-		}
+			return getDefaultWeaponObj(name);
 		
 		var copy = Object.assign({}, itemIndex[name]);
 		copy.name = originalName;
 		return copy;
+	};
+
+	function getDefaultWeaponObj(name){
+		return {
+			'name' : name != undefined ? name : "",
+			'class' : "Mystery",
+			'rank' : "",
+			'type' : "",
+			'might' : "",
+			'hit' : "",
+			'crit' : "",
+			'net' : "",
+			'range' : "",
+			'effect' : "Couldn't locate this item.",
+			'laguzEff' : "",
+			'desc' : "",
+			'HP' : "",
+			'Str' : "",
+			'Mag' : "",
+			'Skl' : "",
+			'OSpd' : "",
+			'DSpd' : "",
+			'Lck' : "",
+			'Def' : "",
+			'Res' : "",
+			'icoOverride' : "",
+			'equipped' : false
+		}
 	};
 
 	function getSkill(name){
