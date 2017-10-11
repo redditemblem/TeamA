@@ -763,9 +763,10 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			var atkList = [];
 			var healList = [];
 		
-			if (char.position.length > 0 && char.position != "Not Deployed" && char.position != "Defeated") {
-				var horz = cols.indexOf(char.position.substring(0,char.position.indexOf(",")));
-				var vert = rows.indexOf(char.position.substring(char.position.indexOf(",")+1));
+			var pos = char.position;
+			if (pos.length > 0 && pos.indexOf(",") != -1 && pos != "Not Deployed" && pos != "Defeated") {
+				var horz = cols.indexOf(pos.substring(0,pos.indexOf(",")));
+				var vert = rows.indexOf(pos.substring(pos.indexOf(",")+1));
 				var range = parseInt(char.Mov);
 
 				var maxAtkRange = 0;
