@@ -429,9 +429,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
     
     //Returns the weapon rank icon relevant to the passed weapon type
-    $scope.weaponIcon = function(weaponName){ 	
-		if(weaponName == undefined) return "";
-    	var c = weaponName.toLowerCase();
+    $scope.weaponIcon = function(wpnCls){ 
+		const laguzCls = ["Fang", "Claw", "Hoof", "Tusk", "Talon", "Breath", "Song"];
+		if(wpnCls == undefined) return "";
+		
+		if(laguzCls.indexOf(wpnCls) != -1) wpnCls = "laguz";
+    	var c = wpnCls.toLowerCase();
     	return "IMG/RANK/rank_" + c + ".png";
     };
     
