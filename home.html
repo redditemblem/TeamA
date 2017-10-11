@@ -274,9 +274,18 @@
 				</div>
 			</div>
 			<div ng-if="char.race == 'Florkana'">
-				<span ng-repeat="com in races.Florkana.abilities" style="font-size: 9px;">
-					{{com.desc}}
-				</span>
+				<div style="margin-top: 5px; margin-bottom: 15px;">
+					<span ng-repeat="com in races.Florkana.abilities" style="font-size: 9px;">
+						{{com.desc}}
+					</span>
+				</div>
+				<div class="boldText" style="font-size: 9px; margin-bottom: 7px;">PREVIOUS TILES</div>
+				<div ng-repeat="com in char.racialInfo" style="font-size: 9px; margin-bottom: 7px;">
+					<div class="boldText">{{com}}</div>
+					<div style="padding-left: 5px;"><span class="italicText">Base Bonus: </span>{{terrainTypes[com].florkanaBonus}}</div>
+					<div style="padding-left: 5px;"><span class="italicText">Stacked: </span>{{terrainTypes[com].florkanaStack}}</div>
+					<div style="padding-left: 5px;"><span class="italicText">Uprooted: </span>{{terrainTypes[com].florkanaUproot}}</div>
+				</div>
 			</div>
 			<div ng-if="char.race == 'Ayzer'">
 				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 10px;">Water Meter: <img ng-repeat="i in [1,2,3,4,5,6,7,8,9,10]" ng-src="{{$index < char.racialInfo.waterMeter ? 'IMG/waterdrop.png' : 'IMG/waterdrop_empty.png'}}" style="display: inline-block;" /></div>

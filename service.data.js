@@ -367,6 +367,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'Mounted' : r[9],
 					'Flier' : r[10],
 					'effect' : r[11],
+					'florkanaBonus' : r[12],
+					'florkanaStack' : r[13],
+					'florkanaUproot' : r[14],
 					'isStructure' : r[16] == "Man-made Structure",
 					'isForest' : r[16] == "Forest",
 					'isMountain' : r[16] == "Mountain",
@@ -517,6 +520,11 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					case "Jera" :
 						for(var j = 64; j < 69; j++)
 							if(c[j].length > 0 && c[j] != "Empty")
+								currObj.racialInfo.push(c[j]);
+						break;
+					case "Florkana" :
+						for(var j = 64; j < 67; j++)
+							if(c[j].length > 0)
 								currObj.racialInfo.push(c[j]);
 						break;
 					case "Ayzer":
@@ -773,13 +781,12 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				if (isAttackingItem(char.equippedWeapon.class) && eR > maxAtkRange && r <= 10) maxAtkRange = eR;
 				else if (!isAttackingItem(char.equippedWeapon.class) && eR > maxHealRange && r <= 10) maxHealRange = eR;
 
-				/*for(var s in char.skills){
+				for(var s in char.skills){
 					var skl = char.skills[s];
 					switch(skl.name){
-						case "Pass" : hasPass = true; break;
-						case "Sea Legs" : hasSeaLegs = true; break;
+						case "Radiance" : if(maxHealRange > 0) maxHealRange += 1; break;
 					}
-				}*/
+				}
 
 				var params = {
 					'atkRange' : maxAtkRange,
