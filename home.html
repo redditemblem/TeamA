@@ -237,11 +237,19 @@
 					<span style="font-size: 9px;">{{com.desc}}</span>
 				</div>
 			</div>
-			<div ng-if="char.race == 'Laguz'">
+			<div ng-if="char.race == 'Laguz' && char.laguzType != 'Song'">
 				<div ng-repeat="com in races.Laguz.abilities[char.laguzType]" style="margin-top: 8px;">
-					<span class="boldText" style="font-size: 9px;">{{com.name}} <span ng-if="com.rank != '-'">({{com.rank}} Rank)</span></span>
+					<span class="boldText" style="font-size: 9px;">{{com.name}} <span ng-if="com.rank != '-' && com.rank != '~'">({{com.rank}} Rank)</span></span>
 					<span style="font-size: 8px;">[HP Cost: {{com.hpcost}}] +{{com.might}} Might, +{{com.hit}} Hit, +{{com.crit}} Crit<br />
 						<span class="italicText">{{com.desc}}</span>
+					</span>
+				</div>
+			</div>
+			<div ng-if="char.race == 'Laguz' && char.laguzType == 'Song'">
+				<div ng-repeat="com in char.racialInfo" style="margin-top: 8px;">
+					<span class="boldText" style="font-size: 9px;">{{races.Laguz.abilities.Song[com].name}}</span>
+					<span style="font-size: 8px;">[HP Cost: {{races.Laguz.abilities.Song[com].hpcost}}] +{{races.Laguz.abilities.Song[com].might}} Might, +{{races.Laguz.abilities.Song[com].hit}} Hit, +{{races.Laguz.abilities.Song[com].crit}} Crit<br />
+						<span class="italicText">{{races.Laguz.abilities.Song[com].desc}}</span>
 					</span>
 				</div>
 			</div>

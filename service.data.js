@@ -264,7 +264,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			if(s.length == 1 
 			   && !(skillBlock == "Beorc" && Object.keys(racialIndex.Beorc.abilities).length < 1)
 			   && !(skillBlock == "Florkana" && Object.keys(racialIndex.Florkana.abilities).length < 2)){
-				skillBlock = s[0];
+				skillBlock = (s[0] == "Beorc (or Branded)" ? "Beorc" : s[0]);
 				continue;
 			}
 
@@ -482,9 +482,35 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'desc' : c[83] != undefined ? c[83] : "",
 					'portrait' : c[84] != undefined ? c[84] : ""
 				};
-				
+
+				//Laguz functions
+				if(currObj.race == "Laguz"){
+					switch(currObj.class.name){
+						case "Canine" :
+						case "Chief" :  currObj.laguzType = "Fang"; break;
+						case "Small Cat" : 
+						case "Big Cat" : currObj.laguzType = "Claw"; break;
+						case "Equine" : currObj.laguzType = "Hoof"; break;
+						case "Avian" : currObj.laguzType = "Talon"; break;
+						case "Elephant" : currObj.laguzType = "Tusk"; break;
+						case "Dragon" : currObj.laguzType = "Breath"; break;
+						case "Heron" : 
+						case "Great Heron" : currObj.laguzType = "Song"; break;
+					}
+
+					if(currObj.name == "Miranda")
+						currObj.laguzType = "Fang";
+				}
+
 				//Populate racial info
 				switch(currObj.race){
+					case "Laguz" :
+						if(currObj.laguzType == "Song"){ 
+							for(var j = 64; j < 81; j++)
+								if(c[j].length > 0)
+									currObj.racialInfo.push(c[j]);
+						}
+						break;
 					case "Kano":
 						currObj.racialInfo.heatUnits = parseInt(c[64]);
 						break;
@@ -506,21 +532,6 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 							"Jera" : c[69]
 						}
 						break;
-				}
-
-				//Laguz functions
-				if(currObj.race == "Laguz"){
-					switch(currObj.class.name){
-						case "Canine" :
-						case "Chief" : currObj.laguzType = "Fang"; break;
-						case "Small Cat" : 
-						case "Big Cat" : currObj.laguzType = "Claw"; break;
-						case "Equine" : currObj.laguzType = "Hoof"; break;
-						case "Avian" : currObj.laguzType = "Talon"; break;
-						case "Elephant" : currObj.laguzType = "Tusk"; break;
-						case "Dragon" : currObj.laguzType = "Breath"; break;
-						case "Heron" : currObj.laguzType = "Song"; break;
-					}
 				}
 
 				//Skills
