@@ -1021,24 +1021,20 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function getEquippedWeaponRank(char){
-		var eqWpnCls = char.equippedWeapon.class;
-
+		const laguzCls = ["Fang", "Claw", "Hoof", "Tusk", "Talon", "Breath", "Song"];
+		var origWpnCls = char.equippedWeapon.class;
 		var wpnRank = "";
+
+		var eqWpnCls = "";
+		if(laguzCls.indexOf(origWpnCls) != -1) eqWpnCls = "Laguz";
+		else eqWpnCls = origWpnCls;
+
 		if(eqWpnCls == char.weaponRanks.w1.class) wpnRank = char.weaponRanks.w1.rank;
 		else if(eqWpnCls == char.weaponRanks.w2.class) wpnRank = char.weaponRanks.w2.rank;
 		else if(eqWpnCls == char.weaponRanks.w3.class) wpnRank = char.weaponRanks.w3.rank;
 		else if(eqWpnCls == char.weaponRanks.w4.class) wpnRank = char.weaponRanks.w4.rank;
 
-		if(eqWpnCls == "Laguz"){
-			if(char.equippedWeapon.name.indexOf("-") != -1)
-				eqWpnCls = char.equippedWeapon.name.substring(0, char.equippedWeapon.name.indexOf("-")).trim();
-			else eqWpnCls = char.equippedWeapon.name.trim();
-
-			eqWpnCls = eqWpnCls.replace("Spell", "");
-			eqWpnCls = eqWpnCls.charAt(0).toUpperCase() + eqWpnCls.slice(1); //capitalize first letter
-		}
-
-		if(wpnRank.length > 0) return weaponRankBonuses[eqWpnCls][wpnRank];
+		if(wpnRank.length > 0) return weaponRankBonuses[origWpnCls][wpnRank];
 		else return {'dmg' : 0, 'hit' : 0, 'crit' : 0 };
 	};
 
