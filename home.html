@@ -63,9 +63,11 @@
 			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{grayscale: char.hasMoved == 'Yes'}" />
 			<img ng-src="{{getEnemyNum(char.name)}}" class="enemyNum" />
 			<div class="fireIcon" ng-if="terrainLocs[char.position].onFire == true"><img ng-src="IMG/Fire.gif" style="opacity: 0.75;" /></div>
-			<div class="healthBarBack"></div>
-			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*13)+'px'}"></div>
-			<div class="healthBarBorder"></div>
+			<div ng-if="char.position.indexOf(',') != -1">
+				<div class="healthBarBack"></div>
+				<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*13)+'px'}"></div>
+				<div class="healthBarBorder"></div>
+			</div>
 			<img ng-if="char.class.tags.indexOf('Boss') != -1" class="pairUpIcon" src="IMG/shield_boss.png" />
 			<img ng-if="isPaired(cIndex)" class="pairUpIcon" src="IMG/shield_pairup.png" />
 			<div style="height: 16px; width: 16px; pointer-events: auto;" class="mapCharCentered" ng-click="displayData(cIndex)"></div>
