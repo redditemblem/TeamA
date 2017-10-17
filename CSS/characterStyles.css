@@ -86,6 +86,17 @@
 	left: 175px;
 }
 
+.supportBox{
+	position: absolute;
+	font-size: 10px;
+	text-align: center;
+	padding-top: 1px;
+	height: 16px;
+	width: 95px;
+	top: 254px;
+	left: 280px;
+}
+
 .battleStatBox{
 	position: absolute;
 	height: 17px;
@@ -259,6 +270,14 @@
 	padding-left: 17px;
 }
 
+.supportInfoPos{
+	overflow-y: hidden;
+	top: 65px;
+	width: 270px;
+	left: 5px;
+	height: 206px;
+}
+
 .tagInfoPos{
 	overflow-y: hidden;
 	top: 170px;
@@ -359,7 +378,7 @@
 .charExpPos{
 	width:95px;
 	height:25px;
-	top:175px;
+	top:170px;
 	left: calc(50% + 5px);
 	font-size: 12px;
 	text-align: center;

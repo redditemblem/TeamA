@@ -65,7 +65,7 @@
 			<div class="fireIcon" ng-if="terrainLocs[char.position].onFire == true"><img ng-src="IMG/Fire.gif" style="opacity: 0.75;" /></div>
 			<div ng-if="char.position.indexOf(',') != -1">
 				<div class="healthBarBack"></div>
-				<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*13)+'px'}"></div>
+				<div class="healthBarFront" ng-style="{width: getHPPercent(char.currHp, char.maxHp), 'background-color': determineHPBackgroundColor(char.currHp, char.maxHp)}"></div>
 				<div class="healthBarBorder"></div>
 			</div>
 			<img ng-if="char.class.tags.indexOf('Boss') != -1" class="pairUpIcon" src="IMG/shield_boss.png" />
@@ -116,7 +116,9 @@
 		</div>
 		<!--Weapon ranks-->
 		<div ng-repeat="w in char.weaponRanks" class="infoElement weaponRankPos" ng-style="{left: fetchWpnRankHorzPos($index), top: fetchWpnRankVertPos($index)}">
-			<span ng-if="existsWeapon(w.class)" title="{{w.class}} Rank" style="position:relative">
+			<span ng-if="existsWeapon(w.class)"
+				  title="{{w.class}} Rank {{w.rank}} (+{{weaponRankBonuses[w.class][w.rank].dmg}} Dmg, +{{weaponRankBonuses[w.class][w.rank].hit}} Hit, +{{weaponRankBonuses[w.class][w.rank].crit}} Crit)" 
+				  style="position:relative">
 				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
 				<div class="weaponRankBackground"></div>
 				<div class="weaponRankBar" ng-style="{width: calcWeaponExp(w.exp)+'px'}"></div>
@@ -156,6 +158,9 @@
 			<span class="indentedSkillName" ng-if="validSkill(skill.name)">{{skill.name}}</span>
 		</div>
 		<!--Additional Info-->
+		<div class="infoElement paleTan tanText hoverTan2 supportBox" ng-mouseover="supportsHoverIn(cIndex)" ng-mouseleave="supportsHoverOut(cIndex)">
+			Support Bonuses
+		</div>
 		<div class="infoElement paleTan tanText leafsPos">
 			<span class="indentedStatLabel tanText" style="top: 5px !important;">Leafs</span>
 			<span class="indentedStat" style="top: 3px !important;">{{char.gold}}</span>
@@ -282,7 +287,7 @@
 					</span>
 				</div>
 				<div class="boldText" style="font-size: 9px; margin-bottom: 7px;">PREVIOUS TILES</div>
-				<div ng-repeat="com in char.racialInfo" style="font-size: 9px; margin-bottom: 7px;">
+				<div ng-repeat="com in char.racialInfo track by $index" style="font-size: 9px; margin-bottom: 7px;">
 					<div class="boldText">{{com}}</div>
 					<div style="padding-left: 5px;"><span class="italicText">Base Bonus: </span>{{terrainTypes[com].florkanaBonus}}</div>
 					<div style="padding-left: 5px;"><span class="italicText">Stacked: </span>{{terrainTypes[com].florkanaStack}}</div>
@@ -320,6 +325,15 @@
 					<span ng-if="checkStatLength(char[stat[0]+'Boost'])">Boost: {{char[stat[0]+'Boost']}}<br /></span>
 				</span>
 			</div>
+		</div>
+		<!--Support Bonuses Info-->
+		<div ng-if="supportsHoverOn(cIndex)" class="infoElement green whiteText supportInfoPos">
+			<span class="supportsStyling">
+				<div ng-repeat="support in characterSupports[char.name]" style="display: inline-block; margin-bottom: 7px; width: 125px;">
+					<span class="boldText">{{support.name}}</span> ({{support.rank}} Rank)
+					<div class="italicText" style="padding-left: 5px;">{{getSupportBonusDesc(support.name, support.rank)}}</div>
+				</div>
+			</span>
 		</div>
 		<!--Tags Info-->
 		<div ng-if="tagsHoverOn(cIndex)" class="infoElement green whiteText tagInfoPos">

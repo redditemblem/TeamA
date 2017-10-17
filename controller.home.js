@@ -6,6 +6,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	var numDefeat = 0;
 	$scope.showGrid = 2;
 	var refreshListener;
+	var supportBonuses;
 
 	$scope.battleStatsList = [
 	                ["Atk", "60px"],
@@ -31,7 +32,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //Positioning constants
     const weaponVerticalPos = ["35px", "65px", "95px", "125px", "155px", "185px", "215px", "245px"];
 	const weaponRankHorzPos = ["290px", "340px", "290px", "340px"];
-	const weaponRankVertPos = ["210px", "210px", "240px", "240px"];
+	const weaponRankVertPos = ["200px", "200px", "225px", "225px"];
     const weaponDescVerticalPos = ["25px", "45px", "65px", "85px", "105px", "125px", "145px", "165px"];
     const skillVerticalPos = ["33px", "61px", "89px", "117px", "145px", "173px", "201px"];
     const skillDescVerticalPos = ["5px", "15px", "22px", "29px", "36px", "43px", "50px", "57px", "63px"];
@@ -58,6 +59,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		$scope.terrainTypes = DataService.getTerrainTypes();
 		$scope.terrainLocs = DataService.getTerrainMappings();
 		$scope.races = DataService.getRacialInfo();
+		$scope.weaponRankBonuses = DataService.getWeaponRankBonuses();
+		supportBonuses = DataService.getSupportBonuses();
+		$scope.characterSupports = DataService.getCharacterSupports();
 	}
 
 	$scope.redirectToHomePage = function() {
@@ -249,6 +253,20 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
 	};
 
+	$scope.getHPPercent = function(currHp, maxHp){
+		return Math.min((currHp/maxHp)*13, 13) + "px";
+	};
+
+	$scope.determineHPBackgroundColor = function(currHp, maxHp){
+		currHp = parseInt(currHp) || 0;
+		maxHp = parseInt(maxHp) || 1;
+
+		if(currHp > maxHp) return "#c430ff";
+		else if((currHp/maxHp) > 0.5) return "#00e003";
+		else if((currHp/maxHp) > 0.25) return "#ffe100";
+		else return "red";
+	};
+
     //***********************\\
     // POSITION CALCULATIONS \\
     //***********************\\
@@ -397,6 +415,20 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 		else return STAT_DEFAULT_COLOR;
 	};
 
+	$scope.getSupportBonusDesc = function(name, rank){
+		//Find char affinity
+		var aff = "";
+		for(var char in $scope.charaData){
+			if($scope.charaData[char].name == name){
+				aff = $scope.charaData[char].affinity;
+				break;
+			}
+		}
+
+		if(aff == "") return "";
+		else return supportBonuses[aff][rank].desc;
+	};
+
     //*************************\\
     // FUNCTIONS FOR INVENTORY \\
     // & WEAPONS PROFICIENCY   \\
@@ -517,6 +549,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     $scope.pairUpHoverIn = function(char){ $scope[char + "pair"] = true; };
     $scope.pairUpHoverOut = function(char){ $scope[char + "pair"] = false; };
     $scope.pairUpHoverOn = function(char){ return $scope[char + "pair"] == true; };
+
+	$scope.supportsHoverIn = function(char){ $scope[char + "support"] = true; };
+	$scope.supportsHoverOut = function(char){ $scope[char + "support"] = false; };
+	$scope.supportsHoverOn = function(char){ return $scope[char + "support"] == true; };
 
 	$scope.tagsHoverIn = function(char){ $scope[char + "tags"] = true; };
 	$scope.tagsHoverOut = function(char){ $scope[char + "tags"] = false; };

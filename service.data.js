@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 16) + 0.1;
+	const updateVal = (100 / 18) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 
@@ -9,7 +9,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	var enemies = null;
 	var rows = [];
 	var cols = [];
-	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, weaponRankBonuses, racialIndex, coordMapping, effectsMapping, terrainIndex, terrainLocs;
+	var map, characterData, enemyData, itemIndex, skillIndex, classIndex, statusIndex, weaponRankBonuses, supportBonuses, characterSupports, racialIndex, coordMapping, effectsMapping, terrainIndex, terrainLocs;
 	
 	this.getCharacters = function(){ return characters; };
 	this.getMap = function(){ return map; };
@@ -18,6 +18,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	this.getTerrainTypes = function(){ return terrainIndex; };
 	this.getTerrainMappings = function(){ return terrainLocs; };
 	this.getRacialInfo = function(){ return racialIndex; };
+	this.getWeaponRankBonuses = function(){ return weaponRankBonuses; }
+	this.getSupportBonuses = function(){ return supportBonuses; }
+	this.getCharacterSupports = function(){ return characterSupports; }
 
 	this.loadMapData = function(){ fetchCharacterData(); };
 	this.calculateRanges = function(){ getMapDimensions(); };
@@ -155,9 +158,70 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		 }
 
     	 updateProgressBar();
-    	 fetchWeaponRankBonuses();
+    	 fetchSupportBonuses();
       });
 	};
+
+	function fetchSupportBonuses() {
+		gapi.client.sheets.spreadsheets.values.get({
+		  spreadsheetId: sheetId,
+		  majorDimension: "ROWS",
+		  range: 'Supports!A2:B',
+		}).then(function(response) {
+		   var support = response.result.values;
+		   supportBonuses = {};
+			
+		   for(var i = 0; i < support.length; i++){
+			  var s = support[i];
+			  
+			  if(s.length == 0 || s[0].length == 0) continue;
+			  if(s[0] == "Boosts") break;
+
+			  var aff = s[0].substring(0, s[0].lastIndexOf(" ")).trim();
+			  var rank = s[0].substring(s[0].lastIndexOf(" ")).trim();
+
+			  if(supportBonuses[aff] == undefined) supportBonuses[aff] = {};
+			  supportBonuses[aff][rank] = {
+				'affinity' : aff,
+				'rank' : rank,
+				'desc' : s[1] != undefined ? s[1] : ""
+			  }
+		   }
+  
+		   updateProgressBar();
+		   fetchCharSupportRanks();
+		});
+	  };
+
+	function fetchCharSupportRanks() {
+		gapi.client.sheets.spreadsheets.values.get({
+		  spreadsheetId: "1LSRqgJ5vPZ3FDQyKtuyPmBM99izYOw7tsjYnBS6hTAg",
+		  majorDimension: "ROWS",
+		  range: 'Support Ranks!A1:ZZ',
+		}).then(function(response) {
+		   var support = response.result.values;
+		   characterSupports = {};
+		
+		   var header = support.shift();
+		   for(var i = 0; i < support.length; i++){
+			  var s = support[i];
+			  
+			  if(s.length == 0 || s[0].length == 0) continue;
+			  characterSupports[s[0]] = {};
+
+			  for(var j = 1; j < s.length; j++){
+				if(header[j] == s[0] || s[j] == undefined || s[j] == "") continue; //skip same character
+				characterSupports[s[0]][header[j]] = {
+					'name' : header[j],
+					'rank' : s[j]
+				}
+			  }
+		   }
+  
+		   updateProgressBar();
+		   fetchWeaponRankBonuses();
+		});
+	  };
 
 	function fetchWeaponRankBonuses() {
       gapi.client.sheets.spreadsheets.values.get({
