@@ -861,7 +861,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'affiliation' : char.affiliation
 				};
 
-				recurseRange(horz, vert, range, params, list, "_");
+				if(horz != -1 && vert != -1)
+					recurseRange(horz, vert, range, params, list, "_");
 				
 				list.forEach(function(e){
 					horz = cols.indexOf(e.substring(0,e.indexOf(",")));
