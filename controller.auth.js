@@ -1,14 +1,10 @@
-app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', function ($scope, $location, $interval, DataService) {
+app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', 'MusicService', function ($scope, $location, $interval, DataService, MusicService) {
     var id = fetch();
 	var sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
     $scope.ready = false;
     var checkGapi = $interval(checkAuth, 250);
     $scope.loadingIcon = pickLoadingIcon();
     var bar = document.getElementById('progress'); 
-	
-	//Hide dialogs at start
-	$scope.showShop = false;
-	$scope.showConvoy = false;
 
     //Set div visibility
     var authorizeDiv = document.getElementById('authorize-div');
@@ -19,20 +15,14 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', f
     loadingDiv.style.display = 'none';
 	bar.style.value = '0px';
 
-	//Global music variables
-	$scope.playMusic = false;
-	$scope.$root.toggleMusic = function(){ 
-		var audio = document.getElementById("audioPlayer");
-		if($scope.playMusic){
-			$scope.playMusic = false;
-			audio.pause();
-		}
-		else{
-			$scope.playMusic = true;
-			audio.play();
-		}
-	};
+	//Load chapter music
+	MusicService.initalizePlayer();
+	$scope.toggleMusic = function(){ MusicService.toggleMusic(); };
+	$scope.musicPlaying = function(){ return MusicService.musicPlaying(); };
 
+	//Dialogs
+	$scope.showShop = false;
+	$scope.showConvoy = false;
 	function displayShopDialog(){ $scope.showShop = true; $scope.$apply(); };
 	function displayConvoyDialog(){ $scope.showConvoy = true; $scope.$apply(); };
 

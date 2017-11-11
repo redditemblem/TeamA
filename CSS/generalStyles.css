@@ -233,10 +233,10 @@ img{
 
 .buttonGridStyle{
 	position: relative;
-	width: 150px; 
+	width: 130px; 
 	height: 20px;
 	bottom: 15px;
-	right: 215px;
+	right: 190px;
 	
  	border: 0px;
  	box-shadow: none;
@@ -249,10 +249,10 @@ img{
 
 .buttonPlayStyle{
 	position: relative;
-	width: 50px; 
+	width: 30px; 
 	height: 30px;
 	bottom: 13px;
-	right: 510px;
+	right: 380px;
 	
  	border: 0px;
  	box-shadow: none;
@@ -263,12 +263,23 @@ img{
 	cursor: pointer;
 }
 
+.musicPickerStyle{
+	position: relative;
+	width: 125px; 
+	height: 30px;
+	bottom: 15px;
+	right: 860px;
+	font-size: 10px;
+	border: 0px;
+	background-color: transparent;
+}
+
 .speakerIcon{
 	position: relative;
 	font-family: "Verdana";
 	font-size: 16px;
 	bottom: 13px;
-	right: 650px;
+	right: 510px;
 }
 
 .rangeStyle{
@@ -276,7 +287,7 @@ img{
 	width: 150px; 
 	height: 30px;
 	bottom: 3px;
-	right: 650px;
+	right: 510px;
 }
 
 .centerText{ text-align: center; }

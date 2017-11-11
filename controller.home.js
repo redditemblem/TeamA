@@ -1,4 +1,4 @@
-app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', function ($scope, $location, $interval, DataService) {
+app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', 'MusicService', function ($scope, $location, $interval, DataService, MusicService) {
 	$scope.rows = ["1"];
 	$scope.columns = ["1"];
 	const boxWidth = 15;
@@ -24,10 +24,17 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	                ["Def", "Defense. Reduces damage from physical attacks.",                    "210px", "180px"],
 	                ["Res", "Resistance. Reduces damage from physical attacks.",                 "232px", "202px"],
 					["Mov", "Movement. Affects how many blocks a unit can move in a turn.",      "254px", "210px"]
-	               ];
+				   ];
 	
 	//Interval timers
-    var dragNDrop = $interval(initializeListeners, 250, 20);
+	var dragNDrop = $interval(initializeListeners, 250, 20);
+	
+	//Music functions
+	$scope.toggleMusic = function(){ MusicService.toggleMusic(); };
+	$scope.musicPlaying = function(){ return MusicService.musicPlaying(); };
+	$scope.setTrack = function(n){ MusicService.setTrack($scope.selectedTrack); };
+	$scope.musicTracks = MusicService.getTrackList();
+	$scope.selectedTrack = $scope.musicTracks[0];
     
     //Positioning constants
     const weaponVerticalPos = ["35px", "65px", "95px", "125px", "155px", "185px", "215px", "245px"];
