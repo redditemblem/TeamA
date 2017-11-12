@@ -9,6 +9,7 @@ app.service('MusicService', ['$rootScope', function ($rootScope) {
         {'name' : "Zain: Lone Wolf", 'src' : "ZainTheme.mp3", 'speed' : 0.75},
         {'name' : "Ayer: Latent Fury", 'src' : "AyerTheme.mp3", 'speed' : 1.0},
         {'name' : "Daniël: A Change of Perspective", 'src' : "DanielTheme.mp3", 'speed' : 1.0},
+        {'name' : "Jetsetter: Refulgent Phosphoratoric Phantasmagoric Symphonia", 'src' : "JetsetterTheme.m4a", 'speed' : 1.0},
         {'name' : "Kiera: Sands of Home and Child", 'src' : "KieraTheme.mp3", 'speed' : 1.0},
         {'name' : "Relgia: Flameheart Swagger", 'src' : "RelgiaTheme.mp3", 'speed' : 1.0},
         {'name' : "Seed: Forest Voice", 'src' : "SeedTheme.mp3", 'speed' : 1.0},
