@@ -1069,14 +1069,27 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		else return JSON.parse(JSON.stringify(classIndex[name]));
 	};
 
-	function getStatusEffect(name){
-		if(name == undefined || name.length == 0 || statusIndex[name] == undefined)
+	function getStatusEffect(cell){
+		var name = cell.substring(0, cell.indexOf("(")).trim();
+		var turns = cell.substring(cell.indexOf("(")+1, cell.indexOf("(")+2);
+
+		if(name == undefined || name.length == 0)
 			return {
-				'name' : "No Status",
-				'turns' : "",
-				'effect' : "This unit's feeling pretty normal."
+				'obj' : { 'name' : "No Status",
+					   'turns' : "",
+					   'effect' : "This unit's feeling pretty normal."
+				},
+				'turns' : ""
 			}
-		else return statusIndex[name];
+		else if(statusIndex[name] == undefined)
+			return {
+				'obj' : { 'name' : name,
+					   'turns' : "#",
+					   'effect' : "Could not locate this status."
+				},
+				'turns' : turns
+			}
+		else return { 'obj' : statusIndex[name], 'turns' : turns };
 	};
 
 	//-------------------\\

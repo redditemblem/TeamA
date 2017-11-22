@@ -170,7 +170,7 @@
 			Tags
 		</div>
 		<div class="infoElement paleTan tanText statusPos hoverTan2" ng-mouseover="statusHoverIn(cIndex)" ng-mouseleave="statusHoverOut(cIndex)">
-			{{char.statusEffect.name}}
+			{{char.statusEffect.obj.name}}
 		</div>
 		<div class="infoElement paleTan tanText behaviorPos hoverTan2" ng-mouseover="behaviorHoverIn(cIndex)" ng-mouseleave="behaviorHoverOut(cIndex)">
 			Behavior
@@ -344,12 +344,12 @@
 		</div>
 		<!--Status Info-->
 		<div ng-if="statusHoverOn(cIndex)" class="infoElement green whiteText statusInfoPos">
-			<div class="boldText popOutText popOutHeader">{{char.statusEffect.name}}</div>
+			<div class="boldText popOutText popOutHeader">{{char.statusEffect.obj.name}}</div>
 			<div ng-if="char.statusEffect.turns.length > 0" class="italicText popOutText popOutHeader" style="right: 0px;">
-				{{char.statusEffect.turns}} Turns
+				{{char.statusEffect.turns}}/{{char.statusEffect.obj.turns}} Turns Left
 			</div>
 			<div class="customDivider" style="top:21px"></div>
-			<span class="popOutText popOutBody">{{char.statusEffect.effect}}</span>
+			<span class="popOutText popOutBody">{{char.statusEffect.obj.effect}}</span>
 		</div>
 		<!--Behavior Info-->
 		<div ng-if="behaviorHoverOn(cIndex)" class="infoElement green whiteText behaviorInfoPos">
