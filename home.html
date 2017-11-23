@@ -69,6 +69,7 @@
 				<div class="healthBarFront" ng-style="{width: getHPPercent(char.currHp, char.maxHp), 'background-color': determineHPBackgroundColor(char.currHp, char.maxHp)}"></div>
 				<div class="healthBarBorder"></div>
 			</div>
+			<img ng-if="char.statusEffect.obj.spriteUrl.length > 0" class="statusIcon" ng-src="{{char.statusEffect.obj.spriteUrl}}" />
 			<img ng-if="char.class.tags.indexOf('Boss') != -1" class="pairUpIcon" src="IMG/shield_boss.png" />
 			<img ng-if="isPaired(cIndex)" class="pairUpIcon" src="IMG/shield_pairup.png" />
 			<div style="height: 16px; width: 16px; pointer-events: auto;" class="mapCharCentered" ng-click="displayData(cIndex)"></div>

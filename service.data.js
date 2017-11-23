@@ -143,7 +143,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         majorDimension: "ROWS",
-		range: 'Status Effects!A2:C',
+		range: 'Status Effects!A2:E',
       }).then(function(response) {
 		 var stat = response.result.values;
 		 statusIndex = {};
@@ -153,7 +153,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			statusIndex[s[0]] = {
 				'name' : s[0],
 				'turns' : s[1],
-				'effect' : s[2]
+				'effect' : s[2],
+				'spriteUrl' : s[4] != undefined ? s[4] : "IMG/blankstatus.png"
 			};
 		 }
 
@@ -1077,7 +1078,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			return {
 				'obj' : { 'name' : "No Status",
 					   'turns' : "",
-					   'effect' : "This unit's feeling pretty normal."
+					   'effect' : "This unit's feeling pretty normal.",
+					   'spriteUrl' : ""
 				},
 				'turns' : ""
 			}
@@ -1085,7 +1087,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			return {
 				'obj' : { 'name' : name,
 					   'turns' : "#",
-					   'effect' : "Could not locate this status."
+					   'effect' : "Could not locate this status.",
+					   'spriteUrl' : "IMG/blankstatus.png"
 				},
 				'turns' : turns
 			}
