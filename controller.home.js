@@ -53,6 +53,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 	const NAMETAG_RED = "#c00c13";
 	const NAMETAG_GREEN = "#33bb33";
 	const NAMETAG_PERIWINKLE = "#9988dd";
+
+	$scope.jeraEnhancementColors = ["red", "yellow", "blue", "magenta", "orange", "lime", "purple", "darkred", "#515100", "navy", "black", "white", "lightgray"];
     
     //Reroutes the user if they haven't logged into the app
     //Loads data from the DataService if they have

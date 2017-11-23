@@ -278,8 +278,12 @@
 			<div ng-if="char.race == 'Jera'">
 				<div class="italicText" style="font-size: 10px; margin-top: 5px; margin-bottom: 10px;">Enchantment Cost: {{calcEnchantmentCost(char.maxHp)}} HP</div>
 				<div class="customDivider" style="top:18px"></div>
-				<div ng-repeat="com in char.racialInfo" style="margin-bottom: 7px;">
-					<span class="boldText" style="font-size: 9px;">{{com}}: </span><span class="italicText" style="font-size: 8px;">{{races.Jera.abilities[com].desc}}</span>
+				<div ng-repeat="com in races.Jera.abilities" ng-if="char.racialInfo[$index] != '-'" style="margin-bottom: 3px; display: inline-block; line-height: 6px;">
+					<span class="boldText" style="font-size: 7px;">
+						<span ng-style="{'color' : jeraEnhancementColors[$index]}">{{com.name}} </span>
+						({{char.racialInfo[$index]}} EXP):
+					</span>
+					<span class="italicText" style="font-size: 6px;"> {{com.desc}}</span>
 				</div>
 			</div>
 			<div ng-if="char.race == 'Florkana'">

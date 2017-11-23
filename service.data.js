@@ -584,9 +584,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						currObj.racialInfo.heatUnits = parseInt(c[64]);
 						break;
 					case "Jera" :
-						for(var j = 64; j < 69; j++)
-							if(c[j].length > 0 && c[j] != "Empty")
-								currObj.racialInfo.push(c[j]);
+						for(var j = 64; j < 77; j++)
+							currObj.racialInfo.push(c[j]);
 						break;
 					case "Florkana" :
 						for(var j = 64; j < 67; j++)
