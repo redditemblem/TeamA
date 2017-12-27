@@ -1169,7 +1169,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		
 		if(stat == "Spd") stat = "OSpd";
 		var wpn = char.equippedWeapon[stat];
-		wpn = (wpn != undefined ? parseInt(wpn) : 0);
+		wpn = (wpn != undefined && wpn.length > 0 ? parseInt(wpn) : 0);
 
 		return base + wpn;
 	};
