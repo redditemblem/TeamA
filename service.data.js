@@ -569,6 +569,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 					if(currObj.name == "Miranda")
 						currObj.laguzType = "Fang";
+					if(currObj.name == "C.C.")
+						currObj.laguzType = "Claw";
 				}
 
 				//Populate racial info
