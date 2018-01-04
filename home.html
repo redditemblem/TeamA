@@ -106,9 +106,9 @@
 			</span>
 		</div>
 		<!--Battle stats-->
-		<div ng-repeat="stat in battleStatsList" class="infoElement darkTan2 tanText battleStatBox" ng-style="{top: stat[1]}">
-			<span class="indentedStatLabel">{{stat[0]}}</span>
-			<span class="indentedStat">{{char[stat[0]]}}</span>
+		<div ng-repeat="stat in battleStatsList" class="infoElement darkTan2 battleStatBox" ng-style="{top: stat[1]}">
+			<span class="indentedStatLabel tanText">{{stat[0]}}</span>
+			<span class="indentedStat" ng-style="{color: getBattleStatColor(cIndex, stat[0])}">{{char[stat[0]]}}</span>
 		</div>
 		<!--Experience bar-->
 		<div class="infoElement redText charExpPos">
@@ -257,7 +257,7 @@
 			</div>
 			<div ng-if="char.race == 'Laguz' && char.laguzType == 'Song'">
 				<div ng-repeat="com in char.racialInfo" style="margin-top: 8px;">
-					<span class="boldText" style="font-size: 9px;">{{races.Laguz.abilities.Song[com].name}}</span>
+					<span class="boldText" style="font-size: 9px;" ng-style="{color: (races.Laguz.abilities.Song[com].name == char.laguzStance ? '#ffc132' : '#ffffff')}">{{races.Laguz.abilities.Song[com].name}}</span>
 					<span style="font-size: 8px;">[HP Cost: {{races.Laguz.abilities.Song[com].hpcost}}] +{{races.Laguz.abilities.Song[com].might}} Might, +{{races.Laguz.abilities.Song[com].hit}} Hit, +{{races.Laguz.abilities.Song[com].crit}} Crit<br />
 						<span class="italicText">{{races.Laguz.abilities.Song[com].desc}}</span>
 					</span>
@@ -330,6 +330,7 @@
 					<span ng-if="checkWpnStatLength(cIndex, stat[0])">{{char.equippedWeapon.name}}: {{getWpnStatValue(cIndex, stat[0])}}<br /></span>
 					<span ng-if="checkStatLength(char[stat[0]+'Buff'])">Buff/Debuff: {{char[stat[0]+'Buff']}}<br /></span>
 					<span ng-if="checkStatLength(char[stat[0]+'Boost'])">Boost: {{char[stat[0]+'Boost']}}<br /></span>
+					<span ng-if="checkStatExistence(char['Kano'+stat[0]])">Kano Vent: {{char["Kano"+stat[0]]}}</span>
 				</span>
 			</div>
 		</div>

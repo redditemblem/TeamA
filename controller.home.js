@@ -397,6 +397,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 		return stat.length > 0;
 	};
 
+	$scope.checkStatExistence = function(stat){
+		return stat != undefined;
+	};
+
 	$scope.checkWpnStatLength = function(index, s){
 		if(s == "Spd") s = "OSpd";
 		var stat = $scope.charaData[index].equippedWeapon[s];
@@ -421,6 +425,13 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 
 		if(enhnc > base) return STAT_BUFF_COLOR;
 		else if(enhnc < base) return STAT_DEBUFF_COLOR;
+		else return STAT_DEFAULT_COLOR;
+	};
+
+	$scope.getBattleStatColor = function(index, stat){
+		var char = $scope.charaData[index];
+		if(Math.floor(char["Base"+stat]) < char[stat]) return STAT_BUFF_COLOR;
+		else if(Math.floor(char["Base"+stat]) > char[stat]) return STAT_DEFAULT_COLOR;
 		else return STAT_DEFAULT_COLOR;
 	};
 

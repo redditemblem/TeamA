@@ -350,9 +350,9 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 							'rank' : s[0].charAt(s[0].length-1),
 							'name' : s[1],
 							'hpcost' : s[2],
-							'might' : s[3],
-							'hit' : s[4],
-							'crit' : s[5],
+							'might' : parseInt(s[3]) | 0,
+							'hit' : parseInt(s[4]) | 0,
+							'crit' : parseInt(s[5]) | 0,
 							'desc' : s[6]
 						};
 					}
@@ -569,7 +569,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					case "Laguz" :
 						if(c[64].length > 0) currObj.laguzStance = c[64];
 						else currObj.laguzStance = "";
-						
+
 						if(currObj.laguzType == "Song"){ 
 							for(var j = 65; j < 82; j++)
 								if(c[j].length > 0)
@@ -662,6 +662,12 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				currObj.Mov = revertStat(currObj, "Mov");
 
 				//Battle stats
+				currObj.BaseAtk = calcBaseAttack(currObj);
+				currObj.BaseHit = calcBaseHit(currObj);
+				currObj.BaseCrit = calcBaseCrit(currObj);
+				currObj.BaseAvo = calcBaseAvo(currObj);
+				currObj.BaseEva = calcBaseEva(currObj);
+
 				currObj.Atk = calcAttack(currObj);
 				currObj.Hit = calcHit(currObj);
 				currObj.Crit = calcCrit(currObj);
@@ -1123,51 +1129,109 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		else return {'dmg' : 0, 'hit' : 0, 'crit' : 0 };
 	};
 
-	function calcAttack(char){
+	function calcBaseAttack(char){
 		var eqWpn = char.equippedWeapon;
-		
-		var playerMight;
-		if(eqWpn.type == "Physical") playerMight = char.TrueStr;
-		else if(eqWpn.type == "Magical") playerMight = char.TrueMag;
-		else playerMight = 0;
+		if(eqWpn.type == "Physical") return char.TrueStr;
+		else if(eqWpn.type == "Magical") return char.TrueMag;
+		else return 0;
+	};
 
-		var wpnMight = parseInt(eqWpn.might) || 0;
+	function calcAttack(char){
+		var raceBonus = 0;
+		if(char.race == "Laguz" && char.laguzStance.length > 0){
+			for(var key in racialIndex.Laguz.abilities[char.laguzType]){
+				var com = racialIndex.Laguz.abilities[char.laguzType][key];
+				if(com.name == char.laguzStance){ raceBonus += com.might; break;}
+			}
+		}
+
+		var wpnMight = parseInt(char.equippedWeapon.might) || 0;
 		var dmgBonus = getEquippedWeaponRank(char).dmg;
 
-		return Math.floor(playerMight + wpnMight + dmgBonus);
+		return Math.floor(char.BaseAtk + wpnMight + dmgBonus + raceBonus);
+	};
+
+	function calcBaseHit(char){
+		return (char.TrueSkl * 2.5) + (char.TrueLck * 1.5);
 	};
 
 	function calcHit(char){
+		var raceBonus = 0;
+		if(char.race == "Laguz" && char.laguzStance.length > 0){
+			for(var key in racialIndex.Laguz.abilities[char.laguzType]){
+				var com = racialIndex.Laguz.abilities[char.laguzType][key];
+				if(com.name == char.laguzStance){ raceBonus += com.hit; break;}
+			}
+		}
+
 		var wpnHit =  parseInt(char.equippedWeapon.hit) || 0;
 		var hitBonus = getEquippedWeaponRank(char).hit;
 
-		return Math.floor((char.TrueSkl * 2.5) + (char.TrueLck * 1.5) + wpnHit + hitBonus);
+		return Math.floor(char.BaseHit + wpnHit + hitBonus + raceBonus);
+	};
+
+	function calcBaseAvo(char){
+		return (char.TrueSpd * 2.5) + (char.TrueLck * 1.5);
 	};
 
 	function calcAvo(char){
 		var wpnAvo =  parseInt(char.equippedWeapon.avo) || 0;
-		return Math.floor((char.TrueSpd * 2.5) + (char.TrueLck * 1.5) + wpnAvo);
+		return Math.floor(char.BaseAvo + wpnAvo);
+	};
+
+	function calcBaseCrit(char){
+		return char.TrueSkl * 2.5;
 	};
 
 	function calcCrit(char){
+		var raceBonus = 0;
+		if(char.race == "Laguz" && char.laguzStance.length > 0){
+			for(var key in racialIndex.Laguz.abilities[char.laguzType]){
+				var com = racialIndex.Laguz.abilities[char.laguzType][key];
+				if(com.name == char.laguzStance){ raceBonus += com.crit; break;}
+			}
+		}
+
 		var wpnCrit = parseInt(char.equippedWeapon.crit) || 0;
 		var critBonus = getEquippedWeaponRank(char).crit;
-		return Math.floor((char.TrueSkl * 2.5) + wpnCrit + critBonus);
+		return Math.floor(char.BaseCrit + wpnCrit + critBonus + raceBonus);
+	};
+
+	function calcBaseEva(char){
+		return char.TrueLck * 2.5;
 	};
 
 	function calcEva(char){
 		var wpnEva =  parseInt(char.equippedWeapon.eva) || 0;
-		return Math.floor((char.TrueLck * 2.5) + wpnEva);
+		return Math.floor(char.BaseEva + wpnEva);
 	};
 
 	function calcTrueStat(char, stat){
 		var base = parseInt(char[stat]) || 0;
-		
+
+		var kanoVent = 0;
+		if(char.race == "Kano" && char.racialInfo.heatUnits > 0 && stat != "Spd" && stat != "Mov"){
+			for(var key in racialIndex.Kano.abilities){
+				var com = racialIndex.Kano.abilities[key];
+				var maxHeat = parseInt((com.temp.length == 7 ? com.temp.slice(-2) : com.temp.replace("-", "").trim()));
+
+				if(char.racialInfo.heatUnits <= maxHeat){
+					var bonus;
+					if(["Str", "Mag", "Skl"].indexOf(stat) != -1) bonus = parseInt(com.statChanges.match("\\+[0-9]+")[0]) || 0;
+					else if(["Lck", "Def", "Res"].indexOf(stat) != -1) bonus = parseInt(com.statChanges.match("-[0-9]+")[0]) || 0;
+
+					char["Kano"+stat] = bonus;
+					kanoVent = bonus;
+					break;
+				}
+			}
+		}
+
 		if(stat == "Spd") stat = "OSpd";
 		var wpn = char.equippedWeapon[stat];
 		wpn = (wpn != undefined && wpn.length > 0 ? parseInt(wpn) : 0);
 
-		return base + wpn;
+		return base + wpn + kanoVent;
 	};
 
 	function revertStat(char, stat){
