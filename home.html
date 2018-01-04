@@ -70,6 +70,7 @@
 				<div class="healthBarBorder"></div>
 			</div>
 			<img ng-if="char.statusEffect.obj.spriteUrl.length > 0" class="statusIcon" ng-src="{{char.statusEffect.obj.spriteUrl}}" />
+			<img ng-if="char.laguzStance.length > 0" class="stanceIcon" ng-src="IMG/stance.png" />
 			<img ng-if="char.class.tags.indexOf('Boss') != -1" class="pairUpIcon" src="IMG/shield_boss.png" />
 			<img ng-if="isPaired(cIndex)" class="pairUpIcon" src="IMG/shield_pairup.png" />
 			<div style="height: 16px; width: 16px; pointer-events: auto;" class="mapCharCentered" ng-click="displayData(cIndex)"></div>
@@ -248,7 +249,7 @@
 			</div>
 			<div ng-if="char.race == 'Laguz' && char.laguzType != 'Song'">
 				<div ng-repeat="com in races.Laguz.abilities[char.laguzType]" style="margin-top: 8px;">
-					<span class="boldText" style="font-size: 9px;">{{com.name}} <span ng-if="com.rank != '-' && com.rank != '~'">({{com.rank}} Rank)</span></span>
+					<span class="boldText" style="font-size: 9px;" ng-style="{color: (com.name == char.laguzStance ? '#ffc132' : '#ffffff')}">{{com.name}} <span ng-if="com.rank != '-' && com.rank != '~'">({{com.rank}} Rank)</span></span>
 					<span style="font-size: 8px;">[HP Cost: {{com.hpcost}}] +{{com.might}} Might, +{{com.hit}} Hit, +{{com.crit}} Crit<br />
 						<span class="italicText">{{com.desc}}</span>
 					</span>
