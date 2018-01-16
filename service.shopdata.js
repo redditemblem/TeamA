@@ -18,7 +18,7 @@ app.service('ShopDataService', ['$rootScope', function ($rootScope) {
 				if(c[0].length > 0){
 					inventory.push({
 						'name' : c[0],
-						'stock' : c[1] != "-" ? parseInt(c[1]) : 0,
+						'stock' : c[1] == "-" ? 99 : (parseInt(c[1]) | 0),
 						'cost' : parseInt(c[2].match(/^[0-9]+/)),
 						'sale' : c[3] != "" ? parseInt(c[3].match(/^[0-9]+/)) : 0,
 						'type' : c[4],

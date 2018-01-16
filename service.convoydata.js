@@ -8,7 +8,7 @@ app.service('ConvoyDataService', ['$rootScope', function ($rootScope) {
 		gapi.client.sheets.spreadsheets.values.get({
 			spreadsheetId: sheetId,
 			majorDimension: "ROWS",
-			range: 'Convoy!B2:AB',
+			range: 'Convoy!B2:AD',
 	    }).then(function(response) {
 			var items = response.result.values;
 			inventory = [];
@@ -35,7 +35,8 @@ app.service('ConvoyDataService', ['$rootScope', function ($rootScope) {
 						'range' : c[14],
 						'rangeVal' : parseInt(c[14].substring(c[14].lastIndexOf("-")).trim()) | 0,
 						'effect' : c[15],
-						'desc' : c[17] != undefined ? c[17] : ""
+						'desc' : c[17] != undefined ? c[17] : "",
+						'value' : c[28] != undefined ? parseInt(c[28]) : 0
 					})
 				}
 			}

@@ -52,7 +52,7 @@
                  <tr class="inventoryRow">
                     <td style="text-align: center;">{{item.name}}</td>
                     <td style="text-align: center;" ng-style="{'background-color' : getRowColor(item.type)}">{{item.type}}</td>
-                    <td style="text-align: center;">{{item.stock}}</td>
+                    <td style="text-align: center;">{{item.stock == 99 ? "∞" : item.stock}}</td>
                     <td style="text-align: center;">
                         {{item.cost}} L<br />
                         <span ng-if="item.sale < 100" style="color: red;">(-{{100 - item.sale}}%)</span>
