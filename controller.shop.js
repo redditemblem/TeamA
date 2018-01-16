@@ -53,7 +53,6 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
 
     $scope.displayItemType = function(type){
       if(type == "None" || type == "Gear" || type == "Consumable" || type == "Item") return $scope.showOther;
-      if(type == "Anima" || type == "Light" || type == "Dark") return $scope.showTome;
       return $scope["show" + type] == true;
     };
 
