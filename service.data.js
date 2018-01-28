@@ -753,6 +753,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						case "XI" : setEnhancementTiles(c, r, "noMovCost", true); terrainLocs[coord].enhancement = row[c]; break;
 						case "XII" : setEnhancementTiles(c, r, "bonusMovCost", true); terrainLocs[coord].enhancement = row[c]; break;
 						case "Fire" : terrainLocs[coord].onFire = true; terrainLocs[coord].bonusHealVal = -20; break;
+						case "Barrier" : terrainLocs[coord].hasBarrier = true; break;
 					}
 				}
 			}
@@ -819,6 +820,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			'noMovCost' : false,
 			'bonusMovCost' : false,
 			'onFire' : false,
+			'hasBarrier' : false,
 			'bonusHealVal' : 0
 		}
 	};
@@ -921,6 +923,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
             //Determine traversal cost
 			if(  classCost == 99
+			 || (tile.hasBarrier == true)
 			 || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation)
 			 || (classCost > range)
 			){
@@ -953,8 +956,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			var coord = cols[horzPos]+","+rows[vertPos];
 			var tile = terrainLocs[coord];
 
-			var canAttack = terrainIndex[terrainLocs[coord].type].canAttack;
-			if(canAttack == undefined || canAttack == false ) return;
+			var canAttack = terrainIndex[tile.type].canAttack;
+			if(canAttack == undefined || canAttack == false || tile.hasBarrier == true ) return;
 			else range -= 1;
 
 			if(itemList.indexOf(coord) == -1) itemList.push(coord);
