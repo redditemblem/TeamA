@@ -5,7 +5,7 @@ app.service('MusicService', ['$rootScope', function ($rootScope) {
     var volume = 100;
     const audio = document.getElementById("audioPlayer");
     const musicTracks = [
-        {'name' : "Chapter 3 Theme", 'src' : "team-a-map3.mp3", 'speed' : 1.0},
+        {'name' : "Chapter 4 Theme", 'src' : "team_a_chapter_4.m4a", 'speed' : 1.0},
         {'name' : "Zain: Lone Wolf", 'src' : "ZainTheme.mp3", 'speed' : 0.75},
         {'name' : "Ayer: Latent Fury", 'src' : "AyerTheme.mp3", 'speed' : 1.0},
         {'name' : "Daniël: A Change of Perspective", 'src' : "DanielTheme.mp3", 'speed' : 1.0},
