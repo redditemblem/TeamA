@@ -1020,10 +1020,10 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			name = name.trim();
 		}
 
-		if(name == undefined || name.length == 0 || itemIndex[name] == undefined)
+		if(name == undefined || name.length == 0 || itemIndex[name.trim()] == undefined)
 			return getDefaultWeaponObj(name);
 		
-		var copy = Object.assign({}, itemIndex[name]);
+		var copy = Object.assign({}, itemIndex[name.trim()]);
 
 		if(originalName.indexOf("(D)") != -1){
 			copy.droppable = true;
@@ -1064,7 +1064,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function getSkill(name){
-		if(name == undefined || name.length == 0 || skillIndex[name] == undefined)
+		if(name == undefined || name.length == 0 || skillIndex[name.trim()] == undefined)
 			return {
 				'name' : name != undefined ? name : "",
 				'slot' : "",
@@ -1072,18 +1072,18 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'finalEff' : "",
 				'notes' : "This skill could not be located."
 			}
-		else return skillIndex[name];
+		else return skillIndex[name.trim()];
 	};
 
 	function getClass(name){
-		if(name == undefined || name.length == 0 || classIndex[name] == undefined)
+		if(name == undefined || name.length == 0 || classIndex[name.trim()] == undefined)
 			return {
 				'name' : name != undefined ? name : "",
 				'tags' : [],
 				'desc' : "",
 				'terrainType' : ""
 			}
-		else return JSON.parse(JSON.stringify(classIndex[name]));
+		else return JSON.parse(JSON.stringify(classIndex[name.trim()]));
 	};
 
 	function getStatusEffect(cell){
@@ -1099,7 +1099,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				},
 				'turns' : ""
 			}
-		else if(statusIndex[name] == undefined)
+		else if(statusIndex[name.trim()] == undefined)
 			return {
 				'obj' : { 'name' : name,
 					   'turns' : "#",
@@ -1108,7 +1108,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				},
 				'turns' : turns
 			}
-		else return { 'obj' : statusIndex[name], 'turns' : turns };
+		else return { 'obj' : statusIndex[name.trim()], 'turns' : turns };
 	};
 
 	//-------------------\\
