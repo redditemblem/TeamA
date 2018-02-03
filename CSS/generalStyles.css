@@ -169,6 +169,17 @@ img{
 	width:15px;
 }
 
+.affiliationBorderBox{
+	position:absolute;
+	margin: auto;
+	left:0;
+	right:0;
+	bottom:0;
+	top:0;
+	height:16px;
+	width:16px;
+}
+
 .glowBoxBorder0{
 	border: 0px solid rgba(0, 0, 0, .08);
 }
@@ -187,6 +198,26 @@ img{
 
 .glowBox:hover{
 	box-shadow: 0px 0px 10px rgba(255, 0, 0, 1);
+}
+
+.pinkBackground{
+	background-color: rgba(255, 0, 152, 0.25);
+}
+
+.pinkBorderTop{
+	border-top: 1px solid rgb(255, 0, 152);
+}
+
+.pinkBorderBottom{
+	border-bottom: 1px solid rgb(255, 0, 152);
+}
+
+.pinkBorderLeft{
+	border-left: 1px solid rgb(255, 0, 152);
+}
+
+.pinkBorderRight{
+	border-right: 1px solid rgb(255, 0, 152);
 }
 
 .absolutePos{

@@ -607,7 +607,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				for(var k = 30; k < 37; k++)
 					currObj.skills["skl_" + (k-29)] = getSkill(c[k]);
 
-				//Accessories
+				//Gear
 				for(var l = 21; l < 24; l++)
 					currObj.accessories["acc_" + (l-20)] = getItem(c[l]);
 
@@ -619,6 +619,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 				//Replace equipped item with ghost
 				var inv = c.slice(25, 30); //grab inventory items
+				for(var elm in inv) inv[elm] = inv[elm].replace("(D)", "").trim();
 				var eqpIndex = inv.indexOf(currObj.equippedWeapon.name);
 				if(currObj.equippedWeapon.name.length > 0 && eqpIndex > -1){
 					var key = "itm_" + (eqpIndex+1);
@@ -626,6 +627,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					currObj.inventory[key].class = currObj.equippedWeapon.class;
 					currObj.inventory[key].icoOverride = currObj.equippedWeapon.icoOverride;
 					currObj.inventory[key].equipped = true;
+					currObj.inventory[key].droppable = c[eqpIndex+25].indexOf("(D)") > -1;
+					currObj.equippedWeapon.droppable = currObj.inventory[key].droppable;
 				}
 
 				//Tags
@@ -814,6 +817,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			'movCount' : 0,
 			'atkCount' : 0,
 			'healCount' : 0,
+			'friendlyRange' : false,
+			'hostileRange' : false, 
 			'occupiedAffiliation' : '',
 			'enhancement' : "",
 			'isEnhanced' : false,
@@ -1019,7 +1024,13 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			return getDefaultWeaponObj(name);
 		
 		var copy = Object.assign({}, itemIndex[name]);
+
+		if(originalName.indexOf("(D)") != -1){
+			copy.droppable = true;
+			originalName = originalName.replace("(D)", "").trim();
+		}
 		copy.name = originalName;
+
 		return copy;
 	};
 
@@ -1047,6 +1058,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			'Def' : "",
 			'Res' : "",
 			'icoOverride' : "",
+			'droppable' : false,
 			'equipped' : false
 		}
 	};

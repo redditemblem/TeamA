@@ -30,11 +30,19 @@
 		</div>-->
 		<div class="convoyButton" ng-click="launchConvoyDialog()">
 			<img src="IMG/convoy_button.png" />
-			<span class="convoyButtonText" style="left: 18px;">Convoy</span>
+			<div class="convoyButtonText">Convoy</div>
 		</div>
 		<div class="convoyButton" ng-click="launchShopDialog()">
 			<img src="IMG/convoy_button.png" />
-			<span class="convoyButtonText" style="left: 24px;">Shop</span>
+			<div class="convoyButtonText">Shop</div>
+		</div>
+		<!--<div class="convoyButton" ng-click="toggleAffiliationRange(true)">
+			<img src="IMG/convoy_button.png" />
+			<div class="convoyButtonText">Friendly Rng</div>
+		</div>-->
+		<div class="convoyButton" ng-click="toggleAffiliationRange(false)">
+			<img src="IMG/convoy_button.png" />
+			<div class="convoyButtonText">Danger Zone</div>
 		</div>
 	</div>
 
@@ -45,7 +53,11 @@
 			 title="({{column}},{{row}}) {{terrainLocs[column+','+row].type}}: {{terrainTypes[terrainLocs[column+','+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+','+row].type].def}}⛨  {{terrainTypes[terrainLocs[column+','+row].type].heal + terrainLocs[column+','+row].bonusHealVal}}♥"
 			 ng-style="{left: determineGlowX(indexX)}"
 		>
-			 <div style="width: 100%; height: 100%;" ng-style="{'background-color': determineGlowColor(column+','+row)}"></div>
+			 <div class="absolutePos" 
+			      style="width: 100%; height: 100%;" 
+				  ng-class="{pinkBackground: affiliationTerrainIsOn(column+','+row)}"></div>
+			 <div class="affiliationBorderBox" ng-class="{pinkBorderTop: displayAffiliationBorder(column, row, 0, -1), pinkBorderBottom: displayAffiliationBorder(column, row, 0, 1), pinkBorderLeft: displayAffiliationBorder(column, row, -1, 0), pinkBorderRight: displayAffiliationBorder(column, row, 1, 0)}"></div>
+			 <div class="absolutePos" style="width: 100%; height: 100%;" ng-style="{'background-color': determineGlowColor(column+','+row)}"></div>
 			 <div class="enhancementRune" ng-if="terrainLocs[column+','+row].enhancement.length > 0" ng-style="{'background-image': 'url(IMG/RUNE/'+terrainLocs[column+','+row].enhancement+'.png)'}"></div>
 			 <div class="fireIcon" ng-if="terrainLocs[column+','+row].onFire == true"><img ng-src="IMG/Fire.gif" /></div> 
 			 <div class="fireIcon" style="opacity: 0.75;" ng-if="terrainLocs[column+','+row].hasBarrier == true"><img ng-src="IMG/barrier.png" /></div> 
@@ -112,7 +124,7 @@
 			<span class="indentedStat" ng-style="{color: getBattleStatColor(cIndex, stat[0])}">{{char[stat[0]]}}</span>
 		</div>
 		<!--Experience bar-->
-		<div class="infoElement redText charExpPos">
+		<div ng-if="determineAffiliationGrouping(char.affiliation) % 2 == 0" class="infoElement redText charExpPos">
 			EXP: {{char.exp % 100}}
 			<div class="expBarBack"></div>
 			<div class="expBarFront" ng-style="{width: (((char.exp % 100)/100) * 95)+'px'}"></div>
@@ -143,16 +155,16 @@
 		<!--Inventory-->
 		<div ng-mouseenter="weaponHoverIn(cIndex, -1)" ng-mouseleave="weaponHoverOut(cIndex, -1)" class="infoElement hoverTan2 itemsPos paleTan" style="top: 5px;">
 			<span class="indentedWeaponIcon" ng-if="validWeapon(char.equippedWeapon.name)"><img ng-src="{{getWeaponClassIcon(char.equippedWeapon.class, char.equippedWeapon.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
-			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)"  ng-class="{'greenText': char.equippedWeapon.name.indexOf('(D)')!=-1, 'redText': char.equippedWeapon.name.indexOf('(D)')==-1}">{{formatWeaponName(char.equippedWeapon.name)}}</span>
+			<span class="indentedWeaponName" ng-if="validWeapon(char.equippedWeapon.name)"  ng-class="{'greenText': char.equippedWeapon.droppable == true, 'redText': char.equippedWeapon.name.indexOf('(D)')==-1}">{{char.equippedWeapon.name}}</span>
 		</div>
 		<div ng-repeat="item in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement hoverTan itemsPos lightTan" ng-style="{top: fetchWeaponVerticalPos($index)}">
 			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class, item.icoOverride)}}" ng-class="{'transparentItem': item.equipped == true}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
-			<span class="indentedWeaponName" ng-if="validWeapon(item.name)" ng-class="{'lightGrayText': item.equipped == true, 'greenText': item.name.indexOf('(D)')!=-1, 'redText': item.name.indexOf('(D)')==-1}">{{formatWeaponName(item.name)}}</span>
+			<span class="indentedWeaponName" ng-if="validWeapon(item.name)" ng-class="{'lightGrayText': item.equipped == true, 'greenText': item.droppable == true, 'redText': item.name.indexOf('(D)')==-1}">{{item.name}}</span>
 		</div>
-		<!--Accessories-->
+		<!--Gear-->
 		<div ng-repeat="item in char.accessories" ng-mouseenter="accessoryHoverIn(cIndex, $index)" ng-mouseleave="accessoryHoverOut(cIndex, $index)" class="infoElement redText hoverTan2 itemsPos paleTan" ng-style="{top: fetchWeaponVerticalPos($index + 5)}">
 			<span class="indentedWeaponIcon" ng-if="validWeapon(item.name)"><img ng-src="{{getWeaponClassIcon(item.class, item.icoOverride)}}" onError="this.onerror=null;this.src='IMG/type_mystery.png';" /></span>
-			<span class="indentedWeaponName" ng-if="validWeapon(item.name)">{{item.name}}</span>
+			<span class="indentedWeaponName" ng-if="validWeapon(item.name)" ng-class="{greenText: item.droppable == true}">{{item.name}}</span>
 		</div>
 		<!--Skills-->
 		<div class="infoElement redText hoverTan2 paleTan hoverTan skillPos" ng-mouseover="skillHoverIn(cIndex, -1)" ng-mouseleave="skillHoverOut(cIndex, -1)" style="top: 5px;">
@@ -188,7 +200,7 @@
 		</div>
 		<!--Inventory Desc-->
 		<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, -1) && validWeapon(char.equippedWeapon.name)" style="top: 5px;">
-			<div class="popOutText itemNamePos boldText">{{formatWeaponName(char.equippedWeapon.name)}}</div>
+			<div class="popOutText itemNamePos boldText">{{char.equippedWeapon.name}}</div>
 			<div class="popOutText itemRankPos">
 				<img style="display: inline-block;" ng-src="{{getItemDamageIcon(char.equippedWeapon.type)}}" />
 				<span ng-if="hasWeaponRank(char.equippedWeapon.rank)">{{char.equippedWeapon.rank}} -</span>
@@ -210,7 +222,7 @@
 		</div>
 		<div ng-repeat="weapon in char.inventory">
 			<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, $index) && validWeapon(weapon.name) && weapon.equipped == false" ng-style="{top: fetchWpnDescVerticalPos($index)}">
-				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
+				<div class="popOutText itemNamePos boldText">{{weapon.name}}</div>
 				<div class="popOutText itemRankPos">
 						<img style="display: inline-block;" ng-src="{{getItemDamageIcon(weapon.type)}}" />
 					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span>
@@ -231,13 +243,16 @@
 				</div>
 			</div>
 		</div>
-		<!--Accesories Info-->
+		<!--Gear Info-->
 		<div ng-repeat="item in char.accessories">
 			<div class="infoElement green whiteText itemInfoPos" ng-if="accessoryHoverOn(cIndex, $index) && validWeapon(item.name)" ng-style="{top: fetchWpnDescVerticalPos($index + 5)}">
 				<div class="popOutText itemNamePos boldText">{{item.name}}</div>
 				<div class="popOutText itemRankPos">{{item.class}} ({{item.rank}} Slots)</div>
 				<div class="customDivider" style="top:22px"></div>
-				<div class="popOutText" style="top: 25px;"><span class="italicText">{{item.effect}}<br/></span><span>{{item.desc}}</span>
+				<div class="popOutText" ng-class="{'scroll-up' : textTooLong(item.effect, item.desc)}" style="top: 25px; height: 108px;">
+					<p style="padding: 0px; margin: 0px;">
+						<span class="italicText">{{item.effect}}<br/></span><span>{{item.desc}}</span>
+					</p>
 				</div>
 			</div>
 		</div>

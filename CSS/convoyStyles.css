@@ -7,10 +7,12 @@
 
 .convoyButtonText{
     position: relative;
+    bottom: 23px;
+    width: 80px;
+    text-align: center;
     color: black;
     font-family: Verdana;
-    font-size: 12px;
-    bottom: 26px;
+    font-size: 10px;
 }
 
 .convoyLoadingButton{

@@ -99,8 +99,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 		MapDataService.loadMapData(mapType);
 	};
 
-	$scope.launchConvoyDialog = function() { $scope.showConvoy = true; };
-	$scope.launchShopDialog = function(){ $scope.showShop = true; };
+	$scope.launchConvoyDialog = function() { $scope.showShop = false; $scope.showConvoy = !$scope.showConvoy; };
+	$scope.launchShopDialog = function(){ $scope.showConvoy = false; $scope.showShop = !$scope.showShop; };
     
     //*************************\\
     // FUNCTIONS FOR MAP TILE  \\
@@ -276,6 +276,56 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 		else return "red";
 	};
 
+	var friendlyRangeOn = false;
+	var hostileRangeOn = false;
+
+	$scope.toggleAffiliationRange = function(isFriendly){
+		if(isFriendly) friendlyRangeOn = !friendlyRangeOn;
+		else hostileRangeOn = !hostileRangeOn;
+
+		for(var c in $scope.charaData){
+			var char = $scope.charaData[c];
+			var aff = $scope.determineAffiliationGrouping(char.affiliation);
+
+			if(isFriendly == true && aff % 2 == 0)
+				markAffilitationRange(isFriendly, char.range, char.atkRange, char.healRange);
+			else if(isFriendly == false && aff % 2 == 1)
+				markAffilitationRange(isFriendly, char.range, char.atkRange, char.healRange);
+		}
+	};
+
+	function markAffilitationRange(isFriendly, range, atkRange, healRange){
+		range.concat(atkRange, healRange).forEach(function(i){
+			if(isFriendly == true) $scope.terrainLocs[i].friendlyRange = friendlyRangeOn;
+			else $scope.terrainLocs[i].hostileRange = hostileRangeOn;
+		});
+	};
+
+	$scope.affiliationTerrainIsOn = function(coord){
+		var tile = $scope.terrainLocs[coord];
+		return tile.friendlyRange == true || tile.hostileRange == true;
+	};
+
+	$scope.displayAffiliationBorder = function(col, row, addCol, addRow){
+		var tile = $scope.terrainLocs[col+','+row];
+		var adjacent = $scope.terrainLocs[(parseInt(col)+addCol)+','+(parseInt(row)+addRow)];
+
+		if(adjacent == undefined) return tile.friendlyRange || tile.hostileRange;
+		else return (tile.friendlyRange || tile.hostileRange) && !adjacent.friendlyRange && !adjacent.hostileRange;
+	};
+
+	$scope.determineAffiliationGrouping = function(aff){
+		switch(aff){
+			case "The Pack" : return 0;
+			case "Enemies" : 
+			case "Rettatese Army" : 
+			case "Ruffians" : return 1;
+			case "Ally" : return 2;
+			case "Other" : return 3;
+			default: return -1;
+		}
+	};
+
     //***********************\\
     // POSITION CALCULATIONS \\
     //***********************\\
@@ -412,10 +462,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 	
 	$scope.getWpnStatValue = function(index, s){
 		if(s == "Spd") s = "OSpd";
-		var stat = $scope.charaData[index].equippedWeapon[s];
-		
-		var num = stat.match(/^(-)[0-9]+/)[0];
-		return parseInt(num);
+		return $scope.charaData[index].equippedWeapon[s];
 	};
 
 	$scope.getStatColor = function(index, stat){
@@ -511,32 +558,26 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
     	return value != "" && value != "0" && value != "-";
     };
     
-    $scope.formatWeaponName = function(name){
-    	return name.replace("(D)", "");
-    };
-    
     $scope.hasWeaponRank = function(rank){
     	return rank != "" && rank != "-";
     };
     
     $scope.notItem = function(type){
-    	return type != "Staff" && type != "Consumable" && type != "Item" && type != "Gear" && type != "Mystery";
+    	return type != "Consumable" && type != "Item" && type != "Gear" && type != "Mystery";
     };
     
     $scope.setDescriptionLoc = function(type){
-    	if(type != "Staff" && type != "Consumable" && type != "Item" && type != "Gear" && type != "Mystery") return "60px";
+    	if(type != "Consumable" && type != "Item" && type != "Gear" && type != "Mystery") return "60px";
     	else return "25px";
     };
 
 	$scope.determineNametagColor = function(aff){
-		switch(aff){
-			case "The Pack" : return NAMETAG_BLUE;
-			case "Enemies" : 
-			case "Rettatese Army" : 
-			case "Ruffians" : return NAMETAG_RED;
-			case "Ally" : return NAMETAG_GREEN;
-			case "Other" : return NAMETAG_PERIWINKLE;
-			default: return "#000000";
+		switch($scope.determineAffiliationGrouping(aff)){
+			case -1: return "#000000";
+			case 0 : return NAMETAG_BLUE;
+			case 1 : return NAMETAG_RED;
+			case 2 : return NAMETAG_GREEN;
+			case 3 : return NAMETAG_PERIWINKLE;
 		}
 	};
 
