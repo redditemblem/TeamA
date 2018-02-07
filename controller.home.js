@@ -53,6 +53,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 	const NAMETAG_RED = "#c00c13";
 	const NAMETAG_GREEN = "#33bb33";
 	const NAMETAG_PERIWINKLE = "#9988dd";
+	const NAMETAG_DEFAULT = "#d89906";
 
 	$scope.jeraEnhancementColors = ["red", "yellow", "blue", "magenta", "orange", "lime", "purple", "darkred", "#515100", "navy", "black", "white", "lightgray"];
     
@@ -573,7 +574,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 
 	$scope.determineNametagColor = function(aff){
 		switch($scope.determineAffiliationGrouping(aff)){
-			case -1: return "#000000";
+			case -1: return NAMETAG_DEFAULT;
 			case 0 : return NAMETAG_BLUE;
 			case 1 : return NAMETAG_RED;
 			case 2 : return NAMETAG_GREEN;
