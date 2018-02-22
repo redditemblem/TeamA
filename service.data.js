@@ -764,7 +764,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 		for(var c in characters)
 			if(terrainLocs[characters[c].position] != undefined)
-				terrainLocs[characters[c].position].occupiedAffiliation = characters[c].affiliation;
+				terrainLocs[characters[c].position].occupiedAffiliation = getAffilitationGrouping(characters[c].affiliation);
 
 		updateProgressBar();
 		calculateCharacterRanges();
@@ -819,7 +819,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			'healCount' : 0,
 			'friendlyRange' : false,
 			'hostileRange' : false, 
-			'occupiedAffiliation' : '',
+			'occupiedAffiliation' : -1,
 			'enhancement' : "",
 			'isEnhanced' : false,
 			'noMovCost' : false,
@@ -827,6 +827,18 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			'onFire' : false,
 			'hasBarrier' : false,
 			'bonusHealVal' : 0
+		}
+	};
+
+	function getAffilitationGrouping(aff){
+		switch(aff){
+			case "The Pack" : 
+			case "Ally" :
+			default : return 0;
+			case "Enemies" : 
+			case "Rettatese Army" :
+			case "Ruffians" : return 1;
+			case "Other": return 2;
 		}
 	};
 
@@ -838,7 +850,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			var healList = [];
 		
 			var pos = char.position;
-			if (pos.length > 0 && pos.indexOf(",") != -1 && pos != "Not Deployed" && pos != "Defeated") {
+			if (pos.length > 0 && pos.indexOf(",") != -1 && pos != "Not Deployed" && pos != "Defeated" && pos != "Escaped") {
 				var horz = cols.indexOf(pos.substring(0,pos.indexOf(",")));
 				var vert = rows.indexOf(pos.substring(pos.indexOf(",")+1));
 				var range = parseInt(char.Mov);
@@ -929,7 +941,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
             //Determine traversal cost
 			if(  classCost == 99
 			 || (tile.hasBarrier == true)
-			 || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation)
+			 || (tile.occupiedAffiliation > -1 && tile.occupiedAffiliation != getAffilitationGrouping(params.affiliation))
 			 || (classCost > range)
 			){
 				return;

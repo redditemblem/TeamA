@@ -7,6 +7,7 @@ app.service('MusicService', ['$rootScope', function ($rootScope) {
     const musicTracks = [
         {'name' : "Chapter 4 Theme", 'src' : "team_a_chapter_4.m4a", 'speed' : 1.0},
         {'name' : "Zain: Lone Wolf", 'src' : "ZainTheme.mp3", 'speed' : 0.75},
+        {'name' : "Himaya: Branded of a Feather", 'src' : "HimayaTheme.mp3", 'speed': 1.25},
         {'name' : "Ayer: Latent Fury", 'src' : "AyerTheme.mp3", 'speed' : 1.0},
         {'name' : "Daniël: A Change of Perspective", 'src' : "DanielTheme.mp3", 'speed' : 1.0},
         {'name' : "Jetsetter: Refulgent Phosphoratoric Phantasmagoric Symphonia", 'src' : "JetsetterTheme.m4a", 'speed' : 1.0},
