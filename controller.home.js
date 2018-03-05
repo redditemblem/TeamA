@@ -530,7 +530,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
     
     //Returns the weapon rank icon relevant to the passed weapon type
     $scope.weaponIcon = function(wpnCls){ 
-		const laguzCls = ["Fang", "Claw", "Hoof", "Tusk", "Talon", "Breath", "Song"];
+		const laguzCls = ["Fang", "Claw", "Big Claw", "Hoof", "Tusk", "Talon", "Breath", "Song"];
 		if(wpnCls == undefined) return "";
 		
 		if(laguzCls.indexOf(wpnCls) != -1) wpnCls = "laguz";

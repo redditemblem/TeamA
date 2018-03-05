@@ -554,7 +554,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 
 				//Laguz functions
 				if(currObj.race == "Laguz"){
-					const ranks = ["Fang", "Claw", "Hoof", "Talon", "Tusk", "Breath", "Song"];
+					const ranks = ["Fang", "Claw", "Big Claw", "Hoof", "Talon", "Tusk", "Breath", "Song"];
 					for(var j = 1; j < 5 && currObj.laguzType == undefined; j++){
 						if(ranks.indexOf(currObj.weaponRanks["w"+j].class) != -1)
 						currObj.laguzType = currObj.weaponRanks["w"+j].class;
@@ -1139,7 +1139,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	};
 
 	function getEquippedWeaponRank(char){
-		const laguzCls = ["Fang", "Claw", "Hoof", "Tusk", "Talon", "Breath", "Song"];
+		const laguzCls = ["Fang", "Claw", "Big Claw", "Hoof", "Tusk", "Talon", "Breath", "Song"];
 		var origWpnCls = char.equippedWeapon.class;
 		var wpnRank = "";
 
