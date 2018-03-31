@@ -834,10 +834,12 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		switch(aff){
 			case "The Pack" : 
 			case "Ally" :
+			case "Psari" :
 			default : return 0;
 			case "Enemies" : 
 			case "Rettatese Army" :
-			case "Ruffians" : return 1;
+			case "Ruffians" :
+			case "???" : return 1;
 			case "Other": return 2;
 		}
 	};

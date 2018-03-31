@@ -320,8 +320,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 			case "The Pack" : return 0;
 			case "Enemies" : 
 			case "Rettatese Army" : 
-			case "Ruffians" : return 1;
-			case "Ally" : return 2;
+			case "Ruffians" :
+			case "???" : return 1;
+			case "Ally" :
+			case "Psari" : return 2;
 			case "Other" : return 3;
 			default: return -1;
 		}
