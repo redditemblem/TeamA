@@ -293,15 +293,15 @@
 	height:19px;
 	line-height: 19px;
 	font-size: 10px;
-	padding-left: 10px;
+	text-align: center;
 }
 
 .statusInfoPos{
 	overflow-y: hidden;
-	top: 191px;
+	top: 61px;
 	width:225px;
 	left:150px;
-	height:80px;
+	height: 210px;
 }
 
 .behaviorPos{

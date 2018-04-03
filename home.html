@@ -82,7 +82,7 @@
 				<div class="healthBarFront" ng-style="{width: getHPPercent(char.currHp, char.maxHp), 'background-color': determineHPBackgroundColor(char.currHp, char.maxHp)}"></div>
 				<div class="healthBarBorder"></div>
 			</div>
-			<img ng-if="char.statusEffect.obj.spriteUrl.length > 0" class="statusIcon" ng-src="{{char.statusEffect.obj.spriteUrl}}" />
+			<img ng-if="getObjectKeyCount(char.statusEffects) > 0" class="statusIcon" ng-src="IMG/STAT/{{getObjectKeyCount(char.statusEffects)}}status.png" />
 			<img ng-if="char.laguzStance.length > 0" class="stanceIcon" ng-src="IMG/stance.png" />
 			<img ng-if="char.class.tags.indexOf('Boss') != -1" class="pairUpIcon" src="IMG/shield_boss.png" />
 			<img ng-if="isPaired(cIndex)" class="pairUpIcon" src="IMG/shield_pairup.png" />
@@ -185,7 +185,7 @@
 			Tags
 		</div>
 		<div class="infoElement paleTan tanText statusPos hoverTan2" ng-mouseover="statusHoverIn(cIndex)" ng-mouseleave="statusHoverOut(cIndex)">
-			{{char.statusEffect.obj.name}}
+			{{getObjectKeyCount(char.statusEffects)}} Status<span ng-if="getObjectKeyCount(char.statusEffects) != 1">es</span>
 		</div>
 		<div class="infoElement paleTan tanText behaviorPos hoverTan2" ng-mouseover="behaviorHoverIn(cIndex)" ng-mouseleave="behaviorHoverOut(cIndex)">
 			Behavior
@@ -367,12 +367,15 @@
 		</div>
 		<!--Status Info-->
 		<div ng-if="statusHoverOn(cIndex)" class="infoElement green whiteText statusInfoPos">
-			<div class="boldText popOutText popOutHeader">{{char.statusEffect.obj.name}}</div>
-			<div ng-if="char.statusEffect.turns.length > 0" class="italicText popOutText popOutHeader" style="right: 0px;">
-				{{char.statusEffect.turns}}/{{char.statusEffect.obj.turns}} Turns Left
+			<div ng-repeat="status in char.statusEffects" class="popOutText" style="display: block; position: relative; padding-bottom: 5px;">
+				<div class="popOutHeader">
+					<span class="boldText">{{status.obj.name}}</span>
+					<span ng-if="status.turns.length > 0" class="italicText" style="float: right;">
+						{{status.turns}}/{{status.obj.turns}} Turns Left
+					</span>
+				</div>
+				<span class="popOutBody">{{status.obj.effect}}</span>
 			</div>
-			<div class="customDivider" style="top:21px"></div>
-			<span class="popOutText popOutBody">{{char.statusEffect.obj.effect}}</span>
 		</div>
 		<!--Behavior Info-->
 		<div ng-if="behaviorHoverOn(cIndex)" class="infoElement green whiteText behaviorInfoPos">

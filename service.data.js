@@ -642,7 +642,11 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				currObj.class.tags = Array.from(new Set(currObj.class.tags))
 
 				//Status
-				currObj.statusEffect = getStatusEffect(c[37]);
+				currObj.statusEffects = {};
+				var stats = c[37].split(",");
+				for(var s in stats)
+					if(stats[s].trim().length > 0)
+						currObj.statusEffects[stats[s].trim()] = getStatusEffect(stats[s].trim());
 
 				//True stats
 				currObj.TrueStr = calcTrueStat(currObj, "Str");

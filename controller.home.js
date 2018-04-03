@@ -102,6 +102,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 
 	$scope.launchConvoyDialog = function() { $scope.showShop = false; $scope.showConvoy = !$scope.showConvoy; };
 	$scope.launchShopDialog = function(){ $scope.showConvoy = false; $scope.showShop = !$scope.showShop; };
+
+	$scope.getObjectKeyCount = function(obj){
+		return Object.keys(obj).length;
+	}
     
     //*************************\\
     // FUNCTIONS FOR MAP TILE  \\
