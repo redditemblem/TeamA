@@ -16,6 +16,7 @@ app.service('MusicService', ['$rootScope', function ($rootScope) {
         {'name' : "Millie: Grave of Sorrow", 'src' : "MillieTheme.mp3", 'speed' : 1.0},
         {'name' : "Relgia: Flameheart Swagger", 'src' : "RelgiaTheme.mp3", 'speed' : 1.0},
         {'name' : "Namaka: Coasting Through Life and Battle", 'src' : "NamakaTheme.mp3", 'speed' : 1.0},
+        {'name' : "Nydrandisa: Dulled Light", 'src' : "NyrandisaTheme.mp3", 'speed' : 1.0},
         {'name' : "Seed: Forest Voice", 'src' : "SeedTheme.mp3", 'speed' : 1.0},
         {'name' : "Suleiman: 150 Years of Servitude", 'src' : "SuleimanTheme.mp3", 'speed' : 1.0}
     ];
