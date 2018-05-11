@@ -695,7 +695,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
         spreadsheetId: sheetId,
         majorDimension: "COLUMNS",
 		valueRenderOption: "FORMULA",
-        range: 'Map Management!A2:A2',
+        range: (type == 2 ? 'Gaiden ' : '') + 'Map Management!A2:A2',
       }).then(function(response) {
 		 map = response.result.values[0][0];
 		 
