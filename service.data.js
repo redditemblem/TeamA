@@ -3,6 +3,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	const updateVal = (100 / 18) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
+	var type;
 
 	var progress = 0;
 	var characters = null;
@@ -22,7 +23,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	this.getSupportBonuses = function(){ return supportBonuses; }
 	this.getCharacterSupports = function(){ return characterSupports; }
 
-	this.loadMapData = function(){ fetchCharacterData(); };
+	this.loadMapData = function(t){ type = t; fetchCharacterData(); };
 	this.calculateRanges = function(){ getMapDimensions(); };
 	
 	//\\//\\//\\//\\//\\//
@@ -33,7 +34,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
       gapi.client.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         majorDimension: "COLUMNS",
-        range: 'Character Tracker!B:ZZ',
+        range: (type == 2 ? 'Gaiden ' : '') + 'Character Tracker!B:ZZ',
       }).then(function(response) {
     	 characterData = response.result.values;
     	 updateProgressBar();
@@ -453,7 +454,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	    gapi.client.sheets.spreadsheets.values.get({
 			spreadsheetId: sheetId,
 			majorDimension: "ROWS",
-			range: 'Terrain Map!A:ZZ',
+			range: (type == 2 ? 'Gaiden ' : '') + 'Terrain Map!A:ZZ',
 	    }).then(function(response) {
 			coordMapping = response.result.values;
 
@@ -466,7 +467,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 	    gapi.client.sheets.spreadsheets.values.get({
 			spreadsheetId: sheetId,
 			majorDimension: "ROWS",
-			range: 'Effects Map!A:ZZ',
+			range: (type == 2 ? 'Gaiden ' : '') + 'Effects Map!A:ZZ',
 	    }).then(function(response) {
 			effectsMapping = response.result.values;
 			if(effectsMapping == undefined) effectsMapping = [];

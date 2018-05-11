@@ -40,17 +40,17 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', '
     		'apiKey': id, 
     		'discoveryDocs': ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
     	}).then(function(){
-			if(type == 2) displayConvoyDialog();
-			else if(type == 3) displayShopDialog();
-			else testWebAppAvailability();
+			if(type == 3) displayConvoyDialog();
+			else if(type == 4) displayShopDialog();
+			else testWebAppAvailability(type);
     	});
     };
 
-	function testWebAppAvailability(){
-	  gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: sheetId,
-        majorDimension: "COLUMNS",
-        range: 'Map Management!A1:A1',
+	function testWebAppAvailability(type){
+		gapi.client.sheets.spreadsheets.values.get({
+			spreadsheetId: sheetId,
+			majorDimension: "COLUMNS",
+			range: (type == 2 ? 'Gaiden ' : '') + 'Map Management!A1:A1',
       }).then(function(response) {
 		 var toggle = response.result.values[0][0];
 		 if(toggle == "Off"){
@@ -59,7 +59,7 @@ app.controller('AuthCtrl', ['$scope', '$location', '$interval', 'DataService', '
 		 }else{
 			authorizeDiv.style.display = 'none';
     		loadingDiv.style.display = 'inline';
-    		DataService.loadMapData();
+    		DataService.loadMapData(type);
 		 }
     	});
 	};

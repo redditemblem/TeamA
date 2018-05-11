@@ -5,15 +5,19 @@
 		<div class="authText">
 			<img src="IMG/logo.png">
 		</div>
-		<button class="authButton" ng-disabled="!ready" ng-click="loadAPI(event,1)" style="left: calc(50% - 50px); top: calc(50% + 35px);">
+		<button class="authButton" ng-disabled="!ready" ng-click="loadAPI(event,1)" style="left: calc(50% - 105px); top: calc(50% + 35px);">
 			<span ng-show="!ready"><img src="IMG/loading.gif"></span>
-			<span ng-show="ready">Load Map</span>
+			<span ng-show="ready">Chapter Map</span>
 		</button>
-		<button class="authButton" ng-click="loadAPI(event,2)" style="left: calc(50% - 105px); top: calc(50% + 75px);">
+		<button class="authButton" ng-disabled="!ready" ng-click="loadAPI(event,2)" style="left: calc(50% + 5px); top: calc(50% + 35px);">
+			<span ng-show="!ready"><img src="IMG/loading.gif"></span>
+			<span ng-show="ready">Gaiden Map</span>
+		</button>
+		<button class="authButton" ng-click="loadAPI(event,3)" style="left: calc(50% - 105px); top: calc(50% + 75px);">
 			<span ng-show="!ready"><img src="IMG/loading.gif"></span>
 			<span ng-show="ready">Convoy</span>
 		</button>
-		<button class="authButton" ng-click="loadAPI(event,3)" style="left: calc(50% + 5px); top: calc(50% + 75px);">
+		<button class="authButton" ng-click="loadAPI(event,4)" style="left: calc(50% + 5px); top: calc(50% + 75px);">
 			<span ng-show="!ready"><img src="IMG/loading.gif"></span>
 			<span ng-show="ready">Shop</span>
 		</button>
