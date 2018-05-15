@@ -54,6 +54,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 	const NAMETAG_GREEN = "#33bb33";
 	const NAMETAG_PERIWINKLE = "#9988dd";
 	const NAMETAG_DEFAULT = "#d89906";
+	const NAMETAG_WHITE = "#f9f9f4";
 
 	$scope.jeraEnhancementColors = ["red", "yellow", "blue", "magenta", "orange", "lime", "purple", "darkred", "#515100", "navy", "black", "white", "lightgray"];
     
@@ -329,6 +330,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 			case "Ally" :
 			case "Psari" : return 2;
 			case "Other" : return 3;
+			case "Environment" : return 4;
 			default: return -1;
 		}
 	};
@@ -585,6 +587,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 			case 1 : return NAMETAG_RED;
 			case 2 : return NAMETAG_GREEN;
 			case 3 : return NAMETAG_PERIWINKLE;
+			case 4 : return NAMETAG_WHITE;
 		}
 	};
 

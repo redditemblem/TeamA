@@ -846,6 +846,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			case "Ruffians" :
 			case "???" : return 1;
 			case "Other": return 2;
+			case "Environment" : return 3;
 		}
 	};
 
@@ -948,7 +949,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
             //Determine traversal cost
 			if(  classCost == 99
 			 || (tile.hasBarrier == true)
-			 || (tile.occupiedAffiliation > -1 && tile.occupiedAffiliation != getAffilitationGrouping(params.affiliation))
+			 || (tile.occupiedAffiliation > -1 && tile.occupiedAffiliation != 3 && tile.occupiedAffiliation != getAffilitationGrouping(params.affiliation))
 			 || (classCost > range)
 			){
 				return;

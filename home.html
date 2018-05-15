@@ -111,7 +111,12 @@
 			<img src="IMG/switchpairup.png">
 		</div>
 		<!--Name, Class, Lvl-->
-		<div class="infoElement whiteText charNamePos" ng-mouseenter="nameHoverIn(cIndex)" ng-mouseleave="nameHoverOut(cIndex)" ng-style="{'background-color': determineNametagColor(char.affiliation)}" style="text-align: center;">
+		<div class="infoElement charNamePos"
+			 ng-class="{'redText': determineAffiliationGrouping(char.affiliation) == 4, 'whiteText': determineAffiliationGrouping(char.affiliation) != 4}" 
+			 ng-mouseenter="nameHoverIn(cIndex)" 
+			 ng-mouseleave="nameHoverOut(cIndex)" 
+			 ng-style="{'background-color': determineNametagColor(char.affiliation)}" 
+			 style="text-align: center;">
 			<span style="position: relative; font-size: 18px; top: calc(50% - 17px);">{{char.name}}</span><br />
 			<span style="position: relative; top: 2px; font-size: 10px; height: 14px; vertical-align: middle;">
 				Lvl. {{calculateCharLvl(char.exp)}} {{char.race}} {{char.class.name}}
