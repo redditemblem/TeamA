@@ -481,7 +481,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		characters = {};
     	for(var i = 0; i < characterData.length; i++){
     		var c = characterData[i];
-			if(c[0] != ""){ //if character has a name
+			if(c[0] != undefined && c[0] != ""){ //if character has a name
 				var currObj = {
 					'name'   : c[0],
 					'spriteUrl' : c[1],
