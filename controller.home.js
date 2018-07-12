@@ -72,7 +72,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 		$scope.races = DataService.getRacialInfo();
 		$scope.weaponRankBonuses = DataService.getWeaponRankBonuses();
 		supportBonuses = DataService.getSupportBonuses();
-		$scope.characterSupports = DataService.getCharacterSupports();
+		$scope.characterSupports = {}; //DataService.getCharacterSupports();
 	}
 
 	$scope.redirectToHomePage = function() {
