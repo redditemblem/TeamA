@@ -1,6 +1,6 @@
 app.service('DataService', ['$rootScope', function ($rootScope) {
 	const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
-	const updateVal = (100 / 17) + 0.1;
+	const updateVal = (100 / 18) + 0.1;
 	const boxWidth = 15;
 	const gridWidth = 1;
 	var type;
@@ -191,8 +191,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 		   }
   
 		   updateProgressBar();
-		   //fetchCharSupportRanks();
-		   fetchWeaponRankBonuses();
+		   fetchCharSupportRanks();
 		});
 	  };
 
