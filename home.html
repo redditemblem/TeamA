@@ -314,8 +314,11 @@
 						{{com.desc}}
 					</span>
 				</div>
-				<div class="boldText" style="font-size: 9px; margin-bottom: 7px;">PREVIOUS TILES</div>
-				<div ng-repeat="com in char.racialInfo track by $index" style="font-size: 9px; margin-bottom: 7px;">
+				<div class="boldText" style="font-size: 9px; margin-bottom: 7px;">
+					PREVIOUS TILES
+					<div style="float: right;" ng-if="char.racialInfo.isUprooted"><img src="IMG/Uprooted.png" /> UPROOTED</div>
+				</div>
+				<div ng-repeat="com in char.racialInfo.terrainLog track by $index" style="font-size: 9px; margin-bottom: 7px;">
 					<div class="boldText">{{com}}</div>
 					<div style="padding-left: 5px;"><span class="italicText">Base Bonus: </span>{{terrainTypes[com].florkanaBonus}}</div>
 					<div style="padding-left: 5px;"><span class="italicText">Stacked: </span>{{terrainTypes[com].florkanaStack}}</div>

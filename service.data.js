@@ -585,9 +585,11 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 							currObj.racialInfo.push(c[j]);
 						break;
 					case "Florkana" :
+						currObj.racialInfo.terrainLog = [];
 						for(var j = 64; j < 67; j++)
 							if(c[j].length > 0)
-								currObj.racialInfo.push(c[j]);
+								currObj.racialInfo.terrainLog.push(c[j]);
+						currObj.racialInfo.isUprooted = (c[68] == "Yes");
 						break;
 					case "Ayzer":
 						currObj.racialInfo.waterMeter = parseInt(c[64]);
