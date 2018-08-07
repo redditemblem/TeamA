@@ -3,10 +3,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 	$scope.columns = ["1"];
 	const boxWidth = 15;
 	const gridWidth = 1;
-	var numDefeat = 0;
 	$scope.showGrid = 2;
 	var refreshListener;
-	var supportBonuses;
+	var supportRanks, supportBonuses;
 
 	$scope.battleStatsList = [
 	                ["Atk", "60px"],
@@ -57,7 +56,17 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 	const NAMETAG_WHITE = "#f9f9f4";
 
 	$scope.jeraEnhancementColors = ["red", "yellow", "blue", "magenta", "orange", "lime", "purple", "darkred", "#515100", "navy", "black", "white", "lightgray"];
-    
+	
+	//Empty values
+	$scope.charaData = {};
+	$scope.mapUrl = "";
+	$scope.terrainTypes = {};
+	$scope.terrainLocs = {};
+	$scope.races = {};
+	$scope.weaponRankBonuses = {};
+	supportBonuses = {};
+	$scope.characterSupports = {};
+
     //Reroutes the user if they haven't logged into the app
     //Loads data from the DataService if they have
 	if(DataService.getCharacters() == null)
@@ -71,8 +80,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 		$scope.terrainLocs = DataService.getTerrainMappings();
 		$scope.races = DataService.getRacialInfo();
 		$scope.weaponRankBonuses = DataService.getWeaponRankBonuses();
-		supportBonuses = DataService.getSupportBonuses();
 		$scope.characterSupports = DataService.getCharacterSupports();
+		supportRanks = DataService.getCharacterSupports();
+		supportBonuses = DataService.getSupportBonuses();
 	}
 
 	$scope.redirectToHomePage = function() {
@@ -234,39 +244,6 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
     $scope.validPosition = function(pos){
     	return pos == 'Not Deployed' || pos == 'Defeated' || pos.indexOf(",") != -1;
 	};
-    
-    //Using a character's coordinates, calculates their horizontal
-    //position on the map
-    $scope.determineCharX = function(index, pos){
-		if(index == 0) numDefeat = 0; 
-		if(pos == "Defeated" || pos == "Not Deployed")
-			return (((numDefeat % 30) * 16) + 16) + "px";
-
-    	pos = pos.substring(0,pos.indexOf(","));
-    	pos = parseInt(pos);
-    	return (((pos-1) * (boxWidth + gridWidth)) + gridWidth) + "px";
-    };
-    
-	//Using a character's coordinates, calculates their vertical
-	//position on the map
-	$scope.determineCharY = function(pos){
-		if(pos == "Defeated" || pos == "Not Deployed"){
-			numDefeat +=1;
-			return ((Math.floor((numDefeat-1)/30) * (gridWidth + boxWidth)) + ($scope.rows.length * (gridWidth + boxWidth)) + 16) +"px";
-		}
-
-		pos = pos.substring(pos.indexOf(",")+1).trim();
-    	pos = parseInt(pos);
-    	return ((pos-1) * (boxWidth + gridWidth)) + "px";
-	};
-	
-	$scope.determineCharZ = function(pos){
-		if(pos == "Defeated" || pos == "Not Deployed") return "0";
-
-		pos = pos.substring(pos.indexOf(",")+1).trim(); //grab first number
-		return pos;
-
-	};
 
 	$scope.getHPPercent = function(currHp, maxHp){
 		return Math.min((currHp/maxHp)*13, 13) + "px";
@@ -396,7 +373,6 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 	};
 
 	$scope.getPairSupportRank = function(name, pos){
-		var supportRanks = DataService.getSupportIndex();
 		var partner = pos.substring(pos.indexOf("(")+1, pos.indexOf(")"));
 		var rank = supportRanks[name][partner];
 		if(rank != "-") return rank;
@@ -404,9 +380,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 	};
 
 	$scope.buildPairSupportBonuses = function(pos){
-		var data = DataService.getSupportBonuses();
 		var partner = pos.substring(pos.indexOf("(")+1, pos.indexOf(")"));
-		var bonuses = data[partner];
+		var bonuses = supportBonuses[partner];
 		var returnStr = "";
 
 		for(var stat in bonuses){

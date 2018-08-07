@@ -71,7 +71,7 @@
 			 ng-if="validPosition(char.position)"
 			 class="absolutePos charDiv hoverImage"
 			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨  {{terrainTypes[terrainLocs[char.position].type].heal + terrainLocs[char.position].bonusHealVal}}♥"
-			 ng-style="{left: determineCharX($index, char.position), top: determineCharY(char.position), 'z-index': determineCharZ(char.position)}"
+			 ng-style="{left: char.drawPos.x, top: char.drawPos.y, 'z-index': char.drawPos.z}"
 		>
 			<!--Unit sprite-->
 			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{grayscale: char.hasMoved == 'Yes'}" />

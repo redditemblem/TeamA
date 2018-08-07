@@ -490,6 +490,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 					'affinity' : c[4],
 					'affiliation' : c[5],
 					'position' : c[6],
+					'drawPos' : {},
 					'hasMoved' : c[7],
 					'currHp' : c[8],
 					'maxHp'  : c[9],
@@ -769,9 +770,18 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			}
 		}
 
-		for(var c in characters)
-			if(terrainLocs[characters[c].position] != undefined)
-				terrainLocs[characters[c].position].occupiedAffiliation = getAffilitationGrouping(characters[c].affiliation);
+		for(var c in characters){
+			var char = characters[c];
+
+			//Calculate drawn position
+			char.drawPos.x = determineCharX(char.position);
+			char.drawPos.y = determineCharY(char.position);
+			char.drawPos.z = determineCharZ(char.position);
+
+			if(terrainLocs[char.position] != undefined)
+			terrainLocs[char.position].occupiedAffiliation = getAffilitationGrouping(char.affiliation);
+		}
+
 
 		updateProgressBar();
 		calculateCharacterRanges();
@@ -1132,6 +1142,50 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 				'turns' : turns
 			}
 		else return { 'obj' : statusIndex[name.trim()], 'turns' : turns };
+	};
+
+	//--------------------\\
+	// COORD CALCULATIONS \\
+	//--------------------\\
+
+	var numDefeat = 0;
+
+	function determineCharX(pos){
+		if(pos == "Defeated" || pos == "Not Deployed")
+			return (((numDefeat % 30) * 16) + 16) + "px";
+
+		var comma = pos.indexOf(",");
+		if(comma == -1) return "-1";
+
+    	pos = pos.substring(0,comma);
+    	pos = parseInt(pos);
+    	return (((pos-1) * (boxWidth + gridWidth)) + gridWidth) + "px";
+    };
+    
+	//Using a character's coordinates, calculates their vertical
+	//position on the map
+	function determineCharY(pos){
+		if(pos == "Defeated" || pos == "Not Deployed"){
+			numDefeat +=1;
+			return ((Math.floor((numDefeat-1)/30) * (gridWidth + boxWidth)) + (rows.length * (gridWidth + boxWidth)) + 16) +"px";
+		}
+
+		var comma = pos.indexOf(",");
+		if(comma == -1) return "-1";
+
+		pos = pos.substring(comma+1).trim();
+    	pos = parseInt(pos);
+    	return ((pos-1) * (boxWidth + gridWidth)) + "px";
+	};
+	
+	function determineCharZ(pos){
+		if(pos == "Defeated" || pos == "Not Deployed") return "0";
+		var comma = pos.indexOf(",");
+		if(comma == -1) return "-1";
+
+		pos = pos.substring(comma+1).trim(); //grab first number
+		return pos;
+
 	};
 
 	//-------------------\\
