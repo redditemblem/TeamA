@@ -852,10 +852,12 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			case "The Pack" : 
 			case "Ally" :
 			case "Psari" :
+			case "Neraida" :
 			default : return 0;
 			case "Enemies" : 
 			case "Rettatese Army" :
 			case "Ruffians" :
+			case "Jolinde's Troops" :
 			case "???" : return 1;
 			case "Other": return 2;
 			case "Environment" : return 3;

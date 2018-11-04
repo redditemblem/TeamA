@@ -303,9 +303,11 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 			case "Enemies" : 
 			case "Rettatese Army" : 
 			case "Ruffians" :
+			case "Jolinde's Troops" :
 			case "???" : return 1;
 			case "Ally" :
-			case "Psari" : return 2;
+			case "Psari" : 
+			case "Neraida" : return 2;
 			case "Other" : return 3;
 			case "Environment" : return 4;
 			default: return -1;
