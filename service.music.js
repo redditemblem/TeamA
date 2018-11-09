@@ -5,7 +5,7 @@
     var volume = 100;
     const audio = document.getElementById("audioPlayer");
     const musicTracks = [
-        {'name' : "Gaiden 2 Theme", 'src' : "Gaiden2Theme.mp3", 'speed' : 1.0},
+        {'name' : "Chapter Theme", 'src' : "ChapterTheme.mp3", 'speed' : 1.0},
         {'name' : "Zain: Lone Wolf", 'src' : "ZainTheme.mp3", 'speed' : 0.75},
         {'name' : "Himaya: Branded of a Feather", 'src' : "HimayaTheme.mp3", 'speed': 1.25},
         {'name' : "Ayer: Latent Fury", 'src' : "AyerTheme.mp3", 'speed' : 1.0},
@@ -17,8 +17,7 @@
         {'name' : "Relgia: Flameheart Swagger", 'src' : "RelgiaTheme.mp3", 'speed' : 1.0},
         {'name' : "Namaka: Coasting Through Life and Battle", 'src' : "NamakaTheme.mp3", 'speed' : 1.0},
         {'name' : "Nydrandisa: Dulled Light", 'src' : "NyrandisaTheme.mp3", 'speed' : 1.0},
-        {'name' : "Seed: Forest Voice", 'src' : "SeedTheme.mp3", 'speed' : 1.0},
-        {'name' : "Suleiman: 150 Years of Servitude", 'src' : "SuleimanTheme.mp3", 'speed' : 1.0}
+        {'name' : "Seed: Forest Voice", 'src' : "SeedTheme.mp3", 'speed' : 1.0}
     ];
 
     //Functions
