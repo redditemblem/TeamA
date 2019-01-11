@@ -765,6 +765,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						case "XII" : setEnhancementTiles(c, r, "bonusMovCost", true); terrainLocs[coord].enhancement = row[c]; break;
 						case "Fire" : terrainLocs[coord].onFire = true; terrainLocs[coord].bonusHealVal = -20; break;
 						case "Barrier" : terrainLocs[coord].hasBarrier = true; break;
+						case "Barrel" : terrainLocs[coord].hasBarrel = true; break;
 					}
 				}
 			}
@@ -964,6 +965,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
             //Determine traversal cost
 			if(  classCost == 99
 			 || (tile.hasBarrier == true)
+			 || (tile.hasBarrel == true)
 			 || (tile.occupiedAffiliation > -1 && tile.occupiedAffiliation != 3 && tile.occupiedAffiliation != getAffilitationGrouping(params.affiliation))
 			 || (classCost > range)
 			){
