@@ -55,11 +55,13 @@
 		>
 			 <div class="absolutePos" 
 			      style="width: 100%; height: 100%;" 
-				  ng-class="{pinkBackground: affiliationTerrainIsOn(column+','+row)}"></div>
+				  ng-class="{pinkBackground: affiliationTerrainIsOn(column+','+row)}">
+			</div>
 			 <div class="affiliationBorderBox" ng-class="{pinkBorderTop: displayAffiliationBorder(column, row, 0, -1), pinkBorderBottom: displayAffiliationBorder(column, row, 0, 1), pinkBorderLeft: displayAffiliationBorder(column, row, -1, 0), pinkBorderRight: displayAffiliationBorder(column, row, 1, 0)}"></div>
 			 <div class="absolutePos" style="width: 100%; height: 100%;" ng-style="{'background-color': determineGlowColor(column+','+row)}"></div>
 			 <div class="enhancementRune" ng-if="terrainLocs[column+','+row].enhancement.length > 0" ng-style="{'background-image': 'url(IMG/RUNE/'+terrainLocs[column+','+row].enhancement+'.png)'}"></div>
-			 <div class="fireIcon" ng-if="terrainLocs[column+','+row].hasBarrel == true"><img ng-src="IMG/barrel.png" /></div>
+			 <div class="barrelIcon" ng-if="terrainLocs[column+','+row].hasBarrel == true"><img ng-src="IMG/barrel.png" /></div>
+			 <div class="crateIcon" ng-if="terrainLocs[column+','+row].hasCrate == true"><img ng-src="IMG/crate.png" /></div>
 			 <div class="fireIcon" ng-if="terrainLocs[column+','+row].onFire == true"><img ng-src="IMG/Fire.gif" /></div> 
 			 <div class="fireIcon" style="opacity: 0.75;" ng-if="terrainLocs[column+','+row].hasBarrier == true"><img ng-src="IMG/barrier.png" /></div> 
 			 <div class="glowBoxBorderBox" ng-class="{glowBoxBorder3:showGrid==3, glowBoxBorder2:showGrid==2, glowBoxBorder1:showGrid==1}"></div>
@@ -76,6 +78,8 @@
 		>
 			<!--Unit sprite-->
 			<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{grayscale: char.hasMoved == 'Yes'}" />
+			<div class="barrelIcon" ng-if="terrainLocs[char.position].hasBarrel == true"><img ng-src="IMG/barrel.png" /></div>
+			<div class="crateIcon" ng-if="terrainLocs[char.position].hasCrate == true"><img ng-src="IMG/crate.png" /></div>
 			<img ng-src="{{getEnemyNum(char.name)}}" class="enemyNum" />
 			<div class="fireIcon" ng-if="terrainLocs[char.position].onFire == true"><img ng-src="IMG/Fire.gif" style="opacity: 0.75;" /></div>
 			<div ng-if="char.position.indexOf(',') != -1">

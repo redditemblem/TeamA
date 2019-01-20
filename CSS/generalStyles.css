@@ -371,6 +371,18 @@ img{
 	left: 0px;
 }
 
+.barrelIcon{
+	position: absolute;
+	top: -3px;
+	left: 0px;
+}
+
+.crateIcon{
+	position: absolute;
+	top: 0px;
+	left: -1px;
+}
+
 .enhancementRune{
 	position: absolute;
 	left: calc(50% - 31px);

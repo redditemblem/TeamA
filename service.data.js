@@ -766,6 +766,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 						case "Fire" : terrainLocs[coord].onFire = true; terrainLocs[coord].bonusHealVal = -20; break;
 						case "Barrier" : terrainLocs[coord].hasBarrier = true; break;
 						case "Barrel" : terrainLocs[coord].hasBarrel = true; break;
+						case "Crate" : terrainLocs[coord].hasCrate = true; break;
 					}
 				}
 			}
@@ -965,14 +966,14 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
             //Determine traversal cost
 			if(  classCost == 99
 			 || (tile.hasBarrier == true)
-			 || (tile.hasBarrel == true)
+			 || (tile.hasBarrel == true || tile.hasCrate == true)
 			 || (tile.occupiedAffiliation > -1 && tile.occupiedAffiliation != 3 && tile.occupiedAffiliation != getAffilitationGrouping(params.affiliation))
 			 || (classCost > range)
 			){
 				return;
 			}
 			else range -= classCost;
-		}
+		}else if(tile.hasBarrel == true || tile.hasCrate == true){ range = 0; } //stop the unit from moving out from under a barrel
 
 		if(list.indexOf(coord) == -1) list.push(coord);
 		trace += coord + "_";
