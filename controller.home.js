@@ -304,6 +304,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 			case "Rettatese Army" : 
 			case "Ruffians" :
 			case "Jolinde's Troops" :
+			case "Pteryga" :
+			case "Unknown" :
+			case "Grey Rider's Troops" :
 			case "???" : return 1;
 			case "Ally" :
 			case "Psari" : 
