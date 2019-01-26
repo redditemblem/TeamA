@@ -405,7 +405,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 
 	$scope.getAffinityIcon = function(affinity){
 		if(affinity.length == 0) return "";
+		
 		affinity = affinity.toLowerCase();
+		if(affinity == "none") return "";
+
 		return "IMG/AFF/" + affinity + ".png";
 	};
 
