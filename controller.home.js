@@ -299,7 +299,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 
 	$scope.determineAffiliationGrouping = function(aff){
 		switch(aff){
-			case "The Pack" : return 0;
+			case "The Pack" : 
+			case "Angels" : return 0;
 			case "Enemies" : 
 			case "Rettatese Army" : 
 			case "Ruffians" :
@@ -307,10 +308,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', '
 			case "Pteryga" :
 			case "Unknown" :
 			case "Grey Rider's Troops" :
+			case "Demons" :
 			case "???" : return 1;
 			case "Ally" :
 			case "Psari" : 
-			case "Neraida" : return 2;
+			case "Neraida" : 
+			case "Arbor Aurelius" : return 2;
 			case "Other" : return 3;
 			case "Environment" : return 4;
 			default: return -1;

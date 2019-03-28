@@ -855,6 +855,8 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			case "Ally" :
 			case "Psari" :
 			case "Neraida" :
+			case "Angels" :
+			case "Arbor Aurelius" :
 			default : return 0;
 			case "Enemies" : 
 			case "Rettatese Army" :
@@ -863,6 +865,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			case "Pteryga" :
 			case "Unknown" :
 			case "Grey Rider's Troops" :
+			case "Demons" :
 			case "???" : return 1;
 			case "Other": return 2;
 			case "Environment" : return 3;
