@@ -883,7 +883,7 @@ app.service('DataService', ['$rootScope', function ($rootScope) {
 			if (pos.length > 0 && pos.indexOf(",") != -1 && pos != "Not Deployed" && pos != "Defeated" && pos != "Escaped") {
 				var horz = cols.indexOf(pos.substring(0,pos.indexOf(",")));
 				var vert = rows.indexOf(pos.substring(pos.indexOf(",")+1));
-				var range = parseInt(char.Mov);
+				var range = parseInt(char.TrueMov);
 
 				var maxAtkRange = 0;
 				var maxHealRange = 0;
